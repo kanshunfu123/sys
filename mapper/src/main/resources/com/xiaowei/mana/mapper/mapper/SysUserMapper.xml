@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.SysUserMapper">
+    <select id="getAdminUser" resultType="int">
+        SELECT
+        COUNT(id)
+        FROM
+        sys_role
+        WHERE group_id=#{groupid} AND sys_role_type='0'
+        <if test="id!=null">
+            AND id!=#{id}
+        </if>
+    </select>
+<select id="getUserCountBygroupId" resultType="int">
+    SELECT
+    COUNT(id)
+    FROM
+        sys_user
+        WHERE group_id=#{groupid}
+</select>
+    <select id="getAll" resultMap="userLogin">
+        SELECT
+     id, sys_user_name, sys_user_uuid, sys_user_login_name, sys_user_pwd, sys_user_auth_salt,
+    dept_id, sys_user_phone, sys_user_email, sys_user_province, sys_user_city, sys_user_area,
+    group_id, role_type, name_top, sys_login_number, name_bottom, is_forbidden, del_flag
+    FROM sys_user WHERE del_flag='0'
+    </select>
+    <select id="userPage" parameterType="com.xiaowei.mana.mapper.Req.UserPageReq" resultMap="userPage">
+        SELECT sys_user.id, sys_user_name, sys_user_uuid, sys_user_login_name,
+        dept_id, sys_user_phone, sys_user_email, sys_user_province_name, sys_user_province,
+        sys_user_city_name, sys_user_city, sys_user_area_name,
+        sys_user.group_id, role_type, gro.name_top, sys_login_number, gro.name_bottom, is_forbidden, sys_user.del_flag,sys_user.create_time,
+        gro.user_group_name,sys_account_start_time,sys_account_end_time,sys_open_day,sys_start,sys_create_account_num,gro.create_time
+        gcreateTime,sys_dept.sys_dept_name
+        FROM
+        sys_user
+        INNER JOIN sys_user_group gro ON sys_user.group_id=gro.id
+        LEFT JOIN sys_dept ON dept_id=sys_dept.id
+        <trim prefix="where" prefixOverrides="and">
+            <if test="groupId!=null">
+                AND gro.id=#{groupId}
+            </if>
+            <if test="roleType!=null and roleType.trim()!=''">
+                AND role_type=#{roleType}
+            </if>
+            <if test="delFlag!=null and delFlag.trim()!=''">
+                AND sys_user.del_flag=#{delFlag}
+            </if>
+            <if test="userName!=null and userName!=''">
+                AND sys_user_name LIKE CONCAT('%',#{userName},'%')
+            </if>
+            <if test="phone!=null and phone!=''">
+                AND sys_user_phone LIKE CONCAT('%',#{phone},'%')
+            </if>
+            <if test="email!=null and email!=''">
+                AND sys_user_email LIKE CONCAT('%',#{email},'%')
+            </if>
+            <if test="groupName!=null and groupName!=''">
+                AND user_group_name LIKE CONCAT('%',#{groupName},'%')
+            </if>
+            <if test="userLoginName!=null and userLoginName!=''">
+                AND sys_user_login_name LIKE CONCAT('%',#{userLoginName},'%')
+            </if>
+        </trim>
+        ORDER BY sys_user.id
+    </select>
+    <resultMap id="userPage" type="com.xiaowei.mana.mapper.res.userpage.UserPage">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="DEPT_ID" property="deptId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="sys_user_province_name" jdbcType="VARCHAR" property="sysUserProvinceName" />
+        <result column="sys_user_province" jdbcType="BIGINT" property="sysUserProvince" />
+        <result column="sys_user_city_name" jdbcType="VARCHAR" property="sysUserCityName" />
+        <result column="sys_user_city" jdbcType="BIGINT" property="sysUserCity" />
+        <result column="sys_user_area_name" jdbcType="VARCHAR" property="sysUserAreaName" />
+        <result column="sys_user_area" jdbcType="BIGINT" property="sysUserArea" />
+        <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+        <result column="NAME_TOP" property="nameTop" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ROLE_TYPE" property="roleType" jdbcType="CHAR" javaType="String"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="NAME_BOTTOM" property="nameBottom" jdbcType="VARCHAR" javaType="String"/>
+        <result column="IS_FORBIDDEN" property="isForbidden" jdbcType="CHAR" javaType="String"/>
+        <result column="SYS_USER_NAME" property="sysUserName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_USER_UUID" property="sysUserUuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_USER_EMAIL" property="sysUserEmail" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_USER_PHONE" property="sysUserPhone" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_LOGIN_NUMBER" property="sysLoginNumber" jdbcType="CHAR" javaType="String"/>
+        <result column="SYS_USER_LOGIN_NAME" property="sysUserLoginName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+
+        <result column="sys_dept_name" jdbcType="VARCHAR" property="deptName" />
+        <result column="user_group_name" jdbcType="VARCHAR" property="userGroupName" />
+        <result column="sys_account_start_time" jdbcType="TIMESTAMP" property="sysAccountStartTime" />
+        <result column="sys_account_end_time" jdbcType="TIMESTAMP" property="sysAccountEndTime" />
+        <result column="sys_open_day" jdbcType="VARCHAR" property="sysOpenDay" />
+        <result column="sys_start" jdbcType="CHAR" property="sysStart" />
+        <result column="sys_create_account_num" jdbcType="INTEGER" property="sysCreateAccountNum" />
+        <result column="gcreateTime" jdbcType="TIMESTAMP" property="gcreateTime" />
+        <collection property="roleNameList" column="id" select="getRoleLiistByUserId"/>
+    </resultMap>
+    <select id="getRoleLiistByUserId" resultMap="getRoleLiistByUserId">
+        SELECT id,sys_role_name,sys_role_type,group_id
+        FROM sys_role
+        WHERE id IN( SELECT role_id FROM sys_role_user where user_id=#{id})
+    </select>
+    <resultMap id="getRoleLiistByUserId" type="com.xiaowei.mana.mapper.dataobject.RoleDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_role_uuid" jdbcType="VARCHAR" property="sysRoleUuid" />
+        <result column="sys_role_name" jdbcType="VARCHAR" property="sysRoleName" />
+        <result column="sys_role_type" jdbcType="CHAR" property="sysRoleType" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <select id="userLogin" resultMap="userLogin">
+    SELECT
+     id, sys_user_name, sys_user_uuid, sys_user_login_name, sys_user_pwd, sys_user_auth_salt,
+    dept_id, sys_user_phone, sys_user_email, sys_user_province, sys_user_city, sys_user_area,
+    group_id, role_type, name_top, sys_login_number, name_bottom, is_forbidden, del_flag
+    FROM
+    sys_user
+    WHERE sys_user_login_name=#{userName}
+    </select>
+    <select id="userLoginCout" resultType="int">
+        SELECT
+        COUNT(id)
+        FROM
+        sys_user
+        <trim prefixOverrides="and" prefix="where">
+            <if test="userName!=null and userName.trim()!=''">
+                AND sys_user_login_name=#{userName}
+            </if>
+            <if test="email!=null and email.trim()!=''">
+                AND sys_user_email=#{email}
+            </if>
+            <if test="phone!=null and phone.trim()!=''">
+                AND sys_user_phone=#{phone}
+            </if>
+            <if test="userId!=null">
+                AND id!=#{userId}
+            </if>
+        </trim>
+    </select>
+    <select id="getUserGroupByUserId" resultMap="getUserGroupByUserId">
+  select
+ id, user_group_uuid, user_group_name, sys_account_start_time, sys_account_end_time,
+    sys_open_day, sys_start, sys_create_account_num, sys_scene, sys_allow_device_num,
+    sys_rece_device_num, name_top, name_bottom, del_flag, create_by, create_time, update_time,
+    update_by
+        from sys_user_group
+        where id = #{userId,jdbcType=BIGINT}
+</select>
+    <select id="getUserByUUID" resultMap="userLogin">
+        select
+         id, sys_user_name, sys_user_uuid, sys_user_login_name, sys_user_pwd, sys_user_auth_salt,
+    dept_id, sys_user_phone, sys_user_email, sys_user_province, sys_user_city, sys_user_area,
+    group_id, role_type, name_top, sys_login_number, name_bottom, is_forbidden, del_flag
+        from sys_user
+        where sys_user_uuid = #{uuid}
+    </select>
+    <update id="editUser" parameterType="com.xiaowei.mana.mapper.dataobject.UserDO">
+        update sys_user
+        <set>
+            <if test="sysUserName != null">
+                sys_user_name = #{sysUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserUuid != null">
+                sys_user_uuid = #{sysUserUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserLoginName != null">
+                sys_user_login_name = #{sysUserLoginName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserPwd != null">
+                sys_user_pwd = #{sysUserPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserAuthSalt != null">
+                sys_user_auth_salt = #{sysUserAuthSalt,jdbcType=VARCHAR},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="sysUserPhone != null">
+                sys_user_phone = #{sysUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserEmail != null">
+                sys_user_email = #{sysUserEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserProvinceName != null">
+                sys_user_province_name = #{sysUserProvinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserProvince != null">
+                sys_user_province = #{sysUserProvince,jdbcType=BIGINT},
+            </if>
+            <if test="sysUserCityName != null">
+                sys_user_city_name = #{sysUserCityName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserCity != null">
+                sys_user_city = #{sysUserCity,jdbcType=BIGINT},
+            </if>
+            <if test="sysUserAreaName != null">
+                sys_user_area_name = #{sysUserAreaName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserArea != null">
+                sys_user_area = #{sysUserArea,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="roleType != null">
+                role_type = #{roleType,jdbcType=CHAR},
+            </if>
+            <if test="nameTop != null">
+                name_top = #{nameTop,jdbcType=VARCHAR},
+            </if>
+            <if test="sysLoginNumber != null">
+                sys_login_number = #{sysLoginNumber,jdbcType=CHAR},
+            </if>
+            <if test="nameBottom != null">
+                name_bottom = #{nameBottom,jdbcType=VARCHAR},
+            </if>
+            <if test="isForbidden != null">
+                is_forbidden = #{isForbidden,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" parameterType="com.xiaowei.mana.mapper.dataobject.UserDO">
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysUserName != null">
+                sys_user_name,
+            </if>
+            <if test="sysUserUuid != null">
+                sys_user_uuid,
+            </if>
+            <if test="sysUserLoginName != null">
+                sys_user_login_name,
+            </if>
+            <if test="sysUserPwd != null">
+                sys_user_pwd,
+            </if>
+            <if test="sysUserAuthSalt != null">
+                sys_user_auth_salt,
+            </if>
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="sysUserPhone != null">
+                sys_user_phone,
+            </if>
+            <if test="sysUserEmail != null">
+                sys_user_email,
+            </if>
+            <if test="sysUserProvinceName != null">
+                sys_user_province_name,
+            </if>
+            <if test="sysUserProvince != null">
+                sys_user_province,
+            </if>
+            <if test="sysUserCityName != null">
+                sys_user_city_name,
+            </if>
+            <if test="sysUserCity != null">
+                sys_user_city,
+            </if>
+            <if test="sysUserAreaName != null">
+                sys_user_area_name,
+            </if>
+            <if test="sysUserArea != null">
+                sys_user_area,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="roleType != null">
+                role_type,
+            </if>
+            <if test="nameTop != null">
+                name_top,
+            </if>
+            <if test="sysLoginNumber != null">
+                sys_login_number,
+            </if>
+            <if test="nameBottom != null">
+                name_bottom,
+            </if>
+            <if test="isForbidden != null">
+                is_forbidden,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysUserName != null">
+                #{sysUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserUuid != null">
+                #{sysUserUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserLoginName != null">
+                #{sysUserLoginName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserPwd != null">
+                #{sysUserPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserAuthSalt != null">
+                #{sysUserAuthSalt,jdbcType=VARCHAR},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="sysUserPhone != null">
+                #{sysUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserEmail != null">
+                #{sysUserEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserProvinceName != null">
+                #{sysUserProvinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserProvince != null">
+                #{sysUserProvince,jdbcType=BIGINT},
+            </if>
+            <if test="sysUserCityName != null">
+                #{sysUserCityName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserCity != null">
+                #{sysUserCity,jdbcType=BIGINT},
+            </if>
+            <if test="sysUserAreaName != null">
+                #{sysUserAreaName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserArea != null">
+                #{sysUserArea,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="roleType != null">
+                #{roleType,jdbcType=CHAR},
+            </if>
+            <if test="nameTop != null">
+                #{nameTop,jdbcType=VARCHAR},
+            </if>
+            <if test="sysLoginNumber != null">
+                #{sysLoginNumber,jdbcType=CHAR},
+            </if>
+            <if test="nameBottom != null">
+                #{nameBottom,jdbcType=VARCHAR},
+            </if>
+            <if test="isForbidden != null">
+                #{isForbidden,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <resultMap id="getUserGroupByUserId" type="com.xiaowei.mana.mapper.dataobject.UserGroupDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_group_uuid" jdbcType="VARCHAR" property="userGroupUuid" />
+        <result column="user_group_name" jdbcType="VARCHAR" property="userGroupName" />
+        <result column="sys_account_start_time" jdbcType="TIMESTAMP" property="sysAccountStartTime" />
+        <result column="sys_account_end_time" jdbcType="TIMESTAMP" property="sysAccountEndTime" />
+        <result column="sys_open_day" jdbcType="VARCHAR" property="sysOpenDay" />
+        <result column="sys_start" jdbcType="CHAR" property="sysStart" />
+        <result column="sys_create_account_num" jdbcType="INTEGER" property="sysCreateAccountNum" />
+        <result column="sys_scene" jdbcType="VARCHAR" property="sysScene" />
+        <result column="sys_allow_device_num" jdbcType="INTEGER" property="sysAllowDeviceNum" />
+        <result column="sys_rece_device_num" jdbcType="INTEGER" property="sysReceDeviceNum" />
+        <result column="name_top" jdbcType="VARCHAR" property="nameTop" />
+        <result column="name_bottom" jdbcType="VARCHAR" property="nameBottom" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <resultMap id="userLogin" type="com.xiaowei.mana.mapper.dataobject.UserDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_user_name" jdbcType="VARCHAR" property="sysUserName" />
+        <result column="sys_user_uuid" jdbcType="VARCHAR" property="sysUserUuid" />
+        <result column="sys_user_login_name" jdbcType="VARCHAR" property="sysUserLoginName" />
+        <result column="sys_user_pwd" jdbcType="VARCHAR" property="sysUserPwd" />
+        <result column="sys_user_auth_salt" jdbcType="VARCHAR" property="sysUserAuthSalt" />
+        <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+        <result column="sys_user_phone" jdbcType="VARCHAR" property="sysUserPhone" />
+        <result column="sys_user_email" jdbcType="VARCHAR" property="sysUserEmail" />
+        <result column="sys_user_province_name" jdbcType="VARCHAR" property="sysUserProvinceName" />
+        <result column="sys_user_province" jdbcType="BIGINT" property="sysUserProvince" />
+        <result column="sys_user_city_name" jdbcType="VARCHAR" property="sysUserCityName" />
+        <result column="sys_user_city" jdbcType="BIGINT" property="sysUserCity" />
+        <result column="sys_user_area_name" jdbcType="VARCHAR" property="sysUserAreaName" />
+        <result column="sys_user_area" jdbcType="BIGINT" property="sysUserArea" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="role_type" jdbcType="CHAR" property="roleType" />
+        <result column="name_top" jdbcType="VARCHAR" property="nameTop" />
+        <result column="sys_login_number" jdbcType="CHAR" property="sysLoginNumber" />
+        <result column="name_bottom" jdbcType="VARCHAR" property="nameBottom" />
+        <result column="is_forbidden" jdbcType="CHAR" property="isForbidden" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+</mapper>

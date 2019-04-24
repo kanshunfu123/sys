@@ -1,0 +1,124 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="SYS_ROLE_AREA" physicalName="SYS_ROLE_AREA" remark="SYS_ROLE_AREA">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:SYS_ROLE_AREA">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_ROLE_AREA(
+            
+            AREA_ID
+            ,ROLE_ID
+            ,AREA_LEVEL
+        )VALUES(
+            
+            #{areaId,jdbcType=BIGINT}
+            ,#{roleId,jdbcType=BIGINT}
+            ,#{areaLevel,jdbcType=INTEGER}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:SYS_ROLE_AREA">
+            UPDATE SYS_ROLE_AREA
+            SET
+                    AREA_ID         = #{areaId,jdbcType=BIGINT}
+                    ,ROLE_ID         = #{roleId,jdbcType=BIGINT}
+                    ,AREA_LEVEL      = #{areaLevel,jdbcType=INTEGER}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_ROLE_AREA">
+            DELETE FROM sys_role_area
+            WHERE
+            role_id = #{role_id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_ROLE_AREA">
+            SELECT * FROM SYS_ROLE_AREA
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+    <operation name="insertSelective">
+        insert into sys_role_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="areaId != null">
+                area_id,
+            </if>
+            <if test="areaLevel != null">
+                area_level,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null">
+            #{id,jdbcType=BIGINT},
+        </if>
+        <if test="roleId != null">
+            #{roleId,jdbcType=BIGINT},
+        </if>
+        <if test="areaId != null">
+            #{areaId,jdbcType=BIGINT},
+        </if>
+        <if test="areaLevel != null">
+            #{areaLevel,jdbcType=INTEGER},
+        </if>
+        <if test="groupId != null">
+            #{groupId,jdbcType=BIGINT},
+        </if>
+        </trim>
+    </operation>
+    <operation name="updateByPrimaryKeySelective">
+        update sys_role_area
+        <set>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=BIGINT},
+            </if>
+            <if test="areaId != null">
+                area_id = #{areaId,jdbcType=BIGINT},
+            </if>
+            <if test="areaLevel != null">
+                area_level = #{areaLevel,jdbcType=INTEGER},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </operation>
+    <operation name="selectByPrimaryKey" >
+        select
+        id, role_id, area_id, area_level, group_id
+        from sys_role_area
+        where id = #{id,jdbcType=BIGINT}
+    </operation>
+    <operation name="selectByRoleId" multiplicity="many" resulttype="Long">
+        select
+         area_id
+        from sys_role_area
+        where role_id = #{roleId,jdbcType=BIGINT}
+    </operation>
+    <operation name="insertBatch" paramtype="objectList">
+        <foreach collection="list" item="item" separator=";">
+            insert into sys_role_area ( role_id, area_id,
+            area_level, group_id,device_type)
+            values ( #{item.roleId,jdbcType=BIGINT}, #{item.areaId,jdbcType=BIGINT},
+            #{item.areaLevel,jdbcType=INTEGER}, #{item.groupId,jdbcType=BIGINT},#{item.deviceType,jdbcType=VARCHAR})
+        </foreach>
+    </operation>
+    <operation name="deleteByParams">
+        DELETE FROM sys_role_area
+        WHERE
+        role_id = #{role_id,jdbcType=BIGINT} and device_type=#{deviceType,jdbcType=VARCHAR}
+    </operation>
+</table>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.RoleDeviceMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.RoleDeviceDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="sys_role_id" jdbcType="BIGINT" property="sysRoleId" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="device_type" jdbcType="CHAR" property="deviceType" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, device_no, sys_role_id, group_id, device_type, del_flag, create_by, create_time,
+    update_time, update_by
+  </sql>
+    <delete id="deleteByGroupId">
+        DELETE FROM sys_role_device WHERE group_id=#{groupId} AND device_no IN
+        <foreach collection="lists" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+    <insert id="batchaddRoleUser" parameterType="com.xiaowei.mana.mapper.dataobject.RoleDO">
+        <foreach collection="list" item="item" separator=";">
+            insert into sys_role_device ( device_no, sys_role_id,
+            group_id, device_type, del_flag,
+            create_by, create_time, update_time,
+            update_by)
+            values ( #{item.deviceNo,jdbcType=VARCHAR}, #{item.sysRoleId,jdbcType=BIGINT},
+            #{item.groupId,jdbcType=BIGINT}, #{item.deviceType,jdbcType=CHAR}, #{item.delFlag,jdbcType=CHAR},
+            #{item.createBy,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.updateBy,jdbcType=VARCHAR})
+        </foreach>
+
+    </insert>
+    <delete id="deleteByRoleId" parameterType="map">
+      delete from sys_role_device
+      where sys_role_id = #{roleId,jdbcType=BIGINT}
+    </delete>
+    <select id="getDevicesInfoByRoleId" resultMap="BaseResultMap">
+        select
+        id, device_no, sys_role_id, group_id, device_type
+        from sys_role_device
+        where sys_role_id IN
+        <foreach collection="list" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getDevicesByRoleId" parameterType="map" resultType="String">
+        select
+        device_no
+        from sys_role_device
+        where sys_role_id IN
+        <foreach collection="list" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getDevicesByRoleIdAndDeviceType" parameterType="map" resultType="String">
+        select
+        device_no
+        from sys_role_device
+        where
+        device_type=#{deviceType}
+       AND sys_role_id IN
+        <foreach collection="list" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role_device
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <insert id="insertSelective" parameterType="com.xiaowei.mana.mapper.dataobject.RoleDO">
+        insert into sys_role_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="deviceNo != null">
+                device_no,
+            </if>
+            <if test="sysRoleId != null">
+                sys_role_id,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="deviceType != null">
+                device_type,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="deviceNo != null">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRoleId != null">
+                #{sysRoleId,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="deviceType != null">
+                #{deviceType,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiaowei.mana.mapper.dataobject.RoleDO">
+        update sys_role_device
+        <set>
+            <if test="deviceNo != null">
+                device_no = #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRoleId != null">
+                sys_role_id = #{sysRoleId,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="deviceType != null">
+                device_type = #{deviceType,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

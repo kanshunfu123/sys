@@ -1,0 +1,56 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="SYS_USER_GROUP_ACL" physicalName="SYS_USER_GROUP_ACL" remark="组和权限点">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:SYS_USER_GROUP_ACL">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_USER_GROUP_ACL(
+            
+            SYS_ACL_ID
+            ,SYS_USER_GROUP_ID
+            ,DEL_FLAG
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            
+            #{sysAclId,jdbcType=BIGINT}
+            ,#{sysUserGroupId,jdbcType=BIGINT}
+            ,#{delFlag,jdbcType=CHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:SYS_USER_GROUP_ACL">
+            UPDATE SYS_USER_GROUP_ACL
+            SET
+                    SYS_ACL_ID      = #{sysAclId,jdbcType=BIGINT}
+                    ,SYS_USER_GROUP_ID = #{sysUserGroupId,jdbcType=BIGINT}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_USER_GROUP_ACL">
+            DELETE FROM SYS_USER_GROUP_ACL
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_USER_GROUP_ACL">
+            SELECT * FROM SYS_USER_GROUP_ACL
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+</table>

@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.areatodevice.AreaAclMapper">
+
+    <select id="com_areaUsing_v2" parameterType="map" resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+      SELECT DISTINCT role_d.device_no,mh.province,mh.province_id provinceId,mh.city,mh.city_id cityId,mh.area,mh.area_id areaId
+            FROM sys_role_user role_u
+            INNER JOIN sys_role_device role_d ON role_u.role_id=role_d.sys_role_id AND role_d.device_type=#{deviceType} AND role_u.user_id=#{userId}
+            <if test="deviceType==0">
+                INNER JOIN xw_equipment_rw mh ON role_d.device_no=mh.device_no
+            </if>
+            <if test="deviceType==1">
+                INNER JOIN xw_equipment_mh mh ON role_d.device_no=mh.device_no
+            </if>
+            <if test="deviceType==2">
+                INNER JOIN xw_equipment_cw mh ON role_d.device_no=mh.device_no
+            </if>
+            <if test="deviceType==3">
+                INNER JOIN xw_equipment_ec mh ON role_d.device_no=mh.device_no
+            </if>
+            <trim prefixOverrides="and" prefix="where">
+                <if test="level==1">
+                    province_id=#{parentId}
+                </if>
+                <if test="level==2">
+                    city_id=#{parentId}
+                </if>
+            </trim>
+    </select>
+
+    <select id="common_offLine_showMapInfo" parameterType="map" resultType="Long">
+        SELECT COUNT(DISTINCT f_log.device_no)
+        FROM sys_role_user role_u
+        INNER JOIN sys_role_device role_d ON role_u.role_id=role_d.sys_role_id AND role_u.user_id=#{userId}
+        INNER JOIN d_offline_log f_log ON role_d.device_no=f_log.device_no AND f_log.device_type=#{deviceType}
+        WHERE
+        <if test="lev==0">
+            province_id=#{areaId}
+        </if>
+        <if test="lev==1">
+            city_id=#{areaId}
+        </if>
+        <if test="lev==2">
+            area_id=#{areaId}
+        </if>
+        <if test="lev==3">
+            street_id=#{areaId}
+        </if>
+        <if test="deviceType==3 || deviceType==2">
+            <if test="lev==4">
+                village_id=#{areaId}
+            </if>
+        </if>
+        <![CDATA[
+            AND  #{beginTime}<=f_log.collect_time
+            AND f_log.collect_time <=#{endTime}
+            ]]>
+    </select>
+    <select id="common_breakdown_showMapInfo" parameterType="map" resultType="Long">
+        SELECT COUNT(DISTINCT f_log.device_no)
+        FROM sys_role_user role_u
+        INNER JOIN sys_role_device role_d ON role_u.role_id=role_d.sys_role_id AND role_u.user_id=#{userId}
+        INNER JOIN d_fault_log f_log ON role_d.device_no=f_log.device_no AND f_log.device_type=#{deviceType}
+        WHERE
+        <if test="lev==0">
+            province_id=#{areaId}
+        </if>
+        <if test="lev==1">
+            city_id=#{areaId}
+        </if>
+        <if test="lev==2">
+            area_id=#{areaId}
+        </if>
+        <if test="lev==3">
+            street_id=#{areaId}
+        </if>
+        <if test="deviceType==3 || deviceType==2">
+            <if test="lev==4">
+                village_id=#{areaId}
+            </if>
+        </if>
+        <![CDATA[
+            AND  #{beginTime}<=f_log.collect_time
+            AND f_log.collect_time <=#{endTime}
+            ]]>
+    </select>
+
+
+    <select id="admin_areaUsing" parameterType="map" resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+        SELECT DISTINCT mh.device_no,mh.province,mh.province_id provinceId,mh.city,mh.city_id cityId,mh.area,mh.area_id areaId
+        FROM
+        <if test="deviceType==0">
+            xw_equipment_rw mh
+        </if>
+        <if test="deviceType==1">
+            xw_equipment_mh mh
+        </if>
+        <if test="deviceType==2">
+            xw_equipment_cw mh
+        </if>
+        <if test="deviceType==3">
+            xw_equipment_ec mh
+        </if>
+        <trim prefixOverrides="and" prefix="where">
+            <if test="level==1">
+                province_id=#{parentId}
+            </if>
+            <if test="level==2">
+                city_id=#{parentId}
+            </if>
+        </trim>
+    </select>
+    <select id="com_areaUsing" parameterType="map" resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+         SELECT mmp.id areaId,mmp.sys_area_level areaLevel,mmp.sys_area_name areaName
+        FROM (
+                SELECT DISTINCT area.id,area.sys_area_level,area.sys_area_name
+             FROM sys_area area
+             WHERE area.sys_area_level LIKE  CONCAT(#{lev},'%')
+        ) mmp
+        INNER JOIN
+        (
+            SELECT DISTINCT role_a.area_id,role_u.role_id
+            FROM sys_role_user role_u
+            INNER JOIN sys_role_area role_a ON role_u.role_id=role_a.role_id AND role_u.user_id=#{userId}
+            INNER JOIN sys_role_device role_d ON role_u.role_id=role_d.sys_role_id
+        ) bbb ON  mmp.id=bbb.area_id
+    </select>
+
+
+    <!--0 地表水 1井盖 2生活用水 3电梯-->
+    <select id="common_showMapInfo" parameterType="map" resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+        SELECT COUNT(DISTINCT role_d.id ) deviceNum
+        FROM sys_role_user role_u
+
+        INNER JOIN sys_role_device role_d ON role_u.role_id=role_d.sys_role_id AND role_u.user_id=#{userId}
+
+        <if test="deviceType==0">
+            INNER JOIN xw_equipment_rw ec ON role_d.device_no=ec.device_no
+        </if>
+        <if test="deviceType==1">
+            INNER JOIN xw_equipment_mh ec ON role_d.device_no=ec.device_no
+        </if>
+        <if test="deviceType==2">
+            INNER JOIN xw_equipment_cw ec ON role_d.device_no=ec.device_no
+        </if>
+        <if test="deviceType==3">
+            INNER JOIN xw_equipment_ec ec ON role_d.device_no=ec.device_no
+        </if>
+        WHERE
+        <if test="lev==0">
+            ec.province_id=#{areaId}
+        </if>
+        <if test="lev==1">
+            ec.city_id=#{areaId}
+        </if>
+        <if test="lev==2">
+            ec.area_id=#{areaId}
+        </if>
+        <if test="lev==3">
+            ec.street_id=#{areaId}
+        </if>
+        <if test="deviceType==3 || deviceType==2">
+            <if test="lev==4">
+                ec.village_id=#{areaId}
+            </if>
+        </if>
+
+    </select>
+    <select id="admin_offLine_showMapInfo" parameterType="map" resultType="Long">
+        SELECT COUNT(DISTINCT f_log.device_no)
+        from (
+        SELECT ec.device_no
+        FROM
+        <if test="deviceType==0">
+            xw_equipment_rw ec
+        </if>
+        <if test="deviceType==1">
+            xw_equipment_mh ec
+        </if>
+        <if test="deviceType==2">
+            xw_equipment_cw ec
+        </if>
+        <if test="deviceType==3">
+            xw_equipment_ec ec
+        </if>
+        WHERE
+        <if test="lev==0">
+            province_id=#{areaId}
+        </if>
+        <if test="lev==1">
+            city_id=#{areaId}
+        </if>
+        <if test="lev==2">
+            area_id=#{areaId}
+        </if>
+        <if test="lev==3">
+            street_id=#{areaId}
+        </if>
+        <if test="lev==4">
+            village_id=#{areaId}
+        </if>
+        ) mmp
+        INNER JOIN d_offline_log f_log ON mmp.device_no=f_log.device_no AND device_type=#{deviceType}
+        <![CDATA[
+            AND  #{beginTime}<=f_log.collect_time
+            AND f_log.collect_time <=#{endTime}
+            ]]>
+    </select>
+    <select id="admin_breakdown_showMapInfo" parameterType="map" resultType="Long">
+        SELECT COUNT(DISTINCT f_log.device_no)
+        from (
+        SELECT ec.device_no
+        FROM
+        <if test="deviceType==0">
+            xw_equipment_rw ec
+        </if>
+        <if test="deviceType==1">
+            xw_equipment_mh ec
+        </if>
+        <if test="deviceType==2">
+            xw_equipment_cw ec
+        </if>
+        <if test="deviceType==3">
+            xw_equipment_ec ec
+        </if>
+        WHERE
+        <if test="lev==0">
+            province_id=#{areaId}
+        </if>
+        <if test="lev==1">
+            city_id=#{areaId}
+        </if>
+        <if test="lev==2">
+            area_id=#{areaId}
+        </if>
+        <if test="lev==3">
+            street_id=#{areaId}
+        </if>
+        <if test="lev==4">
+            village_id=#{areaId}
+        </if>
+        ) mmp
+        INNER JOIN d_fault_log f_log ON mmp.device_no=f_log.device_no AND device_type=#{deviceType}
+        <![CDATA[
+            AND  #{beginTime}<=f_log.collect_time
+            AND f_log.collect_time <=#{endTime}
+            ]]>
+    </select>
+    <select id="admin_showMapInfo" parameterType="map" resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+        SELECT COUNT(DISTINCT ec.id ) deviceNum
+        FROM
+        <if test="deviceType==0">
+            xw_equipment_rw ec
+        </if>
+        <if test="deviceType==1">
+            xw_equipment_mh ec
+        </if>
+        <if test="deviceType==2">
+            xw_equipment_cw ec
+        </if>
+        <if test="deviceType==3">
+            xw_equipment_ec ec
+        </if>
+        WHERE
+        <if test="lev==0">
+            province_id=#{areaId}
+        </if>
+        <if test="lev==1">
+            city_id=#{areaId}
+        </if>
+        <if test="lev==2">
+            area_id=#{areaId}
+        </if>
+        <if test="lev==3">
+            street_id=#{areaId}
+        </if>
+        <if test="lev==4">
+            village_id=#{areaId}
+        </if>
+
+    </select>
+    <select id="secons" parameterType="map" resultType="string">
+        SELECT sys_scene
+        FROM sys_user_group
+        WHERE id =(
+            SELECT group_id
+        FROM sys_user WHERE id=#{userId}
+        )
+    </select>
+
+    <select id="v3_mmp_ec" parameterType="map" resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+
+        SELECT mmp.id, mmp.village_name areaName,mmp.longitude log,mmp.latitude lat,
+        <if test="lev==0">
+            ec.province_id areaId
+        </if>
+        <if test="lev==1">
+            ec.city_id areaId
+        </if>
+        <if test="lev==2">
+            ec.area_id areaId
+        </if>
+        FROM (
+        SELECT id, village_name,longitude,latitude
+        FROM sys_village
+        WHERE street_id
+        <foreach collection="sets" item="item" open="(" close=")">
+            #{item}
+        </foreach>
+        ) mmp
+        INNER JOIN xw_equipment_ec ec ON ec.village_id=mmp.id
+
+    </select>
+    <select id="v3_mmp_cw" parameterType="map" resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+
+        SELECT mmp.id, mmp.village_name areaName,mmp.longitude log,mmp.latitude lat,ec.province_id areaId,ec.city_id
+        areaId,ec.area_id areaId
+        FROM (
+        SELECT id, village_name,longitude,latitude
+        FROM sys_village
+        WHERE street_id
+        <foreach collection="sets" item="item" open="(" close=")">
+            #{item}
+        </foreach>
+        ) mmp
+        INNER JOIN xw_equipment_cw ec ON ec.village_id=mmp.id
+
+    </select>
+
+
+    <select id="v3_adminListMapAcl" parameterType="map" resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+        <if test="village==null">
+            SELECT sys_ar.id areaId,sys_ar.latitude lat,sys_ar.longitude log,sys_ar.sys_area_name
+            areaName,cw.device_no,cw.id
+            FROM sys_area sys_ar
+        </if>
+        <if test="village!=null">
+            SELECT sys_ar.id areaId,sys_ar.latitude lat,sys_ar.longitude log,sys_ar.village_name
+            areaName,cw.device_no,cw.id
+            FROM sys_village sys_ar
+        </if>
+
+        <if test="deviceType==0">
+            INNER JOIN xw_equipment_rw cw
+            <trim prefix="ON" prefixOverrides="AND">
+
+                <if test="lev==0">
+                    sys_ar.id=cw.province_id
+                </if>
+                <if test="lev==1">
+                    sys_ar.id=cw.city_id
+                </if>
+                <if test="lev==2">
+                    sys_ar.id=cw.area_id
+                </if>
+            </trim>
+        </if>
+        <if test="deviceType==1">
+            INNER JOIN xw_equipment_mh cw
+            <trim prefix="ON" prefixOverrides="AND">
+
+                <if test="lev==0">
+                    sys_ar.id=cw.province_id
+                </if>
+                <if test="lev==1">
+                    sys_ar.id=cw.city_id
+                </if>
+                <if test="lev==2">
+                    sys_ar.id=cw.area_id
+                </if>
+            </trim>
+        </if>
+        <if test="deviceType==2 ">
+            INNER JOIN xw_equipment_cw cw
+            <trim prefix="ON" prefixOverrides="AND">
+
+                <if test="lev==0">
+                    sys_ar.id=cw.province_id
+                </if>
+                <if test="lev==1">
+                    sys_ar.id=cw.city_id
+                </if>
+                <if test="lev==2">
+                    sys_ar.id=cw.area_id
+                </if>
+                <if test="lev==3">
+                    sys_ar.id=cw.street_id
+                </if>
+                <if test="lev==4">
+                    sys_ar.id=cw.village_id
+                </if>
+            </trim>
+        </if>
+        <if test="deviceType==3">
+            INNER JOIN xw_equipment_ec cw
+            <trim prefix="ON" prefixOverrides="AND">
+
+                <if test="lev==0">
+                    sys_ar.id=cw.province_id
+                </if>
+                <if test="lev==1">
+                    sys_ar.id=cw.city_id
+                </if>
+                <if test="lev==2">
+                    sys_ar.id=cw.area_id
+                </if>
+                <if test="lev==3">
+                    sys_ar.id=cw.street_id
+                </if>
+                <if test="lev==4">
+                    sys_ar.id=cw.village_id
+                </if>
+            </trim>
+        </if>
+        <if test="village==null and parentId!=null">
+            WHERE
+            <if test="mapZoomVO!=null">
+                <![CDATA[
+              #{mapZoomVO.lngLeft}<= sys_ar.longitude
+             AND #{mapZoomVO.latLeft}<=sys_ar.latitude
+             AND sys_ar.longitude<=#{mapZoomVO.lngRight}
+             AND sys_ar.latitude<=#{mapZoomVO.latRight}
+            ]]>
+            </if>
+        </if>
+        <if test="village!=null">
+            WHERE
+            <if test="mapZoomVO!=null">
+                <![CDATA[
+             AND #{mapZoomVO.lngLeft}<= sys_ar.longitude
+             AND #{mapZoomVO.latLeft}<=sys_ar.latitude
+             AND sys_ar.longitude<=#{mapZoomVO.lngRight}
+             AND sys_ar.latitude<=#{mapZoomVO.latRight}
+            ]]>
+            </if>
+
+        </if>
+    </select>
+    <select id="v3_commonListMapAcl" parameterType="map"
+            resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+
+        SELECT r_area.area_id areaId,area.sys_area_name areaName,area.latitude lat,area.longitude log,mmp.device_type deviceType
+        FROM sys_role_user r_user
+        INNER JOIN sys_role_area r_area ON r_user.role_id=r_area.role_id AND r_user.user_id=#{userId} AND sys_area_level LIKE CONCAT(#{lev},'%')
+        INNER JOIN sys_area area ON area.id=r_area.area_id
+        <![CDATA[
+             AND #{mapZoomVO.lngLeft}<= area.longitude
+             AND #{mapZoomVO.latLeft}<=area.latitude
+             AND area.longitude<=#{mapZoomVO.lngRight}
+             AND area.latitude<=#{mapZoomVO.latRight}
+            ]]>
+        INNER JOIN (
+        SELECT r_area.area_id,r_device.device_type
+        FROM sys_role_user r_user
+        INNER JOIN sys_role_area r_area ON r_user.role_id=r_area.role_id AND r_user.user_id=#{userId}
+        INNER JOIN sys_role_device r_device ON r_user.role_id=r_device.sys_role_id
+        ) mmp ON mmp.area_id=r_area.area_id
+    </select>
+    <select id="v3_commonListMapAcl_two" parameterType="map"
+            resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+
+        SELECT r_area.area_id,area.village_name ,area.latitude lat,area.longitude log,mmp.device_type
+        FROM sys_role_user r_user
+        INNER JOIN sys_role_area r_area ON r_user.role_id=r_area.role_id AND r_user.user_id=#{userId} AND sys_area_level LIKE CONCAT(#{lev},'%')
+        INNER JOIN sys_village area ON area.id=r_area.area_id  AND area.street_id=#{parentId}
+        <![CDATA[
+             AND #{mapZoomVO.lngLeft}<= area.longitude
+             AND #{mapZoomVO.latLeft}<=area.latitude
+             AND area.longitude<=#{mapZoomVO.lngRight}
+             AND area.latitude<=#{mapZoomVO.latRight}
+            ]]>
+        INNER JOIN (
+        SELECT r_area.area_id,r_device.device_type
+        FROM sys_role_user r_user
+        INNER JOIN sys_role_area r_area ON r_user.role_id=r_area.role_id AND r_user.user_id=#{userId}
+        INNER JOIN sys_role_device r_device ON r_user.role_id=r_device.sys_role_id
+        ) mmp ON mmp.area_id=r_area.area_id
+    </select>
+
+
+    <select id="v2_adminListMapAcl" parameterType="map" resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+        <if test="village==null">
+            SELECT sys_ar.id areaId,sys_ar.latitude lat,sys_ar.longitude log,sys_ar.sys_area_name
+            areaName,cw.device_no,cw.id
+            FROM sys_area sys_ar
+        </if>
+        <if test="village!=null">
+            SELECT sys_ar.id areaId,sys_ar.latitude lat,sys_ar.longitude log,sys_ar.village_name
+            areaName,cw.device_no,cw.id
+            FROM sys_village sys_ar
+        </if>
+
+        <if test="deviceType==0">
+            INNER JOIN xw_equipment_rw cw
+            <trim prefix="ON" prefixOverrides="AND">
+
+                <if test="lev==0">
+                    sys_ar.id=cw.province_id
+                </if>
+                <if test="lev==1">
+                    sys_ar.id=cw.city_id
+                </if>
+                <if test="lev==2">
+                    sys_ar.id=cw.area_id
+                </if>
+            </trim>
+        </if>
+        <if test="deviceType==1">
+            INNER JOIN xw_equipment_mh cw
+            <trim prefix="ON" prefixOverrides="AND">
+
+                <if test="lev==0">
+                    sys_ar.id=cw.province_id
+                </if>
+                <if test="lev==1">
+                    sys_ar.id=cw.city_id
+                </if>
+                <if test="lev==2">
+                    sys_ar.id=cw.area_id
+                </if>
+            </trim>
+        </if>
+        <if test="deviceType==2 ">
+            INNER JOIN xw_equipment_cw cw
+            <trim prefix="ON" prefixOverrides="AND">
+
+                <if test="lev==0">
+                    sys_ar.id=cw.province_id
+                </if>
+                <if test="lev==1">
+                    sys_ar.id=cw.city_id
+                </if>
+                <if test="lev==2">
+                    sys_ar.id=cw.area_id
+                </if>
+                <if test="lev==3">
+                    sys_ar.id=cw.street_id
+                </if>
+                <if test="lev==4">
+                    sys_ar.id=cw.village_id
+                </if>
+            </trim>
+        </if>
+        <if test="deviceType==3">
+            INNER JOIN xw_equipment_ec cw
+            <trim prefix="ON" prefixOverrides="AND">
+
+                <if test="lev==0">
+                    sys_ar.id=cw.province_id
+                </if>
+                <if test="lev==1">
+                    sys_ar.id=cw.city_id
+                </if>
+                <if test="lev==2">
+                    sys_ar.id=cw.area_id
+                </if>
+                <if test="lev==3">
+                    sys_ar.id=cw.street_id
+                </if>
+                <if test="lev==4">
+                    sys_ar.id=cw.village_id
+                </if>
+            </trim>
+        </if>
+        <if test="village==null and parentId!=null">
+            WHERE sys_ar.sys_area_parent_id=#{parentId}
+        </if>
+        <if test="village!=null">
+            WHERE sys_ar.street_id=#{streetId}
+        </if>
+    </select>
+    <select id="v2_commonListMapAcl" parameterType="map"
+            resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+
+        SELECT r_area.area_id areaId,area.sys_area_name areaName,area.latitude lat,area.longitude log,mmp.device_type
+        deviceType
+        FROM sys_role_user r_user
+        INNER JOIN sys_role_area r_area ON r_user.role_id=r_area.role_id AND r_user.user_id=#{userId} AND
+        area_level=#{lev}
+        INNER JOIN sys_area area ON area.id=r_area.area_id
+        <if test="parentId!=null">
+            AND sys_area_parent_id=#{parentId}
+        </if>
+        INNER JOIN (
+        SELECT r_area.area_id,r_device.device_type
+        FROM sys_role_user r_user
+        INNER JOIN sys_role_area r_area ON r_user.role_id=r_area.role_id AND r_user.user_id=#{userId} AND
+        area_level=#{lev}
+        INNER JOIN sys_role_device r_device ON r_user.role_id=r_device.sys_role_id
+        ) mmp ON mmp.area_id=r_area.area_id
+    </select>
+    <select id="v2_commonListMapAcl_two" parameterType="map"
+            resultType="com.xiaowei.mana.mapper.dataobject.AreaAclMapDO_v2">
+
+        SELECT r_area.area_id,area.village_name ,area.latitude lat,area.longitude log,mmp.device_type
+        FROM sys_role_user r_user
+        INNER JOIN sys_role_area r_area ON r_user.role_id=r_area.role_id AND r_user.user_id=#{userId} AND area_level=#{lev}
+        INNER JOIN sys_village area ON area.id=r_area.area_id  AND area.street_id=#{parentId}
+        INNER JOIN (
+            SELECT r_area.area_id,r_device.device_type
+            FROM sys_role_user r_user
+            INNER JOIN sys_role_area r_area ON r_user.role_id=r_area.role_id AND r_user.user_id=#{userId} AND area_level=#{lev}
+            INNER JOIN sys_role_device r_device ON r_user.role_id=r_device.sys_role_id
+        ) mmp ON mmp.area_id=r_area.area_id
+    </select>
+
+    <select id="getRoleAclArea" parameterType="map" resultType="Long">
+        SELECT area_id FROM sys_role_area
+        <trim prefix="where" prefixOverrides="and">
+            <if test="roleId!=null and roleId.size()!=0">
+                AND role_id IN
+                <foreach collection="roleId" item="item" separator="," close=")" open="(">
+                    #{item}
+                </foreach>
+            </if>
+            AND device_type=#{deviceType}
+        </trim>
+    </select>
+    <select id="getAreaByAcl" parameterType="map" resultMap="getAreaByAcl">
+        SELECT sys_area.latitude,sys_area.longitude,sys_area.sys_area_name,sys_area.id,sys_area_level
+        FROM (SELECT area_id FROM sys_role_area
+        WHERE area_level=#{lvl}
+        <if test="deviceType!=null and deviceType!=''">
+            AND device_type=#{deviceType}
+        </if>
+        <if test="list!=null and list.size()!=0">
+            AND
+            role_id IN
+            <foreach collection="list" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        ) area_ida
+        INNER JOIN sys_area ON area_ida.area_id=sys_area.id
+        <if test="mapZoomVO!=null">
+            <![CDATA[
+             AND #{mapZoomVO.lngLeft}<= sys_area.longitude
+             AND #{mapZoomVO.latLeft}<=sys_area.latitude
+             AND sys_area.longitude<=#{mapZoomVO.lngRight}
+             AND sys_area.latitude<=#{mapZoomVO.latRight}
+            ]]>
+        </if>
+        GROUP BY sys_area.id
+    </select>
+    <select id="getVillageByAcl_admin" parameterType="map" resultMap="getAreaByAcl">
+        <if test="aaaa!=4">
+            SELECT DISTINCT(mmp.id), mmp.latitude,mmp.longitude,mmp.sys_area_name,mmp.sys_area_level
+        </if>
+        <if test="aaaa==4">
+            SELECT DISTINCT(mmp.id), mmp.latitude,mmp.longitude,mmp.village_name sys_area_name
+        </if>
+        FROM (
+        <if test="aaaa!=4">
+            SELECT sys_village.latitude,sys_village.longitude,sys_village.sys_area_name,sys_village.id,sys_area_level
+            FROM sys_area sys_village WHERE
+        </if>
+        <if test="aaaa==4">
+            SELECT sys_village.latitude,sys_village.longitude,sys_village.village_name,sys_village.id
+            FROM sys_village WHERE
+        </if>
+        <if test="mapZoomVO!=null">
+            <![CDATA[
+              #{mapZoomVO.lngLeft}<= sys_village.longitude
+             AND #{mapZoomVO.latLeft}<=sys_village.latitude
+             AND sys_village.longitude<=#{mapZoomVO.lngRight}
+             AND sys_village.latitude<=#{mapZoomVO.latRight}
+            ]]>
+        </if>
+        <!--<if test="deviceType==null and deviceType==''">
+            AND
+            <if test="bb==0">
+                ec.province_id=mmp.id
+            </if>
+            <if test="bb==1">
+                ec.city_id=mmp.id
+            </if>
+            <if test="bb==2">
+                ec.area_id=mmp.id
+            </if>
+            <if test="cc==3">
+                ec.street_id=mmp.id
+            </if>
+            <if test="cc==4">
+                ec.village_id=mmp.id
+            </if>
+        </if>-->
+        GROUP BY sys_village.id
+        ) mmp
+        <if test="deviceType==0">
+            INNER JOIN xw_equipment_rw ec ON
+            <if test="bb==0">
+                ec.province_id=mmp.id
+            </if>
+            <if test="bb==1">
+                ec.city_id=mmp.id
+            </if>
+            <if test="bb==2">
+                ec.area_id=mmp.id
+            </if>
+        </if>
+        <if test="deviceType==1">
+            INNER JOIN xw_equipment_mh ec ON
+            <if test="bb==0">
+                ec.province_id=mmp.id
+            </if>
+            <if test="bb==1">
+                ec.city_id=mmp.id
+            </if>
+            <if test="bb==2">
+                ec.area_id=mmp.id
+            </if>
+            <if test="cc==3">
+                ec.street_id=mmp.id
+            </if>
+        </if>
+        <if test="deviceType==2">
+            INNER JOIN xw_equipment_cw ec ON
+            <if test="bb==0">
+                ec.province_id=mmp.id
+            </if>
+            <if test="bb==1">
+                ec.city_id=mmp.id
+            </if>
+            <if test="bb==2">
+                ec.area_id=mmp.id
+            </if>
+            <if test="cc==3">
+                ec.street_id=mmp.id
+            </if>
+            <if test="cc==4">
+                ec.village_id=mmp.id
+            </if>
+        </if>
+        <if test="deviceType==3">
+            INNER JOIN xw_equipment_ec ec ON
+            <if test="bb==0">
+                ec.province_id=mmp.id
+            </if>
+            <if test="bb==1">
+                ec.city_id=mmp.id
+            </if>
+            <if test="bb==2">
+                ec.area_id=mmp.id
+            </if>
+            <if test="cc==3">
+                ec.street_id=mmp.id
+            </if>
+            <if test="cc==4">
+                ec.village_id=mmp.id
+            </if>
+        </if>
+
+    </select>
+    <select id="getVillageByAcl" parameterType="map" resultMap="getAreaByAcl">
+
+        SELECT sys_village.latitude,sys_village.longitude,sys_village.village_name sys_area_name,sys_village.id
+        FROM (SELECT area_id FROM sys_role_area
+        WHERE area_level=#{lvl}
+        <if test="deviceType!=null and deviceType!=''">
+            AND device_type=#{deviceType}
+        </if>
+        <if test="list!=null and list.size()!=0">
+            AND
+            role_id IN
+            <foreach collection="list" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        ) area_ida
+        INNER JOIN sys_village ON area_ida.area_id=sys_village.id
+        <if test="mapZoomVO!=null">
+            <![CDATA[
+             AND #{mapZoomVO.lngLeft}<= sys_village.longitude
+             AND #{mapZoomVO.latLeft}<=sys_village.latitude
+             AND sys_village.longitude<=#{mapZoomVO.lngRight}
+             AND sys_village.latitude<=#{mapZoomVO.latRight}
+            ]]>
+        </if>
+        GROUP BY sys_village.id
+    </select>
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.VillageDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="village_uuid" jdbcType="VARCHAR" property="villageUuid"/>
+        <result column="village_name" jdbcType="VARCHAR" property="villageName"/>
+        <result column="province_id" jdbcType="BIGINT" property="provinceId"/>
+        <result column="province_name" jdbcType="VARCHAR" property="provinceName"/>
+        <result column="city_id" jdbcType="BIGINT" property="cityId"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="area_id" jdbcType="BIGINT" property="areaId"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="street_id" jdbcType="BIGINT" property="streetId"/>
+        <result column="street" jdbcType="VARCHAR" property="street"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="village_type" jdbcType="INTEGER" property="villageType"/>
+        <result column="type_name" jdbcType="VARCHAR" property="typeName"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="longitude" jdbcType="VARCHAR" property="longitude"/>
+        <result column="latitude" jdbcType="VARCHAR" property="latitude"/>
+    </resultMap>
+    <resultMap id="getAreaByAcl" type="com.xiaowei.mana.mapper.dataobject.AreaDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sys_area_uuid" jdbcType="VARCHAR" property="sysAreaUuid"/>
+        <result column="sys_area_name" jdbcType="VARCHAR" property="sysAreaName"/>
+        <result column="sys_area_parent_id" jdbcType="BIGINT" property="sysAreaParentId"/>
+        <result column="sys_area_level" jdbcType="VARCHAR" property="sysAreaLevel"/>
+        <result column="sys_area_seq" jdbcType="INTEGER" property="sysAreaSeq"/>
+        <result column="sys_area_remark" jdbcType="VARCHAR" property="sysAreaRemark"/>
+        <result column="sys_weath_code" jdbcType="VARCHAR" property="sysWeathCode"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="longitude" jdbcType="VARCHAR" property="longitude"/>
+        <result column="latitude" jdbcType="VARCHAR" property="latitude"/>
+    </resultMap>
+</mapper>

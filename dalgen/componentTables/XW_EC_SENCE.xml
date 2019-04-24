@@ -1,0 +1,366 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="XW_EC_SENCE" physicalName="XW_EC_SENCE" remark="电梯场景表">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:XW_EC_SENCE">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO XW_EC_SENCE(
+            
+            DEL_FLAG
+            ,CREATE_BY
+            ,DEVICE_NO
+            ,UPDATE_BY
+            ,SENCE_UUID
+            ,ELEVATOR_USE
+            ,EC_SUPERVISOR
+            ,SENCE_SAFE_MAN
+            ,SERIAL_NUMBER
+            ,REGULATORY_UNIT
+            ,SENCE_SAFE_PHONE
+            ,SUPERVISOR_PHONE
+            ,SENCE_SAFE_COMPANY
+            ,EC_CREW
+            ,EC_LOAD
+            ,CREATE_TIME
+            ,UPDATE_TIME
+            ,PRODUCT_TIME
+            ,SENCE_INSTALL_TIME
+        )VALUES(
+            
+            #{delFlag,jdbcType=CHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{deviceNo,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{senceUuid,jdbcType=VARCHAR}
+            ,#{elevatorUse,jdbcType=VARCHAR}
+            ,#{ecSupervisor,jdbcType=VARCHAR}
+            ,#{senceSafeMan,jdbcType=VARCHAR}
+            ,#{serialNumber,jdbcType=VARCHAR}
+            ,#{regulatoryUnit,jdbcType=VARCHAR}
+            ,#{senceSafePhone,jdbcType=VARCHAR}
+            ,#{supervisorPhone,jdbcType=VARCHAR}
+            ,#{senceSafeCompany,jdbcType=VARCHAR}
+            ,#{ecCrew,jdbcType=INTEGER}
+            ,#{ecLoad,jdbcType=INTEGER}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+            ,#{productTime,jdbcType=TIMESTAMP}
+            ,#{senceInstallTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:XW_EC_SENCE">
+            UPDATE XW_EC_SENCE
+            SET
+                    DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,DEVICE_NO       = #{deviceNo,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,SENCE_UUID      = #{senceUuid,jdbcType=VARCHAR}
+                    ,ELEVATOR_USE    = #{elevatorUse,jdbcType=VARCHAR}
+                    ,EC_SUPERVISOR   = #{ecSupervisor,jdbcType=VARCHAR}
+                    ,SENCE_SAFE_MAN  = #{senceSafeMan,jdbcType=VARCHAR}
+                    ,SERIAL_NUMBER   = #{serialNumber,jdbcType=VARCHAR}
+                    ,REGULATORY_UNIT = #{regulatoryUnit,jdbcType=VARCHAR}
+                    ,SENCE_SAFE_PHONE = #{senceSafePhone,jdbcType=VARCHAR}
+                    ,SUPERVISOR_PHONE = #{supervisorPhone,jdbcType=VARCHAR}
+                    ,SENCE_SAFE_COMPANY = #{senceSafeCompany,jdbcType=VARCHAR}
+                    ,EC_CREW         = #{ecCrew,jdbcType=INTEGER}
+                    ,EC_LOAD         = #{ecLoad,jdbcType=INTEGER}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+                    ,PRODUCT_TIME    = #{productTime,jdbcType=TIMESTAMP}
+                    ,SENCE_INSTALL_TIME = #{senceInstallTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:XW_EC_SENCE">
+            DELETE FROM XW_EC_SENCE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:XW_EC_SENCE">
+            SELECT * FROM XW_EC_SENCE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+    <operation name="insertEcSence" paramtype="object" remark="新增表:XW_EC_SENCE">
+        insert into xw_ec_sence
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="senceUuid != null">
+                sence_uuid,
+            </if>
+            <if test="deviceNo != null">
+                device_no,
+            </if>
+            <if test="serialNumber != null">
+                serial_number,
+            </if>
+            <if test="regulatoryUnit != null">
+                regulatory_unit,
+            </if>
+            <if test="ecSupervisor != null">
+                ec_supervisor,
+            </if>
+            <if test="supervisorPhone != null">
+                supervisor_phone,
+            </if>
+            <if test="elevatorUse != null">
+                elevator_use,
+            </if>
+            <if test="ecCrew != null">
+                ec_crew,
+            </if>
+            <if test="ecLoad != null">
+                ec_load,
+            </if>
+            <if test="productTime != null">
+                product_time,
+            </if>
+            <if test="senceInstallTime != null">
+                sence_install_time,
+            </if>
+            <if test="senceSafeCompany != null">
+                sence_safe_company,
+            </if>
+            <if test="senceSafeMan != null">
+                sence_safe_man,
+            </if>
+            <if test="senceSafePhone != null">
+                sence_safe_phone,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="elevatorCode!=null">
+                elevator_code,
+            </if>
+            <if test="ecBrand!=null">
+                ec_brand,
+            </if>
+            <if test="yearsOfUser!=null">
+                years_of_user,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="areaId != null">
+                area_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+
+            <if test="senceUuid != null">
+                #{senceUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="serialNumber != null">
+                #{serialNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="regulatoryUnit != null">
+                #{regulatoryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="ecSupervisor != null">
+                #{ecSupervisor,jdbcType=VARCHAR},
+            </if>
+            <if test="supervisorPhone != null">
+                #{supervisorPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="elevatorUse != null">
+                #{elevatorUse,jdbcType=VARCHAR},
+            </if>
+            <if test="ecCrew != null">
+                #{ecCrew,jdbcType=INTEGER},
+            </if>
+            <if test="ecLoad != null">
+                #{ecLoad,jdbcType=INTEGER},
+            </if>
+            <if test="productTime != null">
+                #{productTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="senceInstallTime != null">
+                #{senceInstallTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="senceSafeCompany != null">
+                #{senceSafeCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="senceSafeMan != null">
+                #{senceSafeMan,jdbcType=VARCHAR},
+            </if>
+            <if test="senceSafePhone != null">
+                #{senceSafePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="elevatorCode != null">
+                #{elevatorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="ecBrand != null">
+                #{ecBrand,jdbcType=VARCHAR},
+            </if>
+            <if test="yearsOfUser != null">
+                #{yearsOfUser,jdbcType=INTEGER},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="areaId != null">
+                #{areaId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </operation>
+    <operation name="updateEcSence" paramtype="object" remark="更新电梯场景信息">
+        update xw_ec_sence
+        <set>
+            <if test="senceUuid != null">
+                sence_uuid = #{senceUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                device_no = #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="serialNumber != null">
+                serial_number = #{serialNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="regulatoryUnit != null">
+                regulatory_unit = #{regulatoryUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="ecSupervisor != null">
+                ec_supervisor = #{ecSupervisor,jdbcType=VARCHAR},
+            </if>
+            <if test="supervisorPhone != null">
+                supervisor_phone = #{supervisorPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="elevatorUse != null">
+                elevator_use = #{elevatorUse,jdbcType=VARCHAR},
+            </if>
+            <if test="ecCrew != null">
+                ec_crew = #{ecCrew,jdbcType=INTEGER},
+            </if>
+            <if test="ecLoad != null">
+                ec_load = #{ecLoad,jdbcType=INTEGER},
+            </if>
+            <if test="productTime != null">
+                product_time = #{productTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="senceInstallTime != null">
+                sence_install_time = #{senceInstallTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="senceSafeCompany != null">
+                sence_safe_company = #{senceSafeCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="senceSafeMan != null">
+                sence_safe_man = #{senceSafeMan,jdbcType=VARCHAR},
+            </if>
+            <if test="senceSafePhone != null">
+                sence_safe_phone = #{senceSafePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="elevatorCode != null">
+                elevator_code = #{elevatorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="ecBrand != null">
+                ec_brand = #{ecBrand,jdbcType=VARCHAR},
+            </if>
+            <if test="yearsOfUser !=null">
+                years_of_user = #{yearsOfUser,jdbcType=INTEGER},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="areaId != null">
+                area_id = #{areaId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where device_no = #{deviceNo,jdbcType=VARCHAR}
+    </operation>
+    <operation name="getElevatorCode" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 电梯编码 全局唯一">
+        SELECT count(id) FROM xw_ec_sence
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="elevatorCode!=null">
+                elevator_code=#{elevatorCode,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </operation>
+    <operation name="getEditElevatorCode" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 电梯编码 全局唯一">
+        SELECT count(id) FROM xw_ec_sence
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="elevatorCode!=null">
+                elevator_code=#{elevatorCode,jdbcType=VARCHAR}
+            </if>
+            <if test="id!=null">
+                id!=#{id,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </operation>
+    <operation name="getEditCountsByCode" remark="编辑时,查询已存在的数量,排除自身" multiplicity="many">
+        select
+        device_no, elevator_code
+        from xw_ec_sence
+        where elevator_code=#{elevatorCode,jdbcType=VARCHAR} AND
+        device_no!=#{deviceNo,jdbcType=VARCHAR}
+    </operation>
+
+</table>

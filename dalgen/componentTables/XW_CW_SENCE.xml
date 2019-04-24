@@ -1,0 +1,317 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="XW_CW_SENCE" physicalName="XW_CW_SENCE" remark="饮用水场景表">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:XW_CW_SENCE">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO XW_CW_SENCE(
+
+        DEL_FLAG
+        ,CREATE_BY
+        ,DEVICE_NO
+        ,TANK_SEAL
+        ,TANK_SIZE
+        ,UPDATE_BY
+        ,SENCE_UUID
+        ,TANK_MATERIAL
+        ,PRINCIPAL_PHONE
+        ,SENCE_PRINCIPAL
+        ,CLEANING_FREQUENCY
+        ,WATER_SUPPORT_STATUS
+        ,SENCE_PROPERTY_COMPANY
+        ,CREATE_TIME
+        ,UPDATE_TIME
+        ,LAST_CLEANING_TIME
+        ,SENCE_INSTALL_TIME
+        )VALUES(
+
+        #{delFlag,jdbcType=CHAR}
+        ,#{createBy,jdbcType=VARCHAR}
+        ,#{deviceNo,jdbcType=VARCHAR}
+        ,#{tankSeal,jdbcType=VARCHAR}
+        ,#{tankSize,jdbcType=VARCHAR}
+        ,#{updateBy,jdbcType=VARCHAR}
+        ,#{senceUuid,jdbcType=VARCHAR}
+        ,#{tankMaterial,jdbcType=VARCHAR}
+        ,#{principalPhone,jdbcType=VARCHAR}
+        ,#{sencePrincipal,jdbcType=VARCHAR}
+        ,#{cleaningFrequency,jdbcType=VARCHAR}
+        ,#{waterSupportStatus,jdbcType=VARCHAR}
+        ,#{sencePropertyCompany,jdbcType=VARCHAR}
+        ,#{createTime,jdbcType=TIMESTAMP}
+        ,#{updateTime,jdbcType=TIMESTAMP}
+        ,#{lastCleaningTime,jdbcType=TIMESTAMP}
+        ,#{senceInstallTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新表:XW_CW_SENCE">
+        UPDATE XW_CW_SENCE
+        SET
+        DEL_FLAG = #{delFlag,jdbcType=CHAR}
+        ,CREATE_BY = #{createBy,jdbcType=VARCHAR}
+        ,DEVICE_NO = #{deviceNo,jdbcType=VARCHAR}
+        ,TANK_SEAL = #{tankSeal,jdbcType=VARCHAR}
+        ,TANK_SIZE = #{tankSize,jdbcType=VARCHAR}
+        ,UPDATE_BY = #{updateBy,jdbcType=VARCHAR}
+        ,SENCE_UUID = #{senceUuid,jdbcType=VARCHAR}
+        ,TANK_MATERIAL = #{tankMaterial,jdbcType=VARCHAR}
+        ,PRINCIPAL_PHONE = #{principalPhone,jdbcType=VARCHAR}
+        ,SENCE_PRINCIPAL = #{sencePrincipal,jdbcType=VARCHAR}
+        ,CLEANING_FREQUENCY = #{cleaningFrequency,jdbcType=VARCHAR}
+        ,WATER_SUPPORT_STATUS = #{waterSupportStatus,jdbcType=VARCHAR}
+        ,SENCE_PROPERTY_COMPANY = #{sencePropertyCompany,jdbcType=VARCHAR}
+        ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+        ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+        ,LAST_CLEANING_TIME = #{lastCleaningTime,jdbcType=TIMESTAMP}
+        ,SENCE_INSTALL_TIME = #{senceInstallTime,jdbcType=TIMESTAMP}
+        WHERE
+        ID = #{id,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:XW_CW_SENCE">
+        DELETE FROM XW_CW_SENCE
+        WHERE
+        ID = #{id,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getById" multiplicity="one" remark="根据主键获取数据:XW_CW_SENCE">
+        SELECT * FROM XW_CW_SENCE
+        WHERE
+        ID = #{id,jdbcType=BIGINT}
+    </operation>
+    <operation name="saveCwSence" paramtype="object" remark="新增表:XW_CW_SENCE">
+        insert into xw_cw_sence
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="senceUuid != null">
+                sence_uuid,
+            </if>
+            <if test="deviceNo != null">
+                device_no,
+            </if>
+            <if test="tankSize != null">
+                tank_size,
+            </if>
+            <if test="tankMaterial != null">
+                tank_material,
+            </if>
+            <if test="tankSeal != null">
+                tank_seal,
+            </if>
+            <if test="sencePrincipal != null">
+                sence_principal,
+            </if>
+            <if test="principalPhone != null">
+                principal_phone,
+            </if>
+            <if test="cleaningFrequency != null">
+                cleaning_frequency,
+            </if>
+            <if test="waterSupportStatus != null">
+                water_support_status,
+            </if>
+            <if test="lastCleaningTime != null">
+                last_cleaning_time,
+            </if>
+            <if test="senceInstallTime != null">
+                sence_install_time,
+            </if>
+            <if test="sencePropertyCompany != null">
+                sence_property_company,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="cwCode != null">
+                cw_code,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="areaId != null">
+                area_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="senceUuid != null">
+                #{senceUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="tankSize != null">
+                #{tankSize,jdbcType=VARCHAR},
+            </if>
+            <if test="tankMaterial != null">
+                #{tankMaterial,jdbcType=VARCHAR},
+            </if>
+            <if test="tankSeal != null">
+                #{tankSeal,jdbcType=VARCHAR},
+            </if>
+            <if test="sencePrincipal != null">
+                #{sencePrincipal,jdbcType=VARCHAR},
+            </if>
+            <if test="principalPhone != null">
+                #{principalPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="cleaningFrequency != null">
+                #{cleaningFrequency,jdbcType=VARCHAR},
+            </if>
+            <if test="waterSupportStatus != null">
+                #{waterSupportStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="lastCleaningTime != null">
+                #{lastCleaningTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="senceInstallTime != null">
+                #{senceInstallTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sencePropertyCompany != null">
+                #{sencePropertyCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="cwCode != null">
+                #{cwCode,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="areaId != null">
+                #{areaId,jdbcType=BIGINT},
+            </if>
+
+        </trim>
+    </operation>
+    <operation name="updateCwSence" paramtype="object" remark="更新引用水设备">
+        update xw_cw_sence
+        <set>
+            <if test="senceUuid != null">
+                sence_uuid = #{senceUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                device_no = #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="tankSize != null">
+                tank_size = #{tankSize,jdbcType=VARCHAR},
+            </if>
+            <if test="tankMaterial != null">
+                tank_material = #{tankMaterial,jdbcType=VARCHAR},
+            </if>
+            <if test="tankSeal != null">
+                tank_seal = #{tankSeal,jdbcType=VARCHAR},
+            </if>
+            <if test="sencePrincipal != null">
+                sence_principal = #{sencePrincipal,jdbcType=VARCHAR},
+            </if>
+            <if test="principalPhone != null">
+                principal_phone = #{principalPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="cleaningFrequency != null">
+                cleaning_frequency = #{cleaningFrequency,jdbcType=VARCHAR},
+            </if>
+            <if test="waterSupportStatus != null">
+                water_support_status = #{waterSupportStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="lastCleaningTime != null">
+                last_cleaning_time = #{lastCleaningTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="senceInstallTime != null">
+                sence_install_time = #{senceInstallTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sencePropertyCompany != null">
+                sence_property_company = #{sencePropertyCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="cwCode != null">
+                cw_code = #{cwCode,jdbcType=CHAR},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="areaId != null">
+                area_id = #{areaId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where device_no = #{deviceNo,jdbcType=VARCHAR}
+    </operation>
+    <operation name="getCwCode" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 电梯编码 全局唯一">
+        SELECT count(id) FROM xw_cw_sence
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="cwCode!=null">
+                cw_code=#{cwCode,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </operation>
+    <operation name="getEditCwCode" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 电梯编码 全局唯一">
+        SELECT count(id) FROM xw_cw_sence
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="cwCode!=null">
+                cw_code=#{cwCode,jdbcType=VARCHAR}
+            </if>
+            <if test="id!=null">
+                id!=#{id,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </operation>
+
+</table>

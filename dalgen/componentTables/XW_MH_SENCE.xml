@@ -1,0 +1,336 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="XW_MH_SENCE" physicalName="XW_MH_SENCE" remark="井盖场景信息表">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:XW_MH_SENCE">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO XW_MH_SENCE(
+            
+            MH_USE
+            ,MH_LOAD
+            ,MH_SIZE
+            ,DEL_FLAG
+            ,CREATE_BY
+            ,DEVICE_NO
+            ,UPDATE_BY
+            ,SENCE_UUID
+            ,MH_MATERIAL
+            ,TRAFFIC_FLOW
+            ,PRINCIPAL_PHONE
+            ,SENCE_PRINCIPAL
+            ,MH_YEARS
+            ,MH_END_TIME
+            ,CREATE_TIME
+            ,UPDATE_TIME
+            ,SENCE_INSTALL_TIME
+        )VALUES(
+            
+            #{mhUse,jdbcType=VARCHAR}
+            ,#{mhLoad,jdbcType=VARCHAR}
+            ,#{mhSize,jdbcType=VARCHAR}
+            ,#{delFlag,jdbcType=CHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{deviceNo,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{senceUuid,jdbcType=VARCHAR}
+            ,#{mhMaterial,jdbcType=VARCHAR}
+            ,#{trafficFlow,jdbcType=VARCHAR}
+            ,#{principalPhone,jdbcType=VARCHAR}
+            ,#{sencePrincipal,jdbcType=VARCHAR}
+            ,#{mhYears,jdbcType=INTEGER}
+            ,#{mhEndTime,jdbcType=TIMESTAMP}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+            ,#{senceInstallTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:XW_MH_SENCE">
+            UPDATE XW_MH_SENCE
+            SET
+                    MH_USE          = #{mhUse,jdbcType=VARCHAR}
+                    ,MH_LOAD         = #{mhLoad,jdbcType=VARCHAR}
+                    ,MH_SIZE         = #{mhSize,jdbcType=VARCHAR}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,DEVICE_NO       = #{deviceNo,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,SENCE_UUID      = #{senceUuid,jdbcType=VARCHAR}
+                    ,MH_MATERIAL     = #{mhMaterial,jdbcType=VARCHAR}
+                    ,TRAFFIC_FLOW    = #{trafficFlow,jdbcType=VARCHAR}
+                    ,PRINCIPAL_PHONE = #{principalPhone,jdbcType=VARCHAR}
+                    ,SENCE_PRINCIPAL = #{sencePrincipal,jdbcType=VARCHAR}
+                    ,MH_YEARS        = #{mhYears,jdbcType=INTEGER}
+                    ,MH_END_TIME     = #{mhEndTime,jdbcType=TIMESTAMP}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+                    ,SENCE_INSTALL_TIME = #{senceInstallTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:XW_MH_SENCE">
+            DELETE FROM XW_MH_SENCE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:XW_MH_SENCE">
+            SELECT * FROM XW_MH_SENCE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+    <operation name="insertMhSence" paramtype="object" remark="新增表:XW_MH_SENCE">
+        insert into xw_mh_sence
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="senceUuid != null">
+                sence_uuid,
+            </if>
+            <if test="deviceNo != null">
+                device_no,
+            </if>
+            <if test="mhYears != null">
+                mh_years,
+            </if>
+            <if test="sencePrincipal != null">
+                sence_principal,
+            </if>
+            <if test="principalPhone != null">
+                principal_phone,
+            </if>
+            <if test="mhLoad != null">
+                mh_load,
+            </if>
+            <if test="mhUse != null">
+                mh_use,
+            </if>
+            <if test="mhMaterial != null">
+                mh_material,
+            </if>
+            <if test="trafficFlow != null">
+                traffic_flow,
+            </if>
+            <if test="mhSize != null">
+                mh_size,
+            </if>
+            <if test="mhEndTime != null">
+                mh_end_time,
+            </if>
+            <if test="senceInstallTime != null">
+                sence_install_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="mhCode != null">
+                mh_code,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="areaId != null">
+                area_id,
+            </if>
+            <if test="mhDiameter != null">
+                mh_diameter,
+            </if>
+            <if test="mhType != null">
+                mh_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="senceUuid != null">
+                #{senceUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="mhYears != null">
+                #{mhYears,jdbcType=INTEGER},
+            </if>
+            <if test="sencePrincipal != null">
+                #{sencePrincipal,jdbcType=VARCHAR},
+            </if>
+            <if test="principalPhone != null">
+                #{principalPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="mhLoad != null">
+                #{mhLoad,jdbcType=VARCHAR},
+            </if>
+            <if test="mhUse != null">
+                #{mhUse,jdbcType=VARCHAR},
+            </if>
+            <if test="mhMaterial != null">
+                #{mhMaterial,jdbcType=VARCHAR},
+            </if>
+            <if test="trafficFlow != null">
+                #{trafficFlow,jdbcType=VARCHAR},
+            </if>
+            <if test="mhSize != null">
+                #{mhSize,jdbcType=VARCHAR},
+            </if>
+            <if test="mhEndTime != null">
+                #{mhEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="senceInstallTime != null">
+                #{senceInstallTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="mhCode != null">
+                #{mhCode,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="areaId != null">
+                #{areaId,jdbcType=BIGINT},
+            </if>
+            <if test="mhDiameter != null">
+                #{mhDiameter,jdbcType=VARCHAR},
+            </if>
+            <if test="mhType != null">
+                #{mhType,jdbcType=VARCHAR},
+            </if>
+
+        </trim>
+    </operation>
+    <operation name="updateMhSence" paramtype="object" remark="更新井盖场景信息">
+        update xw_mh_sence
+        <set>
+            <if test="senceUuid != null">
+                sence_uuid = #{senceUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                device_no = #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="mhYears != null">
+                mh_years = #{mhYears,jdbcType=INTEGER},
+            </if>
+            <if test="sencePrincipal != null">
+                sence_principal = #{sencePrincipal,jdbcType=VARCHAR},
+            </if>
+            <if test="principalPhone != null">
+                principal_phone = #{principalPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="mhLoad != null">
+                mh_load = #{mhLoad,jdbcType=VARCHAR},
+            </if>
+            <if test="mhUse != null">
+                mh_use = #{mhUse,jdbcType=VARCHAR},
+            </if>
+            <if test="mhMaterial != null">
+                mh_material = #{mhMaterial,jdbcType=VARCHAR},
+            </if>
+            <if test="trafficFlow != null">
+                traffic_flow = #{trafficFlow,jdbcType=VARCHAR},
+            </if>
+            <if test="mhSize != null">
+                mh_size = #{mhSize,jdbcType=VARCHAR},
+            </if>
+            <if test="mhEndTime != null">
+                mh_end_time = #{mhEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="senceInstallTime != null">
+                sence_install_time = #{senceInstallTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="mhCode != null">
+                mh_code = #{mhCode,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="areaId != null">
+                area_id = #{areaId,jdbcType=BIGINT},
+            </if>
+            <if test="mhDiameter != null">
+                mh_diameter = #{mhDiameter,jdbcType=VARCHAR},
+            </if>
+            <if test="mhType != null">
+                mh_type = #{mhType,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where device_no = #{deviceNo,jdbcType=VARCHAR}
+    </operation>
+    <operation name="getMhCode" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 电梯编码 全局唯一">
+        SELECT count(id) FROM xw_mh_sence
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="mhCode!=null">
+                mh_code=#{mhCode,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </operation>
+    <operation name="getEditMhCode" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 电梯编码 全局唯一">
+        SELECT count(id) FROM xw_mh_sence
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="mhCode!=null">
+                mh_code=#{mhCode,jdbcType=VARCHAR}
+            </if>
+            <if test="id!=null">
+                id!=#{id,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </operation>
+
+
+</table>

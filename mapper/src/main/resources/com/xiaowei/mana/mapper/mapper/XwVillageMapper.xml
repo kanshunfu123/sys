@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.XwVillageMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.XwVillageDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="village_uuid" jdbcType="VARCHAR" property="villageUuid" />
+        <result column="village_name" jdbcType="VARCHAR" property="villageName" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId" />
+        <result column="province_name" jdbcType="VARCHAR" property="provinceName" />
+        <result column="city_id" jdbcType="BIGINT" property="cityId" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="area_id" jdbcType="BIGINT" property="areaId" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
+        <result column="street" jdbcType="VARCHAR" property="street" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, village_uuid, village_name, province_id, province_name, city_id, city, area_id,
+        area, street, create_by, create_time, update_by, update_time, del_flag
+    </sql>
+    <select id="getVillageByUUID" resultMap="BaseResultMap">
+        select
+        id, village_uuid, village_name, province_id, province_name, city_id, city, area_id,
+        area, street
+        from xw_village
+        where village_uuid=#{uuid}
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        id, village_uuid, village_name, province_id, province_name, city_id, city, area_id,
+        area, street
+        from xw_village
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.xiaowei.mana.mapper.dataobject.XwVillageDO">
+        insert into sys_village
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="villageUuid != null">
+                village_uuid,
+            </if>
+            <if test="villageName != null">
+                village_name,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="provinceName != null">
+                province_name,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="areaId != null">
+                area_id,
+            </if>
+            <if test="area != null">
+                area,
+            </if>
+            <if test="streetId != null">
+                street_id,
+            </if>
+            <if test="street != null">
+                street,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="villageUuid != null">
+                #{villageUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="villageName != null">
+                #{villageName,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="provinceName != null">
+                #{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="areaId != null">
+                #{areaId,jdbcType=BIGINT},
+            </if>
+            <if test="area != null">
+                #{area,jdbcType=VARCHAR},
+            </if>
+            <if test="streetId != null">
+                #{streetId,jdbcType=BIGINT},
+            </if>
+            <if test="street != null">
+                #{street,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiaowei.mana.mapper.dataobject.XwVillageDO">
+        update sys_village
+        <set>
+            <if test="villageUuid != null">
+                village_uuid = #{villageUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="villageName != null">
+                village_name = #{villageName,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="provinceName != null">
+                province_name = #{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="areaId != null">
+                area_id = #{areaId,jdbcType=BIGINT},
+            </if>
+            <if test="area != null">
+                area = #{area,jdbcType=VARCHAR},
+            </if>
+            <if test="streetId != null">
+                street_id = #{streetId,jdbcType=BIGINT},
+            </if>
+            <if test="street != null">
+                street = #{street,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

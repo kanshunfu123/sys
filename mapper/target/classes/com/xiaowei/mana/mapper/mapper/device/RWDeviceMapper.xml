@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.device.RWDeviceMapper">
+
+    <select id="RWbatchCWsByDeviceId" resultType="com.xiaowei.mana.mapper.dataobject.DeviceRoleDeviceRea">
+        SELECT id,device_no deviceNo,setup_time setupTime
+        FROM xw_equipment_rw
+        WHERE del_flag='0' AND  device_no IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        ORDER BY id desc
+    </select>
+    <select id="MHbatchCWsByDeviceId" resultType="com.xiaowei.mana.mapper.dataobject.DeviceRoleDeviceRea">
+        SELECT id,device_no deviceNo,setup_time setupTime
+        FROM xw_equipment_mh
+        WHERE del_flag='0' AND device_no IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        ORDER BY id desc
+    </select>
+    <select id="CWbatchCWsByDeviceId" resultType="com.xiaowei.mana.mapper.dataobject.DeviceRoleDeviceRea">
+        SELECT id,device_no deviceNo,setup_time setupTime
+        FROM xw_equipment_cw
+        WHERE del_flag='0' AND device_no IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        ORDER BY id desc
+    </select>
+    <select id="ECbatchCWsByDeviceId" resultType="com.xiaowei.mana.mapper.dataobject.DeviceRoleDeviceRea">
+        SELECT id,device_no deviceNo,setup_time setupTime
+        FROM xw_equipment_ec
+        WHERE del_flag='0' AND device_no IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        ORDER BY id desc
+    </select>
+
+    <select id="getRWAllBySelect_v1" parameterType="map" resultMap="getRWAllBySelect_v1">
+        SELECT rw.device_no,rw.device_name,rw.device_code,
+        role_device.device_type,equipment_uuid, device_name,
+        device_code, device_desc
+        FROM sys_user suser
+        INNER JOIN sys_role_user role_user ON suser.id=role_user.user_id
+        INNER JOIN sys_role_device role_device ON role_user.role_id=role_device.sys_role_id AND device_type='0'
+        INNER JOIN xw_equipment_rw rw ON rw.device_no =role_device.device_no AND rw.del_flag='0'
+        <trim prefixOverrides="and" prefix="where">
+            <if test="provinceId!=null">
+                AND rw.province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                AND rw.city_id=#{cityId}
+            </if>
+            <if test="areaId!=null">
+                AND rw.area_id=#{areaId}
+            </if>
+            <if test="addressId!=null">
+                AND rw.street_id=#{addressId}
+            </if>
+            AND suser.id=#{userId}
+        </trim>
+        order by device_code asc
+    </select>
+    <select id="getRWAllBySelect_v1_admin" parameterType="map" resultMap="getRWAllBySelect_v1">
+        SELECT rw.device_no,rw.device_name,rw.device_code,equipment_uuid, device_name,
+        device_code, device_desc
+        FROM
+        xw_equipment_rw rw
+        <trim prefixOverrides="and" prefix="where">
+            <if test="provinceId!=null">
+                AND province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                AND city_id=#{cityId}
+            </if>
+            <if test="areaId!=null">
+                AND area_id=#{areaId}
+            </if>
+            <if test="addressId!=null">
+                AND street_id=#{addressId}
+            </if>
+           AND del_flag='0'
+        </trim>
+        order by device_code asc
+    </select>
+
+    <select id="getMHAllBySelect_v1" parameterType="map" resultMap="getMHAllBySelect_v1">
+        SELECT rw.id,rw.device_no,device_code,device_name
+        FROM sys_user suser
+        INNER JOIN sys_role_user role_user ON suser.id=role_user.user_id
+        INNER JOIN sys_role_device role_device ON role_user.role_id=role_device.sys_role_id AND device_type='1'
+        INNER JOIN xw_equipment_mh rw ON rw.device_no =role_device.device_no AND rw.del_flag='0'
+        <trim prefixOverrides="and" prefix="where">
+            <if test="provinceId!=null">
+                AND rw.province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                AND rw.city_id=#{cityId}
+            </if>
+            <if test="areaId!=null">
+                AND rw.area_id=#{areaId}
+            </if>
+            <if test="addressId!=null">
+                AND rw.street_id=#{addressId}
+            </if>
+            AND suser.id=#{userId}
+        </trim>
+        order by device_code asc
+    </select>
+    <select id="getMHAllBySelect_v1_admin" parameterType="map" resultMap="getMHAllBySelect_v1">
+        SELECT rw.id,rw.device_no,device_code,device_name
+        FROM xw_equipment_mh rw
+        <trim prefixOverrides="and" prefix="where">
+            <if test="provinceId!=null">
+                AND province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                AND city_id=#{cityId}
+            </if>
+            <if test="areaId!=null">
+                AND area_id=#{areaId}
+            </if>
+            <if test="addressId!=null">
+                AND street_id=#{addressId}
+            </if>
+            AND del_flag='0'
+        </trim>
+        order by device_code asc
+    </select>
+
+    <select id="getCWAllBySelect_v1" parameterType="map" resultMap="getCWAllBySelect_v1">
+        SELECT rw.id,rw.device_no,device_code,device_name,floor
+        FROM sys_user suser
+        INNER JOIN sys_role_user role_user ON suser.id=role_user.user_id
+        INNER JOIN sys_role_device role_device ON role_user.role_id=role_device.sys_role_id AND device_type='2'
+        INNER JOIN xw_equipment_cw rw ON rw.device_no =role_device.device_no AND rw.del_flag='0'
+        <trim prefixOverrides="and" prefix="where">
+            <if test="provinceId!=null">
+                AND rw.province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                AND rw.city_id=#{cityId}
+            </if>
+            <if test="areaId!=null">
+                AND rw.area_id=#{areaId}
+            </if>
+            <if test="addressId!=null">
+                AND rw.street_id=#{addressId}
+            </if>
+            AND suser.id=#{userId}
+        </trim>
+        order by device_code asc
+    </select>
+
+    <select id="getCWAllBySelect_v1_admin" parameterType="map" resultMap="getCWAllBySelect_v1">
+        SELECT rw.id,rw.device_no,device_code,device_name,floor
+        FROM xw_equipment_cw rw
+        <trim prefixOverrides="and" prefix="where">
+            <if test="provinceId!=null">
+                AND province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                AND city_id=#{cityId}
+            </if>
+            <if test="areaId!=null">
+                AND area_id=#{areaId}
+            </if>
+            <if test="addressId!=null">
+                AND street_id=#{addressId}
+            </if>
+            AND del_flag='0'
+        </trim>
+        order by device_code asc
+    </select>
+    <select id="getECAllBySelect_v1" parameterType="map" resultMap="getECAllBySelect_v1">
+        SELECT rw.id,rw.device_no,device_code,device_name,floor_num,floor_downnum
+        FROM sys_user suser
+        INNER JOIN sys_role_user role_user ON suser.id=role_user.user_id
+        INNER JOIN sys_role_device role_device ON role_user.role_id=role_device.sys_role_id AND device_type='3'
+        INNER JOIN xw_equipment_ec rw ON rw.device_no =role_device.device_no AND rw.del_flag='0'
+        <trim prefixOverrides="and" prefix="where">
+            <if test="provinceId!=null">
+                AND rw.province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                AND rw.city_id=#{cityId}
+            </if>
+            <if test="areaId!=null">
+                AND rw.area_id=#{areaId}
+            </if>
+            <if test="addressId!=null">
+                AND rw.street_id=#{addressId}
+            </if>
+            <if test="villageId!=null">
+                AND  rw.village_id=#{villageId}
+            </if>
+            AND suser.id=#{userId}
+        </trim>
+        order by device_code asc
+    </select>
+    <select id="getECAllBySelect_v1_admin" parameterType="map" resultMap="getECAllBySelect_v1">
+        SELECT rw.id,rw.device_no,device_code,device_name,floor_num,floor_downnum
+        FROM xw_equipment_ec rw
+        <trim prefixOverrides="and" prefix="where">
+            <if test="provinceId!=null">
+                AND province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                AND city_id=#{cityId}
+            </if>
+            <if test="areaId!=null">
+                AND area_id=#{areaId}
+            </if>
+            <if test="addressId!=null">
+                AND street_id=#{addressId}
+            </if>
+            <if test="villageId!=null">
+                village_id= #{villageId}
+            </if>
+
+            AND del_flag='0'
+        </trim>
+        order by device_code asc
+    </select>
+    <resultMap id="getECAllBySelect_v1" type="com.xiaowei.mana.mapper.dataobject.XwEquipmentEcDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="equipment_uuid" jdbcType="VARCHAR" property="equipmentUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+        <result column="device_desc" jdbcType="VARCHAR" property="deviceDesc" />
+        <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+        <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime" />
+        <result column="setup_time" jdbcType="TIMESTAMP" property="setupTime" />
+        <result column="village_id" jdbcType="BIGINT" property="villageId" />
+        <result column="village_name" jdbcType="VARCHAR" property="villageName" />
+        <result column="install_man" jdbcType="VARCHAR" property="installMan" />
+        <result column="vendor" jdbcType="VARCHAR" property="vendor" />
+        <result column="floor_num" jdbcType="INTEGER" property="floorNum" />
+        <result column="floor_downnum" jdbcType="INTEGER" property="floorDownnum" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city_id" jdbcType="BIGINT" property="cityId" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="area_id" jdbcType="BIGINT" property="areaId" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
+        <result column="street_id" jdbcType="BIGINT" property="streetId" />
+        <result column="street" jdbcType="VARCHAR" property="street" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="safe_company" jdbcType="VARCHAR" property="safeCompany" />
+        <result column="safe_man" jdbcType="VARCHAR" property="safeMan" />
+        <result column="safe_phone" jdbcType="VARCHAR" property="safePhone" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+        <result column="install_phone" jdbcType="VARCHAR" property="installPhone" />
+        <result column="safe_time" jdbcType="TIMESTAMP" property="safeTime" />
+    </resultMap>
+    <resultMap id="getCWAllBySelect_v1" type="com.xiaowei.mana.mapper.dataobject.XwEquipmentCwDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="equipment_uuid" jdbcType="VARCHAR" property="equipmentUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+        <result column="device_desc" jdbcType="VARCHAR" property="deviceDesc" />
+        <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+        <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime" />
+        <result column="setup_time" jdbcType="TIMESTAMP" property="setupTime" />
+        <result column="floor" jdbcType="INTEGER" property="floor" />
+        <result column="village_id" jdbcType="BIGINT" property="villageId" />
+        <result column="village_name" jdbcType="VARCHAR" property="villageName" />
+        <result column="install_man" jdbcType="VARCHAR" property="installMan" />
+        <result column="vendor" jdbcType="VARCHAR" property="vendor" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city_id" jdbcType="BIGINT" property="cityId" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="area_id" jdbcType="BIGINT" property="areaId" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
+        <result column="street_id" jdbcType="BIGINT" property="streetId" />
+        <result column="street" jdbcType="VARCHAR" property="street" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="safe_company" jdbcType="VARCHAR" property="safeCompany" />
+        <result column="safe_man" jdbcType="VARCHAR" property="safeMan" />
+        <result column="safe_phone" jdbcType="VARCHAR" property="safePhone" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+        <result column="install_phone" jdbcType="VARCHAR" property="installPhone" />
+        <result column="safe_time" jdbcType="TIMESTAMP" property="safeTime" />
+    </resultMap>
+    <resultMap id="getMHAllBySelect_v1" type="com.xiaowei.mana.mapper.dataobject.XwEquipmentMhDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="equipment_uuid" jdbcType="VARCHAR" property="equipmentUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+        <result column="device_desc" jdbcType="VARCHAR" property="deviceDesc" />
+        <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+        <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime" />
+        <result column="setup_time" jdbcType="TIMESTAMP" property="setupTime" />
+        <result column="village_id" jdbcType="BIGINT" property="villageId" />
+        <result column="village_name" jdbcType="VARCHAR" property="villageName" />
+        <result column="install_man" jdbcType="VARCHAR" property="installMan" />
+        <result column="vendor" jdbcType="VARCHAR" property="vendor" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city_id" jdbcType="BIGINT" property="cityId" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="area_id" jdbcType="BIGINT" property="areaId" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
+        <result column="street_id" jdbcType="BIGINT" property="streetId" />
+        <result column="street" jdbcType="VARCHAR" property="street" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="have_water_line" jdbcType="INTEGER" property="haveWaterLine" />
+        <result column="have_gas" jdbcType="INTEGER" property="haveGas" />
+        <result column="have_h2s" jdbcType="INTEGER" property="haveH2s" />
+        <result column="safe_company" jdbcType="VARCHAR" property="safeCompany" />
+        <result column="safe_man" jdbcType="VARCHAR" property="safeMan" />
+        <result column="safe_phone" jdbcType="VARCHAR" property="safePhone" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+        <result column="install_phone" jdbcType="VARCHAR" property="installPhone" />
+        <result column="safe_time" jdbcType="TIMESTAMP" property="safeTime" />
+    </resultMap>
+    <resultMap id="getRWAllBySelect_v1" type="com.xiaowei.mana.mapper.dataobject.XwEquipmentRwDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="equipment_uuid" jdbcType="VARCHAR" property="equipmentUuid"/>
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo"/>
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode"/>
+        <result column="device_desc" jdbcType="VARCHAR" property="deviceDesc"/>
+        <result column="latitude" jdbcType="VARCHAR" property="latitude"/>
+        <result column="longitude" jdbcType="VARCHAR" property="longitude"/>
+        <result column="alarm_depth" jdbcType="INTEGER" property="alarmDepth"/>
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime"/>
+        <result column="setup_time" jdbcType="TIMESTAMP" property="setupTime"/>
+        <result column="install_man" jdbcType="VARCHAR" property="installMan"/>
+        <result column="vendor" jdbcType="VARCHAR" property="vendor"/>
+        <result column="have_nh" jdbcType="INTEGER" property="haveNh"/>
+        <result column="province_id" jdbcType="BIGINT" property="provinceId"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city_id" jdbcType="BIGINT" property="cityId"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="area_id" jdbcType="BIGINT" property="areaId"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="safe_company" jdbcType="VARCHAR" property="safeCompany"/>
+        <result column="safe_man" jdbcType="VARCHAR" property="safeMan"/>
+        <result column="safe_phone" jdbcType="VARCHAR" property="safePhone"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="device_type" jdbcType="VARCHAR" property="deviceType"/>
+        <result column="install_phone" jdbcType="VARCHAR" property="installPhone"/>
+        <result column="safe_time" jdbcType="TIMESTAMP" property="safeTime"/>
+    </resultMap>
+</mapper>

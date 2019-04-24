@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.UserGroupDOMapper">
+    <!-- 自动生成,请修改 SYS_USER_GROUP.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mana.mapper.dataobject.UserGroupDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+            <result column="NAME_TOP" property="nameTop" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_SCENE" property="sysScene" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_START" property="sysStart" jdbcType="CHAR" javaType="String"/>
+            <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="NAME_BOTTOM" property="nameBottom" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_OPEN_DAY" property="sysOpenDay" jdbcType="VARCHAR" javaType="String"/>
+            <result column="USER_GROUP_NAME" property="userGroupName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="USER_GROUP_UUID" property="userGroupUuid" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_RECE_DEVICE_NUM" property="sysReceDeviceNum" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="SYS_ALLOW_DEVICE_NUM" property="sysAllowDeviceNum" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="SYS_OPEN_ACCOUNT_NUM" property="sysOpenAccountNum" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="SYS_CREATE_ACCOUNT_NUM" property="sysCreateAccountNum" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="SYS_ACCOUNT_END_TIME" property="sysAccountEndTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="SYS_ACCOUNT_START_TIME" property="sysAccountStartTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,DEL_FLAG,NAME_TOP,CREATE_BY,SYS_SCENE,SYS_START,UPDATE_BY,NAME_BOTTOM,SYS_OPEN_DAY,USER_GROUP_NAME,USER_GROUP_UUID,SYS_RECE_DEVICE_NUM,SYS_ALLOW_DEVICE_NUM,SYS_OPEN_ACCOUNT_NUM,SYS_CREATE_ACCOUNT_NUM,CREATE_TIME,UPDATE_TIME,SYS_ACCOUNT_END_TIME,SYS_ACCOUNT_START_TIME
+    </sql>
+
+
+        <!--插入表:SYS_USER_GROUP-->
+        <insert id="insert" >
+                    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_USER_GROUP(
+            
+            DEL_FLAG
+            ,CREATE_BY
+            ,SYS_START
+            ,UPDATE_BY
+            ,SYS_OPEN_DAY
+            ,USER_GROUP_NAME
+            ,USER_GROUP_UUID
+            ,CREATE_TIME
+            ,UPDATE_TIME
+            ,SYS_ACCOUNT_END_TIME
+            ,SYS_ACCOUNT_START_TIME
+        )VALUES(
+            
+            #{delFlag,jdbcType=CHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{sysStart,jdbcType=CHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{sysOpenDay,jdbcType=VARCHAR}
+            ,#{userGroupName,jdbcType=VARCHAR}
+            ,#{userGroupUuid,jdbcType=VARCHAR}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+            ,#{sysAccountEndTime,jdbcType=TIMESTAMP}
+            ,#{sysAccountStartTime,jdbcType=TIMESTAMP}
+        )
+        </insert>
+
+        <!--更新表:SYS_USER_GROUP-->
+        <update id="update" >
+                    UPDATE /*MS-SYS-USER-GROUP-UPDATE*/ SYS_USER_GROUP
+            SET
+                    DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,SYS_START       = #{sysStart,jdbcType=CHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,SYS_OPEN_DAY    = #{sysOpenDay,jdbcType=VARCHAR}
+                    ,USER_GROUP_NAME = #{userGroupName,jdbcType=VARCHAR}
+                    ,USER_GROUP_UUID = #{userGroupUuid,jdbcType=VARCHAR}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+                    ,SYS_ACCOUNT_END_TIME = #{sysAccountEndTime,jdbcType=TIMESTAMP}
+                    ,SYS_ACCOUNT_START_TIME = #{sysAccountStartTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </update>
+
+        <!--根据主键删除数据:SYS_USER_GROUP-->
+        <delete id="deleteById" >
+                    DELETE /*MS-SYS-USER-GROUP-DELETEBYID*/ FROM SYS_USER_GROUP
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </delete>
+
+        <!--根据主键获取数据:SYS_USER_GROUP-->
+        <select id="getById" resultMap="BaseResultMap">
+                    SELECT /*MS-SYS-USER-GROUP-GETBYID*/  <include refid="Base_Column_List" /> FROM SYS_USER_GROUP
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </select>
+</mapper>

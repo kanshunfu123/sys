@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.RoleUserMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.RoleUserDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sys_role_user_uuid" jdbcType="VARCHAR" property="sysRoleUserUuid"/>
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, sys_role_user_uuid, role_id, user_id, group_id, del_flag, create_by, create_time,
+        update_time, update_by
+    </sql>
+    <select id="countAdmin">
+        SELECT count(id) FROM sys_role_user WHERE role_id=#{roleId} group_id AND #{groupId}
+    </select>
+
+    <select id="getThirdRoleByParam" resultMap="BaseResultMap">
+        SELECT id, sys_role_user_uuid, role_id, user_id, group_id
+        FROM sys_role_user
+        WHERE role_id=#{roleId}
+        <if test="id">
+          AND  user_id !=#{id}
+        </if>
+    </select>
+<delete id="deleteByUserId" parameterType="map">
+    DELETE  FROM sys_role_user WHERE user_id=#{userid}
+</delete>
+    <select id="getRolesByUserId" parameterType="map" resultType="Long">
+        SELECT role_id
+        FROM sys_role_user WHERE user_id=#{userid}
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role_user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <insert id="batchaddRoleUser" parameterType="com.xiaowei.mana.mapper.dataobject.RoleUserDO">
+        <foreach collection="list" item="ite" separator=";">
+            insert into sys_role_user ( sys_role_user_uuid, role_id,
+            user_id, group_id, del_flag,
+            create_by, create_time, update_time,
+            update_by)
+            values ( #{ite.sysRoleUserUuid,jdbcType=VARCHAR}, #{ite.roleId,jdbcType=BIGINT},
+            #{ite.userId,jdbcType=BIGINT}, #{ite.groupId,jdbcType=BIGINT}, #{ite.delFlag,jdbcType=CHAR},
+            #{ite.createBy,jdbcType=VARCHAR}, #{ite.createTime,jdbcType=TIMESTAMP}, #{ite.updateTime,jdbcType=TIMESTAMP},
+            #{ite.updateBy,jdbcType=VARCHAR})
+        </foreach>
+
+    </insert>
+    <insert id="insertSelective" parameterType="com.xiaowei.mana.mapper.dataobject.RoleUserDO">
+        insert into sys_role_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysRoleUserUuid != null">
+                sys_role_user_uuid,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysRoleUserUuid != null">
+                #{sysRoleUserUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiaowei.mana.mapper.dataobject.RoleUserDO">
+        update sys_role_user
+        <set>
+            <if test="sysRoleUserUuid != null">
+                sys_role_user_uuid = #{sysRoleUserUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+</mapper>

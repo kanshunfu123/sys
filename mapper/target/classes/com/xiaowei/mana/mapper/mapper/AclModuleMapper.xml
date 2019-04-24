@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.AclModuleMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.AclModuleDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sys_acl_module_uuid" jdbcType="VARCHAR" property="sysAclModuleUuid"/>
+        <result column="sys_acl_module_name" jdbcType="VARCHAR" property="sysAclModuleName"/>
+        <result column="sys_acl_module_code" jdbcType="VARCHAR" property="sysAclModuleCode"/>
+        <result column="sys_acl_module_parent_id" jdbcType="BIGINT" property="sysAclModuleParentId"/>
+        <result column="sys_acl_module_level" jdbcType="VARCHAR" property="sysAclModuleLevel"/>
+        <result column="sys_acl_module_seq" jdbcType="INTEGER" property="sysAclModuleSeq"/>
+        <result column="sys_acl_module_icon" jdbcType="VARCHAR" property="sysAclModuleIcon"/>
+        <result column="sys_acl_permission_type" jdbcType="BIGINT" property="sysAclPermissionType"/>
+        <result column="sys_acl_module_remark" jdbcType="VARCHAR" property="sysAclModuleRemark"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, sys_acl_module_uuid, sys_acl_module_name, sys_acl_module_code, sys_acl_module_parent_id,
+        sys_acl_module_level, sys_acl_module_seq, sys_acl_module_icon, sys_acl_permission_type,
+        sys_acl_module_remark, del_flag, create_by, create_time, update_time, update_by
+    </sql>
+    <select id="getAllAclModuleByModuleIds" resultMap="BaseResultMap">
+        select
+        id, sys_acl_module_uuid, sys_acl_module_name, sys_acl_module_code, sys_acl_module_parent_id,
+        sys_acl_module_level, sys_acl_module_seq, sys_acl_module_icon, sys_acl_permission_type
+        from sys_acl_module
+        WHERE id IN
+        <foreach collection="set" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getAllAclModule" resultMap="BaseResultMap">
+        select
+        id, sys_acl_module_uuid, sys_acl_module_name, sys_acl_module_code, sys_acl_module_parent_id,
+        sys_acl_module_level, sys_acl_module_seq, sys_acl_module_icon, sys_acl_permission_type
+        from sys_acl_module
+    </select>
+    <select id="getChildAclModuleListByLevel" resultMap="BaseResultMap">
+        select
+        id, sys_acl_module_uuid, sys_acl_module_name, sys_acl_module_code, sys_acl_module_parent_id,
+        sys_acl_module_level, sys_acl_module_seq, sys_acl_module_icon, sys_acl_permission_type
+        from sys_acl_module
+        WHERE sys_acl_module_level LIKE CONCAT( #{level,jdbcType=VARCHAR},  '%')
+    </select>
+    <update id="batchUpdateLevel" parameterType="map">
+        <foreach collection="sysAclModuleList" item="sysAclModule" separator=";">
+            UPDATE sys_acl_module
+            SET
+            sys_acl_module_level = #{sysAclModule.sysAclModuleLevel},
+            sys_acl_module_parent_id = #{sysAclModule.sysAclModuleParentId}
+            where id = #{sysAclModule.id}
+        </foreach>
+    </update>
+    <select id="selectByUUID" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_acl_module
+        where sys_acl_module_uuid = #{uuid}
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_acl_module
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="countByNameAndParentId" parameterType="map" resultType="int">
+        SELECT count(1)
+        FROM sys_acl_module
+        WHERE sys_acl_module_name = #{name}
+        <if test="parentId != null">
+            AND sys_acl_module_parent_id = #{parentId}
+        </if>
+        <if test="id != null">
+            AND id != #{id}
+        </if>
+    </select>
+    <update id="updateByPrimaryKey" parameterType="com.xiaowei.mana.mapper.dataobject.AclModuleDO">
+        update sys_acl_module
+        <set>
+            <if test="sysAclModuleUuid != null">
+                sys_acl_module_uuid = #{sysAclModuleUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclModuleName != null">
+                sys_acl_module_name = #{sysAclModuleName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclModuleCode != null">
+                sys_acl_module_code = #{sysAclModuleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclModuleParentId != null">
+                sys_acl_module_parent_id = #{sysAclModuleParentId,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclModuleLevel != null">
+                sys_acl_module_level = #{sysAclModuleLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclModuleSeq != null">
+                sys_acl_module_seq = #{sysAclModuleSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysAclModuleIcon != null">
+                sys_acl_module_icon = #{sysAclModuleIcon,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclPermissionType != null">
+                sys_acl_permission_type = #{sysAclPermissionType,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclModuleRemark != null">
+                sys_acl_module_remark = #{sysAclModuleRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <insert id="addAclModule" useGeneratedKeys="true" keyProperty="id" parameterType="com.xiaowei.mana.mapper.dataobject.AclModuleDO">
+        insert into sys_acl_module
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysAclModuleUuid != null">
+                sys_acl_module_uuid,
+            </if>
+            <if test="sysAclModuleName != null">
+                sys_acl_module_name,
+            </if>
+            <if test="sysAclModuleCode != null">
+                sys_acl_module_code,
+            </if>
+            <if test="sysAclModuleParentId != null">
+                sys_acl_module_parent_id,
+            </if>
+            <if test="sysAclModuleLevel != null">
+                sys_acl_module_level,
+            </if>
+            <if test="sysAclModuleSeq != null">
+                sys_acl_module_seq,
+            </if>
+            <if test="sysAclModuleIcon != null">
+                sys_acl_module_icon,
+            </if>
+            <if test="sysAclPermissionType != null">
+                sys_acl_permission_type,
+            </if>
+            <if test="sysAclModuleRemark != null">
+                sys_acl_module_remark,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclModuleUuid != null">
+                #{sysAclModuleUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclModuleName != null">
+                #{sysAclModuleName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclModuleCode != null">
+                #{sysAclModuleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclModuleParentId != null">
+                #{sysAclModuleParentId,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclModuleLevel != null">
+                #{sysAclModuleLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclModuleSeq != null">
+                #{sysAclModuleSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysAclModuleIcon != null">
+                #{sysAclModuleIcon,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclPermissionType != null">
+                #{sysAclPermissionType,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclModuleRemark != null">
+                #{sysAclModuleRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+</mapper>

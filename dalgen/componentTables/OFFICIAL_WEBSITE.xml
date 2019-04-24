@@ -1,0 +1,147 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="OFFICIAL_WEBSITE" physicalName="OFFICIAL_WEBSITE" remark="OFFICIAL_WEBSITE">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:OFFICIAL_WEBSITE">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO OFFICIAL_WEBSITE(
+            
+            COM
+            ,TEL
+            ,NAME
+            ,UUID
+            ,OFFICE
+            ,DEL_FLAG
+            ,MESSAGE
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            
+            #{com,jdbcType=VARCHAR}
+            ,#{tel,jdbcType=VARCHAR}
+            ,#{name,jdbcType=VARCHAR}
+            ,#{uuid,jdbcType=VARCHAR}
+            ,#{office,jdbcType=VARCHAR}
+            ,#{delFlag,jdbcType=CHAR}
+            ,#{message,jdbcType=VARCHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:OFFICIAL_WEBSITE">
+            UPDATE OFFICIAL_WEBSITE
+            SET
+                    COM             = #{com,jdbcType=VARCHAR}
+                    ,TEL             = #{tel,jdbcType=VARCHAR}
+                    ,NAME            = #{name,jdbcType=VARCHAR}
+                    ,UUID            = #{uuid,jdbcType=VARCHAR}
+                    ,OFFICE          = #{office,jdbcType=VARCHAR}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,MESSAGE         = #{message,jdbcType=VARCHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:OFFICIAL_WEBSITE">
+            DELETE FROM OFFICIAL_WEBSITE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:OFFICIAL_WEBSITE">
+            SELECT * FROM OFFICIAL_WEBSITE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+    <operation name="saveOfficial" paramtype="object" remark="新增表:OFFICIAL_WEBSITE">
+        insert into official_website
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uuid != null">
+                uuid,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="tel != null">
+                tel,
+            </if>
+            <if test="com != null">
+                com,
+            </if>
+            <if test="office != null">
+                office,
+            </if>
+            <if test="message != null">
+                message,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="uuid != null">
+                #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                #{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="com != null">
+                #{com,jdbcType=VARCHAR},
+            </if>
+            <if test="office != null">
+                #{office,jdbcType=VARCHAR},
+            </if>
+            <if test="message != null">
+                #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </operation>
+</table>

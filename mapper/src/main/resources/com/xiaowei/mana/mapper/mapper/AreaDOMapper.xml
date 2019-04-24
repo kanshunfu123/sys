@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.AreaDOMapper">
+    <!-- 自动生成,请修改 SYS_AREA.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mana.mapper.dataobject.AreaDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="SYS_AREA_PARENT_ID" property="sysAreaParentId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+            <result column="MAP_CODE" property="mapCode" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_AREA_NAME" property="sysAreaName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_AREA_UUID" property="sysAreaUuid" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_AREA_LEVEL" property="sysAreaLevel" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_WEATH_CODE" property="sysWeathCode" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_AREA_REMARK" property="sysAreaRemark" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_AREA_SEQ" property="sysAreaSeq" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="LATITUDE" property="latitude" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <result column="LONGITUDE" property="longitude" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,SYS_AREA_PARENT_ID,DEL_FLAG,MAP_CODE,CREATE_BY,UPDATE_BY,SYS_AREA_NAME,SYS_AREA_UUID,SYS_AREA_LEVEL,SYS_WEATH_CODE,SYS_AREA_REMARK,SYS_AREA_SEQ,CREATE_TIME,UPDATE_TIME,LATITUDE,LONGITUDE
+    </sql>
+
+
+        <!--插入表:SYS_AREA-->
+        <insert id="insert" >
+                    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_AREA(
+            
+            SYS_AREA_PARENT_ID
+            ,DEL_FLAG
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_AREA_NAME
+            ,SYS_AREA_UUID
+            ,SYS_AREA_LEVEL
+            ,SYS_AREA_REMARK
+            ,SYS_AREA_SEQ
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            
+            #{sysAreaParentId,jdbcType=BIGINT}
+            ,#{delFlag,jdbcType=CHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{sysAreaName,jdbcType=VARCHAR}
+            ,#{sysAreaUuid,jdbcType=VARCHAR}
+            ,#{sysAreaLevel,jdbcType=VARCHAR}
+            ,#{sysAreaRemark,jdbcType=VARCHAR}
+            ,#{sysAreaSeq,jdbcType=INTEGER}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+        )
+        </insert>
+
+        <!--更新表:SYS_AREA-->
+        <update id="update" >
+                    UPDATE /*MS-SYS-AREA-UPDATE*/ SYS_AREA
+            SET
+                    SYS_AREA_PARENT_ID = #{sysAreaParentId,jdbcType=BIGINT}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,SYS_AREA_NAME   = #{sysAreaName,jdbcType=VARCHAR}
+                    ,SYS_AREA_UUID   = #{sysAreaUuid,jdbcType=VARCHAR}
+                    ,SYS_AREA_LEVEL  = #{sysAreaLevel,jdbcType=VARCHAR}
+                    ,SYS_AREA_REMARK = #{sysAreaRemark,jdbcType=VARCHAR}
+                    ,SYS_AREA_SEQ    = #{sysAreaSeq,jdbcType=INTEGER}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </update>
+
+        <!--根据主键删除数据:SYS_AREA-->
+        <delete id="deleteById" >
+                    DELETE /*MS-SYS-AREA-DELETEBYID*/ FROM SYS_AREA
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </delete>
+
+        <!--根据主键获取数据:SYS_AREA-->
+        <select id="getById" resultMap="BaseResultMap">
+                    SELECT /*MS-SYS-AREA-GETBYID*/  <include refid="Base_Column_List" /> FROM SYS_AREA
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </select>
+
+        <!--新增表:SYS_AREA-->
+        <insert id="insertArea" >
+                insert into sys_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysAreaUuid != null">
+                sys_area_uuid,
+            </if>
+            <if test="sysAreaName != null">
+                sys_area_name,
+            </if>
+            <if test="sysAreaParentId != null">
+                sys_area_parent_id,
+            </if>
+            <if test="sysAreaLevel != null">
+                sys_area_level,
+            </if>
+            <if test="sysAreaSeq != null">
+                sys_area_seq,
+            </if>
+            <if test="sysAreaRemark != null">
+                sys_area_remark,
+            </if>
+            <if test="sysWeathCode != null">
+                sys_weath_code,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="longitude!=null">
+                longitude,
+            </if>
+            <if test="latitude!=null">
+                latitude,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysAreaUuid != null">
+                #{sysAreaUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAreaName != null">
+                #{sysAreaName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAreaParentId != null">
+                #{sysAreaParentId,jdbcType=BIGINT},
+            </if>
+            <if test="sysAreaLevel != null">
+                #{sysAreaLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAreaSeq != null">
+                #{sysAreaSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysAreaRemark != null">
+                #{sysAreaRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="sysWeathCode != null">
+                #{sysWeathCode,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude !=null">
+                #{longitude,jdbcType=DECIMAL},
+            </if>
+            <if test="latitude !=null">
+                #{latitude,jdbcType=DECIMAL},
+            </if>
+        </trim>
+        </insert>
+
+        <!--根据 区域名称 全局唯一-->
+        <select id="getAreaName" resultType="Integer">
+                SELECT /*MS-SYS-AREA-GETAREANAME*/  count(id) FROM sys_area
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="sysAreaName!=null">
+                sys_area_name=#{sysAreaName,jdbcType=VARCHAR}
+            </if>
+            <if test="sysAreaUuid!=null">
+                sys_area_uuid=#{sysAreaUuid,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        </select>
+
+        <!--根据 区域id 全局唯一-->
+        <select id="getAreaId" resultType="Integer">
+                SELECT /*MS-SYS-AREA-GETAREAID*/  count(id) FROM sys_area
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="id!=null">
+                id=#{id,jdbcType=BIGINT}
+            </if>
+            <if test="sysAreaUuid!=null">
+                sys_area_uuid=#{sysAreaUuid,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        </select>
+
+        <!--更新区域信息-->
+        <update id="updateArea" >
+                update /*MS-SYS-AREA-UPDATEAREA*/ sys_area
+        <set>
+            <if test="sysAreaUuid != null">
+                sys_area_uuid = #{sysAreaUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAreaName != null">
+                sys_area_name = #{sysAreaName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAreaParentId != null">
+                sys_area_parent_id = #{sysAreaParentId,jdbcType=BIGINT},
+            </if>
+            <if test="sysAreaLevel != null">
+                sys_area_level = #{sysAreaLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAreaSeq != null">
+                sys_area_seq = #{sysAreaSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysAreaRemark != null">
+                sys_area_remark = #{sysAreaRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="sysWeathCode != null">
+                sys_weath_code = #{sysWeathCode,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude !=null">
+                longitude=#{longitude,jdbcType=DECIMAL},
+            </if>
+            <if test="latitude !=null">
+                latitude=#{latitude,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        </update>
+
+        <!--同一层级下，区域名称是否相同-->
+        <select id="getBycodeNameAndByparentId" resultType="int">
+                SELECT /*MS-SYS-AREA-GETBYCODENAMEANDBYPARENTID*/  COUNT(id)
+        FROM sys_area
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="sysAreaName!=null">
+                AND sys_area_name=#{sysAreaName,jdbcType=VARCHAR}
+            </if>
+            <if test="sysAreaParentId!=null">
+                AND sys_area_parent_id=#{sysAreaParentId,jdbcType=BIGINT}
+            </if>
+            <if test="id != null">
+                AND id != #{id,jdbcType=BIGINT}
+            </if>
+            AND del_flag=0
+        </trim>
+        </select>
+
+        <!--根据 父级id 获取数据:SYS_DICTIONARY-->
+        <select id="getLevelByParentId" resultMap="BaseResultMap">
+                SELECT
+        id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,
+        sys_area_remark, sys_weath_code, del_flag, create_by, create_time, update_time, update_by
+        FROM sys_area
+        WHERE
+        id=#{id,jdbcType=BIGINT}
+        and del_flag=0
+        </select>
+
+        <!--查询子级字典-->
+        <select id="getChildDictionaryListByLevel" resultMap="BaseResultMap">
+                SELECT
+        id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,longitude,latitude
+        FROM sys_area
+        WHERE sys_area_level LIKE CONCAT( #{level,jdbcType=VARCHAR}, '%') AND del_flag=0
+        </select>
+
+        <!--区域更新之后，进行批量子级区域-->
+        <update id="updatebatchUpdateLevel" >
+                <foreach collection="list" item="area" separator=";">
+            UPDATE /*MS-SYS-AREA-UPDATEBATCHUPDATELEVEL*/ sys_area
+            SET
+            sys_area_level = #{area.sysAreaLevel,jdbcType=VARCHAR}
+            WHERE id = #{area.id,jdbcType=BIGINT}
+        </foreach>
+        </update>
+
+        <!--根据区域uuid删除数据:sys_area-->
+        <delete id="deleteByUuid" >
+                delete /*MS-SYS-AREA-DELETEBYUUID*/ from sys_area
+        where
+        sys_area_uuid = #{sysAreaUuid,jdbcType=VARCHAR}
+        </delete>
+
+        <!--同一层级下，区域名称是否相同-->
+        <select id="getNameAndParent" resultType="int">
+                SELECT /*MS-SYS-AREA-GETNAMEANDPARENT*/  COUNT(id)
+        FROM sys_area
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="sysAreaName!=null">
+                AND sys_area_name=#{sysAreaName,jdbcType=VARCHAR}
+            </if>
+            <if test="sysAreaParentId!=null">
+                AND sys_area_parent_id=#{sysAreaParentId,jdbcType=BIGINT}
+            </if>
+            <if test="id != null">
+                AND id = #{id,jdbcType=BIGINT}
+            </if>
+            AND del_flag=0
+        </trim>
+        </select>
+
+        <!--adminAreaAL-->
+        <select id="adminAreaAL" resultMap="BaseResultMap">
+                SELECT
+        id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,longitude,latitude
+        FROM sys_area
+        WHERE sys_area_parent_id=#{sys_area_parent_id,jdbcType=BIGINT} AND del_flag=0
+        </select>
+
+        <!--commonAreaAL-->
+        <select id="commonAreaAL" resultMap="BaseResultMap">
+                SELECT /*MS-SYS-AREA-COMMONAREAAL*/  area.id,area.latitude,area.longitude,area.sys_area_name,area.sys_area_parent_id,area.sys_area_level
+        FROM
+        (
+        SELECT /*MS-SYS-AREA-COMMONAREAAL*/  <include refid="Base_Column_List" />
+        FROM sys_role_area WHERE role_id IN
+        (
+        SELECT /*MS-SYS-AREA-COMMONAREAAL*/  role_id
+        FROM sys_role_user WHERE user_id=#{sys_area_parent_id,jdbcType=BIGINT}
+        )
+        ) mmp
+        INNER JOIN sys_area area ON area.id=mmp.area_id
+        </select>
+</mapper>

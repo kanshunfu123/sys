@@ -1,0 +1,348 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="XW_RW_SENCE" physicalName="XW_RW_SENCE" remark="河道水场景">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:XW_RW_SENCE">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO XW_RW_SENCE(
+            
+            RW_NAME
+            ,RW_TYPE
+            ,DEL_FLAG
+            ,RW_DEPTH
+            ,RW_LEVEE
+            ,RW_RANGE
+            ,RW_WIDTH
+            ,CREATE_BY
+            ,DEVICE_NO
+            ,RW_LENGTH
+            ,RW_REMARK
+            ,UPDATE_BY
+            ,SENCE_UUID
+            ,PRINCIPAL_PHONE
+            ,SENCE_PRINCIPAL
+            ,RW_POLLUTE_SOURCE
+            ,CREATE_TIME
+            ,UPDATE_TIME
+            ,SENCE_INSTALL_TIME
+        )VALUES(
+            
+            #{rwName,jdbcType=VARCHAR}
+            ,#{rwType,jdbcType=VARCHAR}
+            ,#{delFlag,jdbcType=CHAR}
+            ,#{rwDepth,jdbcType=VARCHAR}
+            ,#{rwLevee,jdbcType=VARCHAR}
+            ,#{rwRange,jdbcType=VARCHAR}
+            ,#{rwWidth,jdbcType=VARCHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{deviceNo,jdbcType=VARCHAR}
+            ,#{rwLength,jdbcType=VARCHAR}
+            ,#{rwRemark,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{senceUuid,jdbcType=VARCHAR}
+            ,#{principalPhone,jdbcType=VARCHAR}
+            ,#{sencePrincipal,jdbcType=VARCHAR}
+            ,#{rwPolluteSource,jdbcType=VARCHAR}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+            ,#{senceInstallTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:XW_RW_SENCE">
+            UPDATE XW_RW_SENCE
+            SET
+                    RW_NAME         = #{rwName,jdbcType=VARCHAR}
+                    ,RW_TYPE         = #{rwType,jdbcType=VARCHAR}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,RW_DEPTH        = #{rwDepth,jdbcType=VARCHAR}
+                    ,RW_LEVEE        = #{rwLevee,jdbcType=VARCHAR}
+                    ,RW_RANGE        = #{rwRange,jdbcType=VARCHAR}
+                    ,RW_WIDTH        = #{rwWidth,jdbcType=VARCHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,DEVICE_NO       = #{deviceNo,jdbcType=VARCHAR}
+                    ,RW_LENGTH       = #{rwLength,jdbcType=VARCHAR}
+                    ,RW_REMARK       = #{rwRemark,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,SENCE_UUID      = #{senceUuid,jdbcType=VARCHAR}
+                    ,PRINCIPAL_PHONE = #{principalPhone,jdbcType=VARCHAR}
+                    ,SENCE_PRINCIPAL = #{sencePrincipal,jdbcType=VARCHAR}
+                    ,RW_POLLUTE_SOURCE = #{rwPolluteSource,jdbcType=VARCHAR}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+                    ,SENCE_INSTALL_TIME = #{senceInstallTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:XW_RW_SENCE">
+            DELETE FROM XW_RW_SENCE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:XW_RW_SENCE">
+            SELECT * FROM XW_RW_SENCE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+    <operation name="insertRwSence" paramtype="object" remark="新增表:XW_RW_SENCE">
+        insert into xw_rw_sence
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="senceUuid != null">
+                sence_uuid,
+            </if>
+            <if test="deviceNo != null">
+                device_no,
+            </if>
+            <if test="rwName != null">
+                rw_name,
+            </if>
+            <if test="rwWidth != null">
+                rw_width,
+            </if>
+            <if test="rwLength != null">
+                rw_length,
+            </if>
+            <if test="rwDepth != null">
+                rw_depth,
+            </if>
+            <if test="rwLevee != null">
+                rw_levee,
+            </if>
+            <if test="rwPolluteSource != null">
+                rw_pollute_source,
+            </if>
+            <if test="sencePrincipal != null">
+                sence_principal,
+            </if>
+            <if test="principalPhone != null">
+                principal_phone,
+            </if>
+            <if test="rwType != null">
+                rw_type,
+            </if>
+            <if test="rwRange != null">
+                rw_range,
+            </if>
+            <if test="rwRemark != null">
+                rw_remark,
+            </if>
+            <if test="senceInstallTime != null">
+                sence_install_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="rwCode !=null">
+                rw_code,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="areaId != null">
+                area_id,
+            </if>
+            <if test="rwGrade != null">
+                rw_grade,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="senceUuid != null">
+                #{senceUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="rwName != null">
+                #{rwName,jdbcType=VARCHAR},
+            </if>
+            <if test="rwWidth != null">
+                #{rwWidth,jdbcType=VARCHAR},
+            </if>
+            <if test="rwLength != null">
+                #{rwLength,jdbcType=VARCHAR},
+            </if>
+            <if test="rwDepth != null">
+                #{rwDepth,jdbcType=VARCHAR},
+            </if>
+            <if test="rwLevee != null">
+                #{rwLevee,jdbcType=VARCHAR},
+            </if>
+            <if test="rwPolluteSource != null">
+                #{rwPolluteSource,jdbcType=VARCHAR},
+            </if>
+            <if test="sencePrincipal != null">
+                #{sencePrincipal,jdbcType=VARCHAR},
+            </if>
+            <if test="principalPhone != null">
+                #{principalPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="rwType != null">
+                #{rwType,jdbcType=VARCHAR},
+            </if>
+            <if test="rwRange != null">
+                #{rwRange,jdbcType=VARCHAR},
+            </if>
+            <if test="rwRemark != null">
+                #{rwRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="senceInstallTime != null">
+                #{senceInstallTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="rwCode !=null">
+                #{rwCode,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="areaId != null">
+                #{areaId,jdbcType=BIGINT},
+            </if>
+            <if test="rwGrade != null">
+                #{rwGrade,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </operation>
+    <operation name="updateRwSence" paramtype="object" remark="更新地表水场景信息">
+        update xw_rw_sence
+        <set>
+            <if test="senceUuid != null">
+                sence_uuid = #{senceUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                device_no = #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="rwName != null">
+                rw_name = #{rwName,jdbcType=VARCHAR},
+            </if>
+            <if test="rwWidth != null">
+                rw_width = #{rwWidth,jdbcType=VARCHAR},
+            </if>
+            <if test="rwLength != null">
+                rw_length = #{rwLength,jdbcType=VARCHAR},
+            </if>
+            <if test="rwDepth != null">
+                rw_depth = #{rwDepth,jdbcType=VARCHAR},
+            </if>
+            <if test="rwLevee != null">
+                rw_levee = #{rwLevee,jdbcType=VARCHAR},
+            </if>
+            <if test="rwPolluteSource != null">
+                rw_pollute_source = #{rwPolluteSource,jdbcType=VARCHAR},
+            </if>
+            <if test="sencePrincipal != null">
+                sence_principal = #{sencePrincipal,jdbcType=VARCHAR},
+            </if>
+            <if test="principalPhone != null">
+                principal_phone = #{principalPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="rwType != null">
+                rw_type = #{rwType,jdbcType=VARCHAR},
+            </if>
+            <if test="rwRange != null">
+                rw_range = #{rwRange,jdbcType=VARCHAR},
+            </if>
+            <if test="rwRemark != null">
+                rw_remark = #{rwRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="senceInstallTime != null">
+                sence_install_time = #{senceInstallTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="rwCode !=null">
+                rw_code=#{rwCode,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="areaId != null">
+                area_id = #{areaId,jdbcType=BIGINT},
+            </if>
+            <if test="rwGrade != null">
+                rw_grade = #{rwGrade,jdbcType=INTEGER},
+            </if>
+        </set>
+        where device_no = #{deviceNo,jdbcType=VARCHAR}
+    </operation>
+    <operation name="getRwCode" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 地表水编码 全局唯一">
+        SELECT count(id) FROM xw_rw_sence
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="rwCode!=null">
+                rw_code=#{rwCode,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </operation>
+    <operation name="getEditRwCode" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 地表水编码 全局唯一">
+        SELECT count(id) FROM xw_rw_sence
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="rwCode!=null">
+                rw_code=#{rwCode,jdbcType=VARCHAR}
+            </if>
+            <if test="id!=null">
+                id!=#{id,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </operation>
+</table>

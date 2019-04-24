@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.MhSenceMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.XwMhSenceDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sence_uuid" jdbcType="VARCHAR" property="senceUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="mh_years" jdbcType="INTEGER" property="mhYears" />
+        <result column="sence_principal" jdbcType="VARCHAR" property="sencePrincipal" />
+        <result column="principal_phone" jdbcType="VARCHAR" property="principalPhone" />
+        <result column="mh_load" jdbcType="VARCHAR" property="mhLoad" />
+        <result column="mh_use" jdbcType="VARCHAR" property="mhUse" />
+        <result column="mh_material" jdbcType="VARCHAR" property="mhMaterial" />
+        <result column="traffic_flow" jdbcType="VARCHAR" property="trafficFlow" />
+        <result column="mh_size" jdbcType="VARCHAR" property="mhSize" />
+        <result column="mh_end_time" jdbcType="TIMESTAMP" property="mhEndTime" />
+        <result column="sence_install_time" jdbcType="TIMESTAMP" property="senceInstallTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId"/>
+        <result column="city_id" jdbcType="BIGINT" property="cityId"/>
+        <result column="area_id" jdbcType="BIGINT" property="areaId"/>
+        <result column="mh_type" jdbcType="VARCHAR" property="mhType"/>
+        <result column="mh_diameter" jdbcType="VARCHAR" property="mhDiameter"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, sence_uuid, device_no, province_id, city_id, area_id, mh_years, mh_diameter,
+    mh_type, mh_material, sence_principal, principal_phone, mh_load, mh_use, traffic_flow,
+    mh_size, mh_end_time, sence_install_time, create_by, create_time, update_by, update_time,
+    del_flag, mh_code
+  </sql>
+
+    <!--设备编号是否存在-->
+    <select id="deviceNo" resultType="int">
+        select count(id)
+        from xw_mh_sence
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="deNo" resultType="int">
+        select count(id)
+        from xw_equipment_mh
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="uuid" resultMap="uuid">
+        select
+        id, sence_uuid, device_no, mh_years, sence_principal, principal_phone, mh_load, mh_use,
+    mh_material, traffic_flow, mh_size, mh_end_time, sence_install_time, create_by, create_time,
+    update_by, update_time, del_flag
+        from xw_mh_sence
+        where device_no = #{deviceNo}
+    </select>
+    <resultMap id="uuid" type="com.xiaowei.mana.mapper.dataobject.XwMhSenceDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sence_uuid" jdbcType="VARCHAR" property="senceUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="mh_years" jdbcType="INTEGER" property="mhYears" />
+        <result column="sence_principal" jdbcType="VARCHAR" property="sencePrincipal" />
+        <result column="principal_phone" jdbcType="VARCHAR" property="principalPhone" />
+        <result column="mh_load" jdbcType="VARCHAR" property="mhLoad" />
+        <result column="mh_use" jdbcType="VARCHAR" property="mhUse" />
+        <result column="mh_material" jdbcType="VARCHAR" property="mhMaterial" />
+        <result column="traffic_flow" jdbcType="VARCHAR" property="trafficFlow" />
+        <result column="mh_size" jdbcType="VARCHAR" property="mhSize" />
+        <result column="mh_end_time" jdbcType="TIMESTAMP" property="mhEndTime" />
+        <result column="sence_install_time" jdbcType="TIMESTAMP" property="senceInstallTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    </resultMap>
+    <select id="mhSenceByNo" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xw_mh_sence
+        where
+        device_no=#{deviceNo,jdbcType=VARCHAR}
+    </select>
+    <select id="deSenNo" resultType="int">
+        select count(id)
+        from xw_mh_sence
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="selMhSen" resultMap="BaseResultMap">
+          SELECT   id, sence_uuid, device_no, mh_years, sence_principal, principal_phone, mh_load, mh_use,
+    mh_material, traffic_flow, mh_size, mh_end_time, sence_install_time, create_by, create_time,
+    update_by, update_time, del_flag,mh_type,mh_diameter,province_id,city_id,area_id
+        FROM xw_mh_sence
+
+    </select>
+
+
+
+
+</mapper>

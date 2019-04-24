@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.RoleAclMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.RoleAclDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_role_acl_uuid" jdbcType="VARCHAR" property="sysRoleAclUuid" />
+        <result column="sys_role_id" jdbcType="BIGINT" property="sysRoleId" />
+        <result column="sys_acl_id" jdbcType="BIGINT" property="sysAclId" />
+        <result column="sys_acl_permission_type" jdbcType="BIGINT" property="sysAclPermissionType" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, sys_role_acl_uuid, sys_role_id, sys_acl_id, sys_acl_permission_type, group_id,
+        del_flag, create_by, create_time, update_time, update_by
+    </sql>
+    <select id="getAclIdListByRoleIdList" resultType="Long">
+        SELECT sys_acl_id
+        FROM sys_role_acl WHERE sys_role_id IN
+        <foreach collection="roles" item="ite" open="(" close=")" separator=",">
+            #{ite}
+        </foreach>
+    </select>
+    <select id="getAclIdListByRoleIdAndPerTypeList" resultType="Long">
+        SELECT sys_acl_id
+        FROM sys_role_acl WHERE sys_role_id IN
+        <foreach collection="roles" item="ite" open="(" close=")" separator=",">
+            #{ite}
+        </foreach>
+        <if test="sysAclPermissionType!=null">
+            AND sys_acl_permission_type=#{sysAclPermissionType}
+        </if>
+    </select>
+    <insert id="batchaddRoleUser" parameterType="com.xiaowei.mana.mapper.dataobject.RoleAclDO">
+        <foreach collection="list" item="ite" separator=";">
+            insert into sys_role_acl ( sys_role_acl_uuid, sys_role_id,
+            sys_acl_id, sys_acl_permission_type, group_id,
+            del_flag, create_by, create_time,
+            update_time, update_by)
+            values ( #{ite.sysRoleAclUuid,jdbcType=VARCHAR}, #{ite.sysRoleId,jdbcType=BIGINT},
+            #{ite.sysAclId,jdbcType=BIGINT}, #{ite.sysAclPermissionType,jdbcType=BIGINT}, #{ite.groupId,jdbcType=BIGINT},
+            #{ite.delFlag,jdbcType=CHAR}, #{ite.createBy,jdbcType=VARCHAR}, #{ite.createTime,jdbcType=TIMESTAMP},
+            #{ite.updateTime,jdbcType=TIMESTAMP}, #{ite.updateBy,jdbcType=VARCHAR})
+        </foreach>
+
+    </insert>
+    <delete id="deleteByUserId" parameterType="map">
+        DELETE  FROM sys_role_acl WHERE sys_role_id=#{roleid}
+    </delete>
+    <select id="getRolesByUserId" parameterType="map" resultType="Long">
+        SELECT sys_acl_id
+        FROM sys_role_acl WHERE sys_role_id=#{roleid}
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_role_acl
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from sys_role_acl
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.xiaowei.mana.mapper.dataobject.RoleAclDO">
+        insert into sys_role_acl (id, sys_role_acl_uuid, sys_role_id,
+        sys_acl_id, sys_acl_permission_type, group_id,
+        del_flag, create_by, create_time,
+        update_time, update_by)
+        values (#{id,jdbcType=BIGINT}, #{sysRoleAclUuid,jdbcType=VARCHAR}, #{sysRoleId,jdbcType=BIGINT},
+        #{sysAclId,jdbcType=BIGINT}, #{sysAclPermissionType,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT},
+        #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.xiaowei.mana.mapper.dataobject.RoleAclDO">
+        insert into sys_role_acl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysRoleAclUuid != null">
+                sys_role_acl_uuid,
+            </if>
+            <if test="sysRoleId != null">
+                sys_role_id,
+            </if>
+            <if test="sysAclId != null">
+                sys_acl_id,
+            </if>
+            <if test="sysAclPermissionType != null">
+                sys_acl_permission_type,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysRoleAclUuid != null">
+                #{sysRoleAclUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRoleId != null">
+                #{sysRoleId,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclId != null">
+                #{sysAclId,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclPermissionType != null">
+                #{sysAclPermissionType,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiaowei.mana.mapper.dataobject.RoleAclDO">
+        update sys_role_acl
+        <set>
+            <if test="sysRoleAclUuid != null">
+                sys_role_acl_uuid = #{sysRoleAclUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRoleId != null">
+                sys_role_id = #{sysRoleId,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclId != null">
+                sys_acl_id = #{sysAclId,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclPermissionType != null">
+                sys_acl_permission_type = #{sysAclPermissionType,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

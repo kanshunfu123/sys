@@ -1,0 +1,300 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="SYS_DICTIONARY_DATA" physicalName="SYS_DICTIONARY_DATA" remark="数据字典">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:SYS_DICTIONARY_DATA">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO SYS_DICTIONARY_DATA(
+
+        PARENT_ID
+        ,DEL_FLAG
+        ,CODE_NAME
+        ,CREATE_BY
+        ,UPDATE_BY
+        ,CODE_LEVEL
+        ,SYS_DICTIONARY_UUID
+        ,SYS_DICTIONARY_REMARK
+        ,SYS_DICTIONARY_SEQ
+        ,CREATE_TIME
+        ,UPDATE_TIME
+        )VALUES(
+
+        #{parentId,jdbcType=BIGINT}
+        ,#{delFlag,jdbcType=CHAR}
+        ,#{codeName,jdbcType=VARCHAR}
+        ,#{createBy,jdbcType=VARCHAR}
+        ,#{updateBy,jdbcType=VARCHAR}
+        ,#{codeLevel,jdbcType=VARCHAR}
+        ,#{sysDictionaryUuid,jdbcType=VARCHAR}
+        ,#{sysDictionaryRemark,jdbcType=VARCHAR}
+        ,#{sysDictionarySeq,jdbcType=INTEGER}
+        ,#{createTime,jdbcType=TIMESTAMP}
+        ,#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新表:SYS_DICTIONARY_DATA">
+        UPDATE SYS_DICTIONARY_DATA
+        SET
+        PARENT_ID = #{parentId,jdbcType=BIGINT}
+        ,DEL_FLAG = #{delFlag,jdbcType=CHAR}
+        ,CODE_NAME = #{codeName,jdbcType=VARCHAR}
+        ,CREATE_BY = #{createBy,jdbcType=VARCHAR}
+        ,UPDATE_BY = #{updateBy,jdbcType=VARCHAR}
+        ,CODE_LEVEL = #{codeLevel,jdbcType=VARCHAR}
+        ,SYS_DICTIONARY_UUID = #{sysDictionaryUuid,jdbcType=VARCHAR}
+        ,SYS_DICTIONARY_REMARK = #{sysDictionaryRemark,jdbcType=VARCHAR}
+        ,SYS_DICTIONARY_SEQ = #{sysDictionarySeq,jdbcType=INTEGER}
+        ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+        ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+        ID = #{id,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_DICTIONARY_DATA">
+        DELETE FROM SYS_DICTIONARY_DATA
+        WHERE
+        ID = #{id,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_DICTIONARY_DATA">
+        SELECT * FROM SYS_DICTIONARY_DATA
+        WHERE
+        ID = #{id,jdbcType=BIGINT}
+    </operation>
+    <operation name="saveDictionary" paramtype="object" remark="新增表:sys_dictionary_data">
+        insert into sys_dictionary_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysDictionaryUuid != null">
+                sys_dictionary_uuid,
+            </if>
+            <if test="codeName != null">
+                code_name,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="codeLevel != null">
+                code_level,
+            </if>
+            <if test="sysDictionarySeq != null">
+                sys_dictionary_seq,
+            </if>
+            <if test="sysDictionaryRemark != null">
+                sys_dictionary_remark,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="codeValue != null">
+                code_value,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysDictionaryUuid != null">
+                #{sysDictionaryUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="codeName != null">
+                #{codeName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=BIGINT},
+            </if>
+            <if test="codeLevel != null">
+                #{codeLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDictionarySeq != null">
+                #{sysDictionarySeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysDictionaryRemark != null">
+                #{sysDictionaryRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="codeValue != null">
+                #{codeValue,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </operation>
+    <operation name="getDictionaryCodeName" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 字典代码名称 全局唯一">
+        SELECT count(id) FROM sys_dictionary_data
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="codeName!=null">
+                and code_name=#{codeName,jdbcType=VARCHAR}
+            </if>
+            <if test="sysDictionaryUuid!=null">
+                and sys_dictionary_uuid=#{sysDictionaryUuid,jdbcType=VARCHAR}
+            </if>
+            <if test="parentId!=null">
+                and parent_id=#{parentId,jdbcType=BIGINT}
+            </if>
+            AND del_flag=0
+        </trim>
+    </operation>
+    <operation name="getDictionaryCodeValue" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 字典代码名称 全局唯一">
+        SELECT count(id) FROM sys_dictionary_data
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="codeValue!=null">
+                AND code_value=#{codeValue,jdbcType=BIGINT}
+            </if>
+            <if test="sysDictionaryUuid!=null">
+                AND sys_dictionary_uuid=#{sysDictionaryUuid,jdbcType=VARCHAR}
+            </if>
+            AND del_flag=0
+        </trim>
+    </operation>
+
+    <operation name="getDictionaryId" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 字典代码名称 全局唯一">
+        SELECT count(id) FROM sys_dictionary_data
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="id!=null">
+                AND id=#{id,jdbcType=BIGINT}
+            </if>
+            <if test="sysDictionaryUuid!=null">
+                AND sys_dictionary_uuid=#{sysDictionaryUuid,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </operation>
+    <operation name="getDicId" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 字典代码值 全局唯一">
+        SELECT count(id) FROM sys_dictionary_data
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="codeValue!=null">
+                AND code_value=#{codeValue,jdbcType=BIGINT}
+            </if>
+            <if test="sysDictionaryUuid!=null">
+                AND sys_dictionary_uuid=#{sysDictionaryUuid,jdbcType=VARCHAR}
+            </if>
+            AND del_flag=0
+        </trim>
+    </operation>
+    <operation name="getLevelByParentId" multiplicity="one" remark="根据 父级id 获取数据:SYS_DICTIONARY">
+        SELECT
+        id, sys_dictionary_uuid, code_name, parent_id, code_level, sys_dictionary_seq, sys_dictionary_remark,
+        del_flag, create_by, create_time, update_time, update_by
+        FROM sys_dictionary_data
+        WHERE
+        id=#{id,jdbcType=BIGINT}
+        and del_flag=0
+    </operation>
+    <operation name="getBycodeNameAndByparentId" multiplicity="one" resulttype="int" remark="同一层级下，代码名称是否相同">
+        SELECT COUNT(id)
+        FROM sys_dictionary_data
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="codeName!=null">
+                AND code_name=#{codeName,jdbcType=VARCHAR}
+            </if>
+            <if test="parentId!=null">
+                AND parent_id=#{parentId,jdbcType=BIGINT}
+            </if>
+            AND del_flag=0
+        </trim>
+    </operation>
+    <operation name="getChildDictionaryListByLevel" multiplicity="many" remark="查询子级字典">
+        SELECT
+        id, sys_dictionary_uuid, code_name, parent_id, code_level, sys_dictionary_seq, sys_dictionary_remark,
+        del_flag, create_by, create_time, update_time, update_by
+        FROM sys_dictionary_data
+        WHERE code_level LIKE CONCAT( #{level,jdbcType=VARCHAR}, '%') AND del_flag=0
+    </operation>
+    <operation name="updateDictionary" paramtype="object" remark="更新字典信息">
+        update sys_dictionary_data
+        <set>
+            <if test="sysDictionaryUuid != null">
+                sys_dictionary_uuid = #{sysDictionaryUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="codeName != null">
+                code_name = #{codeName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=BIGINT},
+            </if>
+            <if test="codeLevel != null">
+                code_level = #{codeLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDictionarySeq != null">
+                sys_dictionary_seq = #{sysDictionarySeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysDictionaryRemark != null">
+                sys_dictionary_remark = #{sysDictionaryRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="codeValue != null">
+                code_value = #{codeValue,jdbcType=BIGINT},
+            </if>
+        </set>
+        where sys_dictionary_uuid = #{sysDictionaryUuid,jdbcType=VARCHAR}
+    </operation>
+    <operation name="updatebatchUpdateLevel" paramtype="objectList" remark="字典更新之后，进行批量子级字典">
+        <foreach collection="list" item="sysDictionary" separator=";">
+            UPDATE sys_dictionary_data
+            SET
+            CODE_LEVEL = #{sysDictionary.codeLevel,jdbcType=VARCHAR}
+            ,CREATE_BY = #{sysDictionary.createBy,jdbcType=VARCHAR}
+            ,UPDATE_BY = #{sysDictionary.updateBy,jdbcType=VARCHAR}
+            ,CREATE_TIME = #{sysDictionary.createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME = #{sysDictionary.updateTime,jdbcType=TIMESTAMP}
+            WHERE id = #{sysDictionary.id,jdbcType=BIGINT}
+        </foreach>
+    </operation>
+    <operation name="getDictionaryInfoByParentId" multiplicity="many" remark="根据parentId查询">
+        SELECT
+        id, sys_dictionary_uuid, code_name, parent_id, code_level, sys_dictionary_seq, sys_dictionary_remark,
+        del_flag, create_by, create_time, update_time, update_by,code_value
+        FROM sys_dictionary_data
+        WHERE parent_id=#{parentId,jdbcType=BIGINT} AND del_flag=0
+    </operation>
+
+
+</table>

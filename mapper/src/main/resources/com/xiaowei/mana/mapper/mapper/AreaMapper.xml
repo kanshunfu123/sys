@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.AreaMapper">
+    <select id="getAreaByID" resultMap="getAreaByID">
+        SELECT
+        id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,
+    sys_area_remark, sys_weath_code, del_flag, create_by, create_time, update_time, update_by
+             from sys_area
+      where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="getAreaByParentId" resultMap="getAreaByID">
+        SELECT
+        id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,
+    sys_area_remark, sys_weath_code, del_flag, create_by, create_time, update_time, update_by
+        from sys_area
+        where sys_area_parent_id = #{parentId,jdbcType=BIGINT}
+    </select>
+    <resultMap id="getAreaByID" type="com.xiaowei.mana.mapper.dataobject.AreaDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_area_uuid" jdbcType="VARCHAR" property="sysAreaUuid" />
+        <result column="sys_area_name" jdbcType="VARCHAR" property="sysAreaName" />
+        <result column="sys_area_parent_id" jdbcType="BIGINT" property="sysAreaParentId" />
+        <result column="sys_area_level" jdbcType="VARCHAR" property="sysAreaLevel" />
+        <result column="sys_area_seq" jdbcType="INTEGER" property="sysAreaSeq" />
+        <result column="sys_area_remark" jdbcType="VARCHAR" property="sysAreaRemark" />
+        <result column="sys_weath_code" jdbcType="VARCHAR" property="sysWeathCode" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+        <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    </resultMap>
+    <select id="getAreaByUUID" resultMap="BaseResultMap">
+        select
+       id,  sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,longitude,latitude
+        from sys_area
+        where sys_area_uuid = #{sysAreaUuid}
+    </select>
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.AreaDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_area_uuid" jdbcType="VARCHAR" property="sysAreaUuid" />
+        <result column="sys_area_name" jdbcType="VARCHAR" property="sysAreaName" />
+        <result column="sys_area_parent_id" jdbcType="BIGINT" property="sysAreaParentId" />
+        <result column="sys_area_level" jdbcType="VARCHAR" property="sysAreaLevel" />
+        <result column="sys_area_seq" jdbcType="INTEGER" property="sysAreaSeq" />
+        <result column="sys_area_remark" jdbcType="VARCHAR" property="sysAreaRemark" />
+        <result column="sys_weath_code" jdbcType="VARCHAR" property="sysWeathCode" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+        <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    </resultMap>
+    <select id="AreaTree" resultMap="areaTreeResult">
+          select
+       id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,del_flag
+        from sys_area
+
+    </select>
+    <resultMap id="areaTreeResult"  type="com.xiaowei.mana.mapper.resultmap.AreaTreeResult">
+        <id column="id" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="sys_area_parent_id" property="sysAreaParentId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="del_flag" property="delFlag" jdbcType="CHAR" javaType="String"/>
+        <result column="sys_area_name" property="sysAreaName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_area_level" property="sysAreaLevel" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_area_uuid" property="sysAreaUuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_area_seq" property="sysAreaSeq" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" javaType="String" />
+    </resultMap>
+    <select id="areaDo" resultMap="getAreaInfoByUuid" >
+
+        SELECT
+       id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,
+    sys_area_remark, sys_weath_code, del_flag, create_by, create_time, update_time, update_by,longitude,latitude
+        FROM sys_area
+        WHERE sys_area_uuid=#{sysAreaUuid,jdbcType=VARCHAR} AND del_flag=0
+    </select>
+    <resultMap id="getAreaInfoByUuid" type="com.xiaowei.mana.mapper.dataobject.AreaDO" >
+        <id column="id" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="sys_area_parent_id" property="sysAreaParentId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="del_flag" property="delFlag" jdbcType="CHAR" javaType="String"/>
+        <result column="sys_area_uuid" property="sysAreaUuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_area_level" property="sysAreaLevel" jdbcType="VARCHAR" javaType="String"/>
+        <result column="sys_area_seq" property="sysAreaSeq" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="sys_area_name" property="sysAreaName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="longitude" property="longitude" jdbcType="DECIMAL" javaType="BigDecimal"/>
+        <result column="latitude" property="latitude" jdbcType="DECIMAL" javaType="BigDecimal"/>
+    </resultMap>
+
+
+</mapper>

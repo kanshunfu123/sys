@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.areatodevice.AreatodeviceMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.XwEquipmentRwDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="equipment_uuid" jdbcType="VARCHAR" property="equipmentUuid"/>
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo"/>
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode"/>
+        <result column="device_desc" jdbcType="VARCHAR" property="deviceDesc"/>
+        <result column="latitude" jdbcType="REAL" property="latitude"/>
+        <result column="longitude" jdbcType="REAL" property="longitude"/>
+        <result column="alarm_depth" jdbcType="INTEGER" property="alarmDepth"/>
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime"/>
+        <result column="setup_time" jdbcType="TIMESTAMP" property="setupTime"/>
+        <result column="install_man" jdbcType="VARCHAR" property="installMan"/>
+        <result column="vendor" jdbcType="VARCHAR" property="vendor"/>
+        <result column="have_nh" jdbcType="INTEGER" property="haveNh"/>
+        <result column="province_id" jdbcType="BIGINT" property="provinceId"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city_id" jdbcType="BIGINT" property="cityId"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="area_id" jdbcType="BIGINT" property="areaId"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="safe_company" jdbcType="VARCHAR" property="safeCompany"/>
+        <result column="safe_man" jdbcType="VARCHAR" property="safeMan"/>
+        <result column="safe_phone" jdbcType="VARCHAR" property="safePhone"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <resultMap id="BaseResultMapec" type="com.xiaowei.mana.mapper.dataobject.XwEquipmentEcDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="equipment_uuid" jdbcType="VARCHAR" property="equipmentUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+        <result column="device_desc" jdbcType="VARCHAR" property="deviceDesc" />
+        <result column="latitude" jdbcType="REAL" property="latitude" />
+        <result column="longitude" jdbcType="REAL" property="longitude" />
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime" />
+        <result column="setup_time" jdbcType="TIMESTAMP" property="setupTime" />
+        <result column="village_id" jdbcType="BIGINT" property="villageId" />
+        <result column="village_name" jdbcType="VARCHAR" property="villageName" />
+        <result column="install_man" jdbcType="VARCHAR" property="installMan" />
+        <result column="vendor" jdbcType="VARCHAR" property="vendor" />
+        <result column="floor_num" jdbcType="INTEGER" property="floorNum" />
+        <result column="floor_downnum" jdbcType="INTEGER" property="floorDownnum" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city_id" jdbcType="BIGINT" property="cityId" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="area_id" jdbcType="BIGINT" property="areaId" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
+        <result column="street_id" jdbcType="BIGINT" property="streetId" />
+        <result column="street" jdbcType="VARCHAR" property="street" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="safe_company" jdbcType="VARCHAR" property="safeCompany" />
+        <result column="safe_man" jdbcType="VARCHAR" property="safeMan" />
+        <result column="safe_phone" jdbcType="VARCHAR" property="safePhone" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    </resultMap>
+    <resultMap id="BaseResultMapcw" type="com.xiaowei.mana.mapper.dataobject.XwEquipmentCwDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="equipment_uuid" jdbcType="VARCHAR" property="equipmentUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+        <result column="device_desc" jdbcType="VARCHAR" property="deviceDesc" />
+        <result column="latitude" jdbcType="REAL" property="latitude" />
+        <result column="longitude" jdbcType="REAL" property="longitude" />
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime" />
+        <result column="setup_time" jdbcType="TIMESTAMP" property="setupTime" />
+        <result column="floor" jdbcType="INTEGER" property="floor" />
+        <result column="village_id" jdbcType="BIGINT" property="villageId" />
+        <result column="village_name" jdbcType="VARCHAR" property="villageName" />
+        <result column="install_man" jdbcType="VARCHAR" property="installMan" />
+        <result column="vendor" jdbcType="VARCHAR" property="vendor" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city_id" jdbcType="BIGINT" property="cityId" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="area_id" jdbcType="BIGINT" property="areaId" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
+        <result column="street_id" jdbcType="BIGINT" property="streetId" />
+        <result column="street" jdbcType="VARCHAR" property="street" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="safe_company" jdbcType="VARCHAR" property="safeCompany" />
+        <result column="safe_man" jdbcType="VARCHAR" property="safeMan" />
+        <result column="safe_phone" jdbcType="VARCHAR" property="safePhone" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, equipment_uuid, device_no, device_name, device_code, device_desc, latitude, longitude,
+        alarm_depth, product_time, setup_time, install_man, vendor, have_nh, province_id,
+        province, city_id, city, area_id, area, address, safe_company, safe_man, safe_phone,
+        create_by, create_time, update_by, update_time, del_flag
+    </sql>
+    <select id="getRWAllBySelect" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+      id,device_no,device_code,device_name
+    FROM xw_equipment_rw WHERE area_id=#{areaId} AND del_flag='0'
+    order by device_code asc
+</select>
+    <select id="getMHAllBySelect" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        id,device_no,device_code,device_name
+        FROM xw_equipment_mh WHERE street_id=#{areaId} AND del_flag='0'
+        order by device_code asc
+    </select>
+    <select id="getCWAllBySelect" parameterType="map" resultMap="BaseResultMapcw">
+        SELECT
+        id,device_no,device_code,device_name,floor
+        FROM xw_equipment_cw WHERE village_id=#{areaId} AND del_flag='0'
+        order by device_code asc
+    </select>
+    <select id="getECAllBySelect" parameterType="map" resultMap="BaseResultMapec">
+        SELECT
+        id,device_no,device_code,device_name,floor_num,floor_downnum
+        FROM xw_equipment_ec WHERE village_id=#{areaId} AND del_flag='0'
+        order by device_code asc
+    </select>
+    <select id="getRWDeivcesByDeviceNos" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        id,device_no,device_code,device_name
+        FROM xw_equipment_rw WHERE  del_flag='0' and device_no IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        order by device_code asc
+    </select>
+    <select id="getMHDeivcesByDeviceNos" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        id,device_no,device_code,device_name
+        FROM xw_equipment_mh WHERE   del_flag='0' AND device_no IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        order by device_code asc
+    </select>
+    <select id="getCWDeivcesByDeviceNos" parameterType="map" resultMap="BaseResultMapcw">
+        SELECT
+        id,device_no,device_code,device_name,floor
+        FROM xw_equipment_cw WHERE  del_flag='0' AND device_no IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        order by device_code asc
+    </select>
+    <select id="getECDeivcesByDeviceNos" parameterType="map" resultMap="BaseResultMapec">
+        SELECT
+        id,device_no,device_code,device_name,floor_num,floor_downnum
+        FROM xw_equipment_ec WHERE  del_flag='0' AND device_no IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        order by device_code asc
+    </select>
+</mapper>

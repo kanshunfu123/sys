@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.areatodevice.HomeAreaMap">
+    <select id="adminHomeMap" parameterType="map" resultMap="areaDo">
+        SELECT
+         DISTINCT id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,longitude,latitude,map_code,sys_weath_code
+        FROM sys_area
+        WHERE sys_area_parent_id=#{parentId,jdbcType=BIGINT} AND del_flag=0
+    </select>
+    <select id="commonHomeMap" parameterType="map" resultMap="areaDo">
+        SELECT DISTINCT area.id,area.latitude,area.longitude,area.sys_area_name,area.sys_area_parent_id,area.sys_area_level,map_code,sys_weath_code
+        FROM
+        (
+        SELECT *
+        FROM sys_role_area WHERE role_id IN
+        (
+        SELECT role_id
+        FROM sys_role_user WHERE user_id=#{userId,jdbcType=BIGINT} and area_level =#{level}
+
+          <if test='deviceType=="ec"'>
+            and device_type='3'
+          </if>
+        <if test='deviceType=="mh"'>
+            and device_type='1'
+          </if>
+        <if test='deviceType=="cw"'>
+            and device_type='2'
+          </if>
+        <if test='deviceType=="rw"'>
+            and device_type='0'
+          </if>
+        )
+        ) mmp
+        INNER JOIN sys_area area ON area.id=mmp.area_id AND area.sys_area_parent_id=#{areaId}
+    </select>
+    <select id="commonECHomeMap" parameterType="map" resultMap="AreaDO_v3">
+        SELECT id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,longitude,latitude,map_code,sys_weath_code
+        FROM
+        (
+            SELECT area_id,area_level
+        FROM sys_role_area WHERE role_id IN(
+        SELECT role_id
+        FROM sys_role_user WHERE user_id=#{userId}
+        )
+        AND device_type=#{deviceType}  AND area_level=#{level}
+        ) mmp
+        INNER JOIN sys_area a ON mmp.area_id=a.id AND a.sys_area_parent_id=#{areaId}
+    </select>
+    <select id="commonECHomeMap_village" parameterType="map" resultMap="AreaDO_v3">
+        SELECT a.id,a.village_uuid sys_area_uuid,a.village_name sys_area_name,longitude,latitude,map_code
+        FROM
+        (
+            SELECT area_id,area_level
+        FROM sys_role_area WHERE role_id IN(
+        SELECT role_id
+        FROM sys_role_user WHERE user_id=#{userId}
+        )
+        AND device_type=#{deviceType}  AND area_level=#{level}
+        ) mmp
+        INNER JOIN (
+	 SELECT sys_area.id FROM sys_area WHERE sys_area_level LIKE CONCAT(#{areaLevel},'%')
+) cnm ON cnm.id=mmp.area_id
+        INNER JOIN sys_village a ON mmp.area_id=a.street_id
+    </select>
+
+    <select id="adminECHomeMap_village"  parameterType="map" resultMap="AreaDO_v3">
+      SELECT DISTINCT a.id,village_uuid sys_area_uuid,a.village_name sys_area_name,a.longitude,a.latitude,map_code
+        FROM sys_village a
+        INNER JOIN xw_equipment_ec cw ON a.street_id=cw.street_id   AND a.street_id IN
+        (
+            SELECT sys_area.id
+        FROM sys_area WHERE sys_area_level LIKE CONCAT(#{areaLevel},'%')
+        )
+    </select>
+    <select id="adminRWHomeMap_village"  parameterType="map" resultMap="AreaDO_v3">
+SELECT DISTINCT a.id,village_uuid sys_area_uuid,a.village_name sys_area_name,a.longitude,a.latitude,map_code
+        FROM sys_village a
+        INNER JOIN xw_equipment_rw cw ON a.street_id=cw.street_id   AND a.street_id=#{parentId}
+    </select>
+    <select id="adminMHHomeMap_village"  parameterType="map" resultMap="AreaDO_v3">
+SELECT DISTINCT a.id,village_uuid sys_area_uuid,a.village_name sys_area_name,a.longitude,a.latitude,map_code
+        FROM sys_village a
+        INNER JOIN xw_equipment_mh cw ON a.street_id=cw.street_id   AND a.street_id=#{parentId}
+    </select>
+    <select id="adminCWHomeMap_village"  parameterType="map" resultMap="AreaDO_v3">
+SELECT DISTINCT a.id,village_uuid sys_area_uuid,a.village_name sys_area_name,a.longitude,a.latitude,map_code
+        FROM sys_village a
+        INNER JOIN xw_equipment_cw cw ON a.street_id=cw.street_id   AND a.street_id IN
+         (
+            SELECT sys_area.id
+        FROM sys_area WHERE sys_area_level LIKE CONCAT(#{areaLevel},'%')
+        )
+    </select>
+    <select id="adminECHomeMap" parameterType="map" resultMap="AreaDO_v3">
+        SELECT DISTINCT a.id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,a.longitude,a.latitude,map_code,sys_weath_code
+        FROM sys_area a
+        INNER JOIN xw_equipment_ec cw ON
+        <if test='level=="0"'>
+            a.id=cw.province_id
+        </if>
+        <if test='level=="1"'>
+        a.id=cw.city_id
+        </if>
+        <if test='level=="2"'>
+            a.id=cw.area_id
+        </if>
+        <if test='level=="3"'>
+            a.id=cw.street_id
+        </if>
+         AND a.sys_area_parent_id=#{parentId}
+    </select>
+   <!-- <select id="adminECHomeMap_village" parameterType="map" resultMap="AreaDO_v3">
+        SELECT DISTINCT a.id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,a.longitude,a.latitude,map_code
+        FROM sys_area a
+        INNER JOIN xw_equipment_ec cw ON a.id=cw.province_id  AND a.sys_area_parent_id=#{parentId}
+    </select>-->
+    <select id="adminRWHomeMap" parameterType="map" resultMap="AreaDO_v3">
+        SELECT DISTINCT a.id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,a.longitude,a.latitude,map_code,sys_weath_code
+        FROM sys_area a
+        INNER JOIN xw_equipment_rw cw ON
+        <if test='level=="0"'>
+            a.id=cw.province_id
+        </if>
+        <if test='level=="1"'>
+            a.id=cw.city_id
+        </if>
+        <if test='level=="2"'>
+            a.id=cw.area_id
+        </if>
+        <if test='level=="3"'>
+            a.id=cw.street_id
+        </if>
+          AND a.sys_area_parent_id=#{parentId}
+    </select>
+    <select id="adminMHHomeMap" parameterType="map" resultMap="AreaDO_v3">
+        SELECT DISTINCT a.id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,a.longitude,a.latitude,map_code,sys_weath_code
+        FROM sys_area a
+        INNER JOIN xw_equipment_mh cw ON
+        <if test='level=="0"'>
+            a.id=cw.province_id
+        </if>
+        <if test='level=="1"'>
+            a.id=cw.city_id
+        </if>
+        <if test='level=="2"'>
+            a.id=cw.area_id
+        </if>
+        <if test='level=="3"'>
+            a.id=cw.street_id
+        </if>
+         AND a.sys_area_parent_id=#{parentId}
+    </select>
+    <select id="adminCWHomeMap" parameterType="map" resultMap="AreaDO_v3">
+        SELECT DISTINCT a.id, sys_area_uuid, sys_area_name, sys_area_parent_id, sys_area_level, sys_area_seq,a.longitude,a.latitude,map_code,sys_weath_code
+        FROM sys_area a
+        INNER JOIN xw_equipment_cw cw ON
+        <if test='level=="0"'>
+            a.id=cw.province_id
+        </if>
+        <if test='level=="1"'>
+            a.id=cw.city_id
+        </if>
+        <if test='level=="2"'>
+            a.id=cw.area_id
+        </if>
+        <if test='level=="3"'>
+            a.id=cw.street_id
+        </if>
+          AND a.sys_area_parent_id=#{parentId}
+    </select>
+
+    <resultMap id="areaDo" type="com.xiaowei.mana.mapper.dataobject.AreaDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sys_area_uuid" jdbcType="VARCHAR" property="sysAreaUuid"/>
+        <result column="sys_area_name" jdbcType="VARCHAR" property="sysAreaName"/>
+        <result column="map_code" jdbcType="VARCHAR" property="mapCode"/>
+        <result column="sys_weath_code" jdbcType="VARCHAR" property="sysWeathCode"/>
+        <result column="sys_area_parent_id" jdbcType="BIGINT" property="sysAreaParentId"/>
+        <result column="sys_area_level" jdbcType="VARCHAR" property="sysAreaLevel"/>
+        <result column="sys_area_seq" jdbcType="INTEGER" property="sysAreaSeq"/>
+        <result column="sys_area_remark" jdbcType="VARCHAR" property="sysAreaRemark"/>
+        <result column="sys_weath_code" jdbcType="VARCHAR" property="sysWeathCode"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="longitude" jdbcType="VARCHAR" property="longitude"/>
+        <result column="latitude" jdbcType="VARCHAR" property="latitude"/>
+    </resultMap>
+    <resultMap id="AreaDO_v3" type="com.xiaowei.mana.mapper.dataobject.AreaDO_v3">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sys_area_uuid" jdbcType="VARCHAR" property="sysAreaUuid"/>
+        <result column="map_code" jdbcType="VARCHAR" property="mapCode"/>
+        <result column="sys_weath_code" jdbcType="VARCHAR" property="sysWeathCode"/>
+        <result column="sys_area_name" jdbcType="VARCHAR" property="sysAreaName"/>
+        <result column="sys_area_parent_id" jdbcType="BIGINT" property="sysAreaParentId"/>
+        <result column="sys_area_level" jdbcType="VARCHAR" property="sysAreaLevel"/>
+        <result column="sys_area_seq" jdbcType="INTEGER" property="sysAreaSeq"/>
+        <result column="sys_area_remark" jdbcType="VARCHAR" property="sysAreaRemark"/>
+        <result column="sys_weath_code" jdbcType="VARCHAR" property="sysWeathCode"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="longitude" jdbcType="VARCHAR" property="longitude"/>
+        <result column="latitude" jdbcType="VARCHAR" property="latitude"/>
+    </resultMap>
+</mapper>

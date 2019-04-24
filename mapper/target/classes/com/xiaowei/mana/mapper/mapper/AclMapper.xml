@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.AclMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.AclDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_acl_uuid" jdbcType="VARCHAR" property="sysAclUuid" />
+        <result column="sys_acl_action" jdbcType="VARCHAR" property="sysAclAction" />
+        <result column="sys_acl_router" jdbcType="VARCHAR" property="sysAclRouter" />
+        <result column="sys_acl_name" jdbcType="VARCHAR" property="sysAclName" />
+        <result column="sys_acl_module_id" jdbcType="BIGINT" property="sysAclModuleId" />
+        <result column="sys_acl_permission_type" jdbcType="BIGINT" property="sysAclPermissionType" />
+        <result column="sys_acl_url" jdbcType="VARCHAR" property="sysAclUrl" />
+        <result column="sys_acl_type" jdbcType="CHAR" property="sysAclType" />
+        <result column="sys_acl_icon" jdbcType="VARCHAR" property="sysAclIcon" />
+        <result column="sys_acl_seq" jdbcType="INTEGER" property="sysAclSeq" />
+        <result column="sys_acl_status" jdbcType="CHAR" property="sysAclStatus" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="sys_acl_code" jdbcType="VARCHAR" property="sysAclCode" />
+    </resultMap>
+    <sql id="Base_Column_List">
+       id, sys_acl_uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_module_id,
+    sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon, sys_acl_seq, sys_acl_status,
+    remark, del_flag, create_by, create_time, update_time, update_by, name, sys_acl_code
+    </sql>
+        <select id="getByIdList" parameterType="map" resultMap="getByIdList">
+        SELECT
+        id, sys_acl_uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_module_id,
+        sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon, sys_acl_seq, sys_acl_status,
+         name, sys_acl_code
+        FROM sys_acl
+        WHERE id IN
+        <foreach collection="idList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    <select id="getAll" parameterType="map" resultMap="getByIdList">
+        SELECT
+        id, sys_acl_uuid, sys_acl_action, sys_acl_router, sys_acl_name, sys_acl_module_id,
+        sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon, sys_acl_seq, sys_acl_status,
+         name, sys_acl_code
+        FROM sys_acl
+         <trim prefix="where" prefixOverrides="and">
+             <if test="sysAclPermissionType!=null">
+                 sys_acl_permission_type=#{sysAclPermissionType}
+             </if>
+         </trim>
+    </select>
+    <select id="getAclByUUID" resultMap="BaseResultMap">
+        SELECT
+        id, sys_acl_uuid, sys_acl_code, name, sys_acl_action, sys_acl_router, sys_acl_name,
+        sys_acl_module_id, sys_acl_permission_type, sys_acl_url, sys_acl_type, sys_acl_icon,
+        sys_acl_seq,sys_acl_status
+        FROM sys_acl WHERE sys_acl_uuid=#{uuid}
+    </select>
+    <select id="uniqueness" parameterType="map" resultType="int">
+        SELECT
+        COUNT(id)
+        FROM sys_acl
+        <trim prefixOverrides="and" prefix="where">
+            <if test="sysAclUrl!=null and sysAclUrl!=''">
+                AND sys_acl_url=#{sysAclUrl}
+            </if>
+            <if test="sysAclName!=null and sysAclName!=''">
+                AND sys_acl_name=#{sysAclName}
+            </if>
+            <if test="sysAclAction!=null and sysAclAction!=''">
+                AND sys_acl_action=#{sysAclAction}
+            </if>
+            <if test="sysAclRouter!=null and sysAclRouter!=''">
+                AND sys_acl_router=#{sysAclRouter}
+            </if>
+            <if test="id!=null">
+               AND id != #{id}
+            </if>
+        </trim>
+    </select>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.xiaowei.mana.mapper.dataobject.AclDO">
+        insert into sys_acl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysAclUuid != null">
+                sys_acl_uuid,
+            </if>
+            <if test="sysAclAction != null">
+                sys_acl_action,
+            </if>
+            <if test="sysAclRouter != null">
+                sys_acl_router,
+            </if>
+            <if test="sysAclName != null">
+                sys_acl_name,
+            </if>
+            <if test="sysAclModuleId != null">
+                sys_acl_module_id,
+            </if>
+            <if test="sysAclPermissionType != null">
+                sys_acl_permission_type,
+            </if>
+            <if test="sysAclUrl != null">
+                sys_acl_url,
+            </if>
+            <if test="sysAclType != null">
+                sys_acl_type,
+            </if>
+            <if test="sysAclIcon != null">
+                sys_acl_icon,
+            </if>
+            <if test="sysAclSeq != null">
+                sys_acl_seq,
+            </if>
+            <if test="sysAclStatus != null">
+                sys_acl_status,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="sysAclCode != null">
+                sys_acl_code,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclUuid != null">
+                #{sysAclUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclAction != null">
+                #{sysAclAction,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclRouter != null">
+                #{sysAclRouter,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclName != null">
+                #{sysAclName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclModuleId != null">
+                #{sysAclModuleId,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclPermissionType != null">
+                #{sysAclPermissionType,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclUrl != null">
+                #{sysAclUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclType != null">
+                #{sysAclType,jdbcType=CHAR},
+            </if>
+            <if test="sysAclIcon != null">
+                #{sysAclIcon,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclSeq != null">
+                #{sysAclSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysAclStatus != null">
+                #{sysAclStatus,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclCode != null">
+                #{sysAclCode,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiaowei.mana.mapper.dataobject.AclDO">
+        update sys_acl
+        <set>
+            <if test="sysAclUuid != null">
+                sys_acl_uuid = #{sysAclUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclAction != null">
+                sys_acl_action = #{sysAclAction,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclRouter != null">
+                sys_acl_router = #{sysAclRouter,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclName != null">
+                sys_acl_name = #{sysAclName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclModuleId != null">
+                sys_acl_module_id = #{sysAclModuleId,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclPermissionType != null">
+                sys_acl_permission_type = #{sysAclPermissionType,jdbcType=BIGINT},
+            </if>
+            <if test="sysAclUrl != null">
+                sys_acl_url = #{sysAclUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclType != null">
+                sys_acl_type = #{sysAclType,jdbcType=CHAR},
+            </if>
+            <if test="sysAclIcon != null">
+                sys_acl_icon = #{sysAclIcon,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclSeq != null">
+                sys_acl_seq = #{sysAclSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysAclStatus != null">
+                sys_acl_status = #{sysAclStatus,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAclCode != null">
+                sys_acl_code = #{sysAclCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <resultMap id="getByIdList" type="com.xiaowei.mana.mapper.dataobject.SysAcl">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_acl_uuid" jdbcType="VARCHAR" property="sysAclUuid" />
+        <result column="sys_acl_action" jdbcType="VARCHAR" property="sysAclAction" />
+        <result column="sys_acl_router" jdbcType="VARCHAR" property="sysAclRouter" />
+        <result column="sys_acl_name" jdbcType="VARCHAR" property="sysAclName" />
+        <result column="sys_acl_module_id" jdbcType="BIGINT" property="sysAclModuleId" />
+        <result column="sys_acl_permission_type" jdbcType="BIGINT" property="sysAclPermissionType" />
+        <result column="sys_acl_url" jdbcType="VARCHAR" property="sysAclUrl" />
+        <result column="sys_acl_type" jdbcType="CHAR" property="sysAclType" />
+        <result column="sys_acl_icon" jdbcType="VARCHAR" property="sysAclIcon" />
+        <result column="sys_acl_seq" jdbcType="INTEGER" property="sysAclSeq" />
+        <result column="sys_acl_status" jdbcType="CHAR" property="sysAclStatus" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="sys_acl_code" jdbcType="VARCHAR" property="sysAclCode" />
+    </resultMap>
+
+</mapper>

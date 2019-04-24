@@ -1,0 +1,221 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="SYS_PARAMETER_CONFIGURATION" physicalName="SYS_PARAMETER_CONFIGURATION" remark="参数配置">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:SYS_PARAMETER_CONFIGURATION">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_PARAMETER_CONFIGURATION(
+            
+            DICTIONARY_ID
+            ,DEL_FLAG
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,PARAMETER_NAME
+            ,SYS_PARAMETER_UUID
+            ,SYS_PARAMETER_REMARK
+            ,SYS_PARAMETER_SEQ
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            
+            #{dictionaryId,jdbcType=BIGINT}
+            ,#{delFlag,jdbcType=CHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{parameterName,jdbcType=VARCHAR}
+            ,#{sysParameterUuid,jdbcType=VARCHAR}
+            ,#{sysParameterRemark,jdbcType=VARCHAR}
+            ,#{sysParameterSeq,jdbcType=INTEGER}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:SYS_PARAMETER_CONFIGURATION">
+            UPDATE SYS_PARAMETER_CONFIGURATION
+            SET
+                    DICTIONARY_ID   = #{dictionaryId,jdbcType=BIGINT}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,PARAMETER_NAME  = #{parameterName,jdbcType=VARCHAR}
+                    ,SYS_PARAMETER_UUID = #{sysParameterUuid,jdbcType=VARCHAR}
+                    ,SYS_PARAMETER_REMARK = #{sysParameterRemark,jdbcType=VARCHAR}
+                    ,SYS_PARAMETER_SEQ = #{sysParameterSeq,jdbcType=INTEGER}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_PARAMETER_CONFIGURATION">
+            DELETE FROM SYS_PARAMETER_CONFIGURATION
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_PARAMETER_CONFIGURATION">
+            SELECT * FROM SYS_PARAMETER_CONFIGURATION
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+    <operation name="getCountFieldValue" multiplicity="one" paramtype="object" resulttype="Integer"
+               remark="根据 参数 参数值 全局唯一">
+        SELECT count(id) FROM sys_parameter_configuration
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+
+            <if test="dictionaryId!=null">
+                AND  dictionary_id=#{dictionaryId,jdbcType=BIGINT}
+            </if>
+            AND del_flag=0
+        </trim>
+    </operation>
+    <operation name="interParameter" paramtype="object" remark="更新表:sys_parameter_configuration">
+        insert into sys_parameter_configuration
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysParameterUuid != null">
+                sys_parameter_uuid,
+            </if>
+            <if test="parameterName != null">
+                parameter_name,
+            </if>
+            <if test="sysParameterSeq != null">
+                sys_parameter_seq,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="sysParameterRemark != null">
+                sys_parameter_remark,
+            </if>
+            <if test="dictionaryId != null">
+                dictionary_id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysParameterUuid != null">
+                #{sysParameterUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="parameterName != null">
+                #{parameterName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysParameterSeq != null">
+                #{sysParameterSeq,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="sysParameterRemark != null">
+                #{sysParameterRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="dictionaryId != null">
+                #{dictionaryId,jdbcType=BIGINT},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </operation>
+    <operation name="getCountsByName" remark="查询已存在的数量" multiplicity="many">
+        select * from sys_parameter_configuration
+        where parameter_name=#{parameterName,jdbcType=VARCHAR}
+        AND del_flag=0
+    </operation>
+    <operation name="getParameterInfoByFieldValue" multiplicity="many"
+               remark="根据dictionId查看参数信息">
+        SELECT
+        id, sys_parameter_uuid, parameter_name, sys_parameter_seq, del_flag, sys_parameter_remark,
+        dictionary_id, create_by, create_time, update_time, update_by
+        FROM sys_parameter_configuration
+        WHERE dictionary_id=#{dictionaryId,jdbcType=BIGINT}
+        AND del_flag=0
+        order by sys_parameter_seq
+    </operation>
+    <operation name="updateParameter" paramtype="object" remark="更新参数表">
+        update sys_parameter_configuration
+        <set>
+            <if test="sysParameterUuid != null">
+                sys_parameter_uuid = #{sysParameterUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="parameterName != null">
+                parameter_name = #{parameterName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysParameterSeq != null">
+                sys_parameter_seq = #{sysParameterSeq,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="sysParameterRemark != null">
+                sys_parameter_remark = #{sysParameterRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="dictionaryId != null">
+                dictionary_id = #{dictionaryId,jdbcType=BIGINT},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where sys_parameter_uuid=#{sysParameterUuid,jdbcType=VARCHAR}
+    </operation>
+    <operation name="getByUuid" multiplicity="one" remark="根据字段值获取数据:sys_parameter_configuration">
+        SELECT
+        id, sys_parameter_uuid, parameter_name, sys_parameter_seq, del_flag, sys_parameter_remark,
+        dictionary_id, create_by, create_time, update_time, update_by
+        FROM sys_parameter_configuration
+        WHERE
+        sys_parameter_uuid = #{sysParameterUuid,jdbcType=VARCHAR}
+        and del_flag=0
+    </operation>
+    <operation name="getEditCountsByName" remark="编辑时,查询已存在的数量,排除自身" multiplicity="many">
+        select
+        id, sys_parameter_uuid, parameter_name, sys_parameter_seq, del_flag, sys_parameter_remark,
+        dictionary_id, create_by, create_time, update_time, update_by
+        from sys_parameter_configuration
+        where parameter_name=#{parameterName,jdbcType=VARCHAR} AND
+        id!=#{id,jdbcType=BIGINT}
+    </operation>
+
+
+
+
+</table>

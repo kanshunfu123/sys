@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.UserGroupMapper">
+
+    <select id="getAll" resultMap="pageUserGroup">
+        SELECT
+        id, user_group_uuid, user_group_name
+        from sys_user_group
+    </select>
+    <select id="pageUserGroup" parameterType="com.xiaowei.mana.mapper.dataobject.PageUserGroupReqVO"
+            resultMap="pageUserGroup">
+        SELECT
+        id, user_group_uuid, user_group_name, sys_account_start_time, sys_account_end_time,
+        sys_open_day, sys_start, sys_create_account_num, sys_open_account_num, sys_scene,
+        sys_allow_device_num, sys_rece_device_num, name_top, name_bottom, del_flag, create_by,
+        create_time, update_time, update_by
+        from sys_user_group
+        <trim prefixOverrides="and" prefix="where">
+            <if test="userGroupName!=null and userGroupName!=''">
+                AND user_group_name LIKE CONCAT('%',#{userGroupName},'%')
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                <![CDATA[
+                  AND #{startTime}<= sys_account_start_time
+                ]]>
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                <![CDATA[
+                  AND  sys_account_end_time<=#{endTime}
+                ]]>
+            </if>
+        </trim>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="checkGroupName" parameterType="map" resultType="int">
+        SELECT count(id) FROM sys_user_group
+        WHERE user_group_name=#{groupName}
+        <if test="id!=null">
+            AND id !=#{id}
+        </if>
+    </select>
+    <select id="getGroupByUUID" parameterType="map" resultMap="getUserGroupBygId">
+         SELECT
+         id, user_group_uuid, user_group_name, sys_account_start_time, sys_account_end_time,
+    sys_open_day, sys_start, sys_create_account_num, sys_open_account_num, sys_scene,
+    sys_allow_device_num, sys_rece_device_num, name_top, name_bottom, del_flag, create_by,
+    create_time, update_time, update_by
+       from sys_user_group
+       WHERE user_group_uuid=#{uuid}
+    </select>
+    <select id="getUserGroupBygId" resultMap="getUserGroupBygId">
+        SELECT
+        id, user_group_uuid, user_group_name, sys_account_start_time, sys_account_end_time,
+        sys_open_day, sys_start, sys_create_account_num, sys_open_account_num, sys_scene,
+        sys_allow_device_num, sys_rece_device_num, name_top, name_bottom, del_flag, create_by,
+        create_time, update_time, update_by
+        from sys_user_group
+        <trim prefixOverrides="and" prefix="where">
+            <if test="gid!=null">
+                AND id = #{gid,jdbcType=BIGINT}
+            </if>
+            <if test="delflag!=null and delflag.trim()!=''">
+                AND del_flag = #{delflag,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" keyColumn="id"
+            parameterType="com.xiaowei.mana.mapper.dataobject.UserGroupDO">
+        insert into sys_user_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userGroupUuid != null">
+                user_group_uuid,
+            </if>
+            <if test="userGroupName != null">
+                user_group_name,
+            </if>
+            <if test="sysAccountStartTime != null">
+                sys_account_start_time,
+            </if>
+            <if test="sysAccountEndTime != null">
+                sys_account_end_time,
+            </if>
+            <if test="sysOpenDay != null">
+                sys_open_day,
+            </if>
+            <if test="sysStart != null">
+                sys_start,
+            </if>
+            <if test="sysCreateAccountNum != null">
+                sys_create_account_num,
+            </if>
+            <if test="sysOpenAccountNum != null">
+                sys_open_account_num,
+            </if>
+            <if test="sysScene != null">
+                sys_scene,
+            </if>
+            <if test="sysAllowDeviceNum != null">
+                sys_allow_device_num,
+            </if>
+            <if test="sysReceDeviceNum != null">
+                sys_rece_device_num,
+            </if>
+            <if test="nameTop != null">
+                name_top,
+            </if>
+            <if test="nameBottom != null">
+                name_bottom,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userGroupUuid != null">
+                #{userGroupUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="userGroupName != null">
+                #{userGroupName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAccountStartTime != null">
+                #{sysAccountStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sysAccountEndTime != null">
+                #{sysAccountEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sysOpenDay != null">
+                #{sysOpenDay,jdbcType=VARCHAR},
+            </if>
+            <if test="sysStart != null">
+                #{sysStart,jdbcType=CHAR},
+            </if>
+            <if test="sysCreateAccountNum != null">
+                #{sysCreateAccountNum,jdbcType=INTEGER},
+            </if>
+            <if test="sysOpenAccountNum != null">
+                #{sysOpenAccountNum,jdbcType=INTEGER},
+            </if>
+            <if test="sysScene != null">
+                #{sysScene,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAllowDeviceNum != null">
+                #{sysAllowDeviceNum,jdbcType=INTEGER},
+            </if>
+            <if test="sysReceDeviceNum != null">
+                #{sysReceDeviceNum,jdbcType=INTEGER},
+            </if>
+            <if test="nameTop != null">
+                #{nameTop,jdbcType=VARCHAR},
+            </if>
+            <if test="nameBottom != null">
+                #{nameBottom,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiaowei.mana.mapper.dataobject.UserGroupDO">
+        update sys_user_group
+        <set>
+            <if test="userGroupUuid != null">
+                user_group_uuid = #{userGroupUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="userGroupName != null">
+                user_group_name = #{userGroupName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAccountStartTime != null">
+                sys_account_start_time = #{sysAccountStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sysAccountEndTime != null">
+                sys_account_end_time = #{sysAccountEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sysOpenDay != null">
+                sys_open_day = #{sysOpenDay,jdbcType=VARCHAR},
+            </if>
+            <if test="sysStart != null">
+                sys_start = #{sysStart,jdbcType=CHAR},
+            </if>
+            <if test="sysCreateAccountNum != null">
+                sys_create_account_num = #{sysCreateAccountNum,jdbcType=INTEGER},
+            </if>
+            <if test="sysOpenAccountNum != null">
+                sys_open_account_num = #{sysOpenAccountNum,jdbcType=INTEGER},
+            </if>
+            <if test="sysScene != null">
+                sys_scene = #{sysScene,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAllowDeviceNum != null">
+                sys_allow_device_num = #{sysAllowDeviceNum,jdbcType=INTEGER},
+            </if>
+            <if test="sysReceDeviceNum != null">
+                sys_rece_device_num = #{sysReceDeviceNum,jdbcType=INTEGER},
+            </if>
+            <if test="nameTop != null">
+                name_top = #{nameTop,jdbcType=VARCHAR},
+            </if>
+            <if test="nameBottom != null">
+                name_bottom = #{nameBottom,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <sql id="Base_Column_List">
+        id, user_group_uuid, user_group_name, sys_account_start_time, sys_account_end_time,
+    sys_open_day, sys_start, sys_create_account_num, sys_open_account_num, sys_scene,
+    sys_allow_device_num, sys_rece_device_num, name_top, name_bottom, del_flag, create_by,
+    create_time, update_time, update_by
+    </sql>
+    <resultMap id="getUserGroupBygId" type="com.xiaowei.mana.mapper.dataobject.UserGroupDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_group_uuid" jdbcType="VARCHAR" property="userGroupUuid" />
+        <result column="user_group_name" jdbcType="VARCHAR" property="userGroupName" />
+        <result column="sys_account_start_time" jdbcType="TIMESTAMP" property="sysAccountStartTime" />
+        <result column="sys_account_end_time" jdbcType="TIMESTAMP" property="sysAccountEndTime" />
+        <result column="sys_open_day" jdbcType="VARCHAR" property="sysOpenDay" />
+        <result column="sys_start" jdbcType="CHAR" property="sysStart" />
+        <result column="sys_create_account_num" jdbcType="INTEGER" property="sysCreateAccountNum" />
+        <result column="sys_open_account_num" jdbcType="INTEGER" property="sysOpenAccountNum" />
+        <result column="sys_scene" jdbcType="VARCHAR" property="sysScene" />
+        <result column="sys_allow_device_num" jdbcType="INTEGER" property="sysAllowDeviceNum" />
+        <result column="sys_rece_device_num" jdbcType="INTEGER" property="sysReceDeviceNum" />
+        <result column="name_top" jdbcType="VARCHAR" property="nameTop" />
+        <result column="name_bottom" jdbcType="VARCHAR" property="nameBottom" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <resultMap id="pageUserGroup" type="com.xiaowei.mana.mapper.dataobject.UserGroupPageDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_group_uuid" jdbcType="VARCHAR" property="userGroupUuid" />
+        <result column="user_group_name" jdbcType="VARCHAR" property="userGroupName" />
+        <result column="sys_account_start_time" jdbcType="TIMESTAMP" property="sysAccountStartTime" />
+        <result column="sys_account_end_time" jdbcType="TIMESTAMP" property="sysAccountEndTime" />
+        <result column="sys_open_day" jdbcType="VARCHAR" property="sysOpenDay" />
+        <result column="sys_start" jdbcType="CHAR" property="sysStart" />
+        <result column="sys_create_account_num" jdbcType="INTEGER" property="sysCreateAccountNum" />
+        <result column="sys_open_account_num" jdbcType="INTEGER" property="sysOpenAccountNum" />
+        <result column="sys_scene" jdbcType="VARCHAR" property="sysScene" />
+        <result column="sys_allow_device_num" jdbcType="INTEGER" property="sysAllowDeviceNum" />
+        <result column="sys_rece_device_num" jdbcType="INTEGER" property="sysReceDeviceNum" />
+        <result column="name_top" jdbcType="VARCHAR" property="nameTop" />
+        <result column="name_bottom" jdbcType="VARCHAR" property="nameBottom" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+</mapper>

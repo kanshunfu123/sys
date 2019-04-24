@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.EcSenceMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.XwEcSenceDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sence_uuid" jdbcType="VARCHAR" property="senceUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+        <result column="regulatory_unit" jdbcType="VARCHAR" property="regulatoryUnit" />
+        <result column="ec_supervisor" jdbcType="VARCHAR" property="ecSupervisor" />
+        <result column="supervisor_phone" jdbcType="VARCHAR" property="supervisorPhone" />
+        <result column="elevator_use" jdbcType="VARCHAR" property="elevatorUse" />
+        <result column="ec_crew" jdbcType="INTEGER" property="ecCrew" />
+        <result column="ec_load" jdbcType="INTEGER" property="ecLoad" />
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime" />
+        <result column="sence_install_time" jdbcType="TIMESTAMP" property="senceInstallTime" />
+        <result column="sence_safe_company" jdbcType="VARCHAR" property="senceSafeCompany" />
+        <result column="sence_safe_man" jdbcType="VARCHAR" property="senceSafeMan" />
+        <result column="sence_safe_phone" jdbcType="VARCHAR" property="senceSafePhone" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="ec_brand" jdbcType="VARCHAR" property="ecBrand" />
+        <result column="elevator_code" jdbcType="VARCHAR" property="elevatorCode" />
+        <result column="years_of_user" jdbcType="INTEGER" property="yearsOfUser" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId"/>
+        <result column="city_id" jdbcType="BIGINT" property="cityId"/>
+        <result column="area_id" jdbcType="BIGINT" property="areaId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, sence_uuid, device_no, serial_number, regulatory_unit, ec_supervisor, supervisor_phone,
+    elevator_use, ec_crew, ec_load, product_time, sence_install_time, sence_safe_company,
+    sence_safe_man, sence_safe_phone, create_by, create_time, update_by, update_time,
+    del_flag,ec_brand,elevator_code,years_of_user
+  </sql>
+
+    <!--设备编号是否存在-->
+    <select id="deviceNo" resultType="int">
+        select count(id)
+        from xw_ec_sence
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="deNo" resultType="int">
+        select count(id)
+        from xw_equipment_ec
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="uuid" resultMap="uuid">
+        select
+         id, sence_uuid, device_no, serial_number, regulatory_unit, ec_supervisor, supervisor_phone,
+    elevator_use, ec_crew, ec_load, product_time, sence_install_time, sence_safe_company,
+    sence_safe_man, sence_safe_phone, create_by, create_time, update_by, update_time,
+    del_flag
+        from xw_ec_sence
+        where device_no = #{deviceNo}
+    </select>
+    <resultMap id="uuid" type="com.xiaowei.mana.mapper.dataobject.XwEcSenceDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sence_uuid" jdbcType="VARCHAR" property="senceUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+        <result column="regulatory_unit" jdbcType="VARCHAR" property="regulatoryUnit" />
+        <result column="ec_supervisor" jdbcType="VARCHAR" property="ecSupervisor" />
+        <result column="supervisor_phone" jdbcType="VARCHAR" property="supervisorPhone" />
+        <result column="elevator_use" jdbcType="VARCHAR" property="elevatorUse" />
+        <result column="ec_crew" jdbcType="INTEGER" property="ecCrew" />
+        <result column="ec_load" jdbcType="INTEGER" property="ecLoad" />
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime" />
+        <result column="sence_install_time" jdbcType="TIMESTAMP" property="senceInstallTime" />
+        <result column="sence_safe_company" jdbcType="VARCHAR" property="senceSafeCompany" />
+        <result column="sence_safe_man" jdbcType="VARCHAR" property="senceSafeMan" />
+        <result column="sence_safe_phone" jdbcType="VARCHAR" property="senceSafePhone" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    </resultMap>
+    <select id="ecSenceByNo" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xw_ec_sence
+        where
+        device_no=#{deviceNo,jdbcType=VARCHAR}
+    </select>
+    <select id="deSenNo" resultType="int">
+        select count(id)
+        from xw_ec_sence
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="selEcSen" resultMap="BaseResultMap">
+          SELECT  id, sence_uuid, device_no, serial_number, regulatory_unit, ec_supervisor, supervisor_phone,
+    elevator_use, ec_crew, ec_load, product_time, sence_install_time, sence_safe_company,
+    sence_safe_man, sence_safe_phone, create_by, create_time, update_by, update_time,
+    del_flag,ec_brand,elevator_code,province_id,city_id,area_id,years_of_user
+        FROM xw_ec_sence
+
+    </select>
+
+
+
+
+
+</mapper>

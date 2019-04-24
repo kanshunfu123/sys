@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.HomeMapper">
+    <select id="mainEcTotal" resultType="integer">
+        select count(id) from xw_equipment_ec
+    </select>
+    <select id="mainMhTotal" resultType="integer">
+        select count(id) from xw_equipment_mh
+    </select>
+    <select id="mainRwTotal" resultType="integer">
+        select count(id) from xw_equipment_rw
+    </select>
+    <select id="mainCwTotal" resultType="integer">
+        select count(id) from xw_equipment_cw
+    </select>
+    <select id="ecTotalTime" resultType="date">
+        select setup_time from xw_equipment_ec
+    </select>
+    <select id="mhTotalTime" resultType="date">
+        select setup_time from xw_equipment_mh
+    </select>
+    <select id="rwTotalTime" resultType="date">
+        select setup_time from xw_equipment_rw
+    </select>
+    <select id="cwTotalTime" resultType="date">
+        select setup_time from xw_equipment_cw
+    </select>
+    <select id="latestEc" resultType="com.xiaowei.mana.mapper.dataobject.XwEquipmentEcDO">
+        select device_no,setup_time,village_name,device_name,device_code
+        from xw_equipment_ec
+        order by id desc
+        limit #{count}
+    </select>
+    <select id="latestMh" resultType="com.xiaowei.mana.mapper.dataobject.XwEquipmentMhDO">
+        select device_no,setup_time,address,device_name,device_code
+        from xw_equipment_mh
+        order by id desc
+        limit #{count}
+    </select>
+    <select id="latestRw" resultType="com.xiaowei.mana.mapper.dataobject.XwEquipmentRwDO">
+        select device_no,setup_time,device_name,device_code
+        from xw_equipment_rw
+        order by id desc
+        limit #{count}
+    </select>
+    <select id="latestCw" resultType="com.xiaowei.mana.mapper.dataobject.XwEquipmentCwDO">
+        select device_no,setup_time,village_name,device_name,device_code
+        from xw_equipment_cw
+        order by id desc
+        limit #{count}
+    </select>
+    <select id="deviceNoListEc" resultType="string">
+        select device_no
+        from xw_equipment_ec
+        order by id desc
+    </select>
+    <select id="deviceNoListMh" resultType="string">
+        select device_no
+        from xw_equipment_mh
+        order by id desc
+    </select>
+    <select id="deviceNoListRw" resultType="string">
+        select device_no
+        from xw_equipment_rw
+        order by id desc
+    </select>
+    <select id="deviceNoListCw" resultType="string">
+        select device_no
+        from xw_equipment_cw
+        order by id desc
+    </select>
+    <select id="ecSize" resultType="integer">
+        select count(id) from xw_equipment_ec
+    </select>
+    <select id="mhSize" resultType="integer">
+        select count(id) from xw_equipment_mh
+    </select>
+    <select id="rwSize" resultType="integer">
+        select count(id) from xw_equipment_rw
+    </select>
+    <select id="cwSize" resultType="integer">
+        select count(id) from xw_equipment_cw
+    </select>
+    <select id="ecAccessTotal" resultType="integer">
+        SELECT
+        COUNT(id)
+        FROM
+        xw_equipment_ec
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="beginTime!=null and beginTime!=''">
+                and setup_time >#{beginTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime} > setup_time
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="mhAccessTotal" resultType="integer">
+        SELECT
+        COUNT(id)
+        FROM
+        xw_equipment_mh
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="beginTime!=null and beginTime!=''">
+                and setup_time >#{beginTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime} > setup_time
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="rwAccessTotal" resultType="integer">
+        SELECT
+        COUNT(id)
+        FROM
+        xw_equipment_rw
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="beginTime!=null and beginTime!=''">
+                and setup_time >#{beginTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime} > setup_time
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="cwAccessTotal" resultType="integer">
+        SELECT
+        COUNT(id)
+        FROM
+        xw_equipment_cw
+        <trim prefix="WHERE" prefixOverrides="AND || OR">
+            <if test="beginTime!=null and beginTime!=''">
+                and setup_time >#{beginTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime} > setup_time
+            </if>
+            <if test="provinceId!=null">
+                and province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                and city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

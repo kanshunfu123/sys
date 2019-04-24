@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.ParameterMapper">
+    <!-- 自动生成,请修改 SYS_PARAMETER_CONFIGURATION.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mana.mapper.dataobject.ParameterConfigurationDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="DICTIONARY_ID" property="dictionaryId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+        <result column="PARAMETER_NAME" property="parameterName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_PARAMETER_UUID" property="sysParameterUuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_PARAMETER_REMARK" property="sysParameterRemark" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SYS_PARAMETER_SEQ" property="sysParameterSeq" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,DICTIONARY_ID,DEL_FLAG,CREATE_BY,UPDATE_BY,PARAMETER_NAME,SYS_PARAMETER_UUID,SYS_PARAMETER_REMARK,SYS_PARAMETER_SEQ,CREATE_TIME,UPDATE_TIME
+    </sql>
+    <select id="pageList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_parameter_configuration
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="dictionaryId!=null and dictionaryId!=''">
+                AND dictionary_id=#{dictionaryId,jdbcType=BIGINT}
+            </if>
+            AND del_flag=0
+        </trim>
+        order by id desc
+    </select>
+
+
+
+</mapper>

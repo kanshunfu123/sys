@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.HomeV2Mapper">
+    <select id="mainEcTotal" resultType="integer">
+        select count(id) from xw_equipment_ec
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="mainMhTotal" resultType="integer">
+        select count(id) from xw_equipment_mh
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="mainRwTotal" resultType="integer">
+        select count(id) from xw_equipment_rw
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="mainCwTotal" resultType="integer">
+        select count(id) from xw_equipment_cw
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="ecTotalTime" resultType="date">
+        select setup_time from xw_equipment_ec
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="mhTotalTime" resultType="date">
+        select setup_time from xw_equipment_mh
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="rwTotalTime" resultType="date">
+        select setup_time from xw_equipment_rw
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="cwTotalTime" resultType="date">
+        select setup_time from xw_equipment_cw
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="ecSize" resultType="integer">
+        select count(id) from xw_equipment_ec
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="mhSize" resultType="integer">
+        select count(id) from xw_equipment_mh
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="rwSize" resultType="integer">
+        select count(id) from xw_equipment_rw
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="cwSize" resultType="integer">
+        select count(id) from xw_equipment_cw
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="ecTotalDevice" resultType="string">
+        select device_no from xw_equipment_ec
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="mhTotalDevice" resultType="string">
+        select device_no from xw_equipment_mh
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="rwTotalDevice" resultType="string">
+        select device_no from xw_equipment_rw
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+    <select id="cwTotalDevice" resultType="string">
+        select device_no from xw_equipment_cw
+        <trim prefix="WHERE" suffixOverrides="AND || OR">
+            <if test="provinceId!=null">
+                province_id=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                city_id=#{cityId}
+            </if>
+        </trim>
+    </select>
+</mapper>

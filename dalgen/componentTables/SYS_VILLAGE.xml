@@ -1,0 +1,92 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="SYS_VILLAGE" physicalName="SYS_VILLAGE" remark="小区表">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:SYS_VILLAGE">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_VILLAGE(
+            
+            AREA_ID
+            ,CITY_ID
+            ,STREET_ID
+            ,PROVINCE_ID
+            ,AREA
+            ,CITY
+            ,STREET
+            ,DEL_FLAG
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,VILLAGE_NAME
+            ,VILLAGE_UUID
+            ,PROVINCE_NAME
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            
+            #{areaId,jdbcType=BIGINT}
+            ,#{cityId,jdbcType=BIGINT}
+            ,#{streetId,jdbcType=BIGINT}
+            ,#{provinceId,jdbcType=BIGINT}
+            ,#{area,jdbcType=VARCHAR}
+            ,#{city,jdbcType=VARCHAR}
+            ,#{street,jdbcType=VARCHAR}
+            ,#{delFlag,jdbcType=CHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{villageName,jdbcType=VARCHAR}
+            ,#{villageUuid,jdbcType=VARCHAR}
+            ,#{provinceName,jdbcType=VARCHAR}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:SYS_VILLAGE">
+            UPDATE SYS_VILLAGE
+            SET
+                    AREA_ID         = #{areaId,jdbcType=BIGINT}
+                    ,CITY_ID         = #{cityId,jdbcType=BIGINT}
+                    ,STREET_ID       = #{streetId,jdbcType=BIGINT}
+                    ,PROVINCE_ID     = #{provinceId,jdbcType=BIGINT}
+                    ,AREA            = #{area,jdbcType=VARCHAR}
+                    ,CITY            = #{city,jdbcType=VARCHAR}
+                    ,STREET          = #{street,jdbcType=VARCHAR}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,VILLAGE_NAME    = #{villageName,jdbcType=VARCHAR}
+                    ,VILLAGE_UUID    = #{villageUuid,jdbcType=VARCHAR}
+                    ,PROVINCE_NAME   = #{provinceName,jdbcType=VARCHAR}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_VILLAGE">
+            DELETE FROM SYS_VILLAGE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_VILLAGE">
+            SELECT * FROM SYS_VILLAGE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+        <operation name="getAll" multiplicity="many">
+            SELECT id,village_uuid,village_name,street_id FROM sys_village
+        </operation>
+    <operation name="getAllTwo" multiplicity="many">
+        SELECT vi.*
+        FROM(
+        SELECT area_id
+        FROM sys_role_area
+        WHERE role_id=#{roleId,jdbcType=BIGINT} AND area_level='4' AND device_type=#{device_type,jdbcType=VARCHAR}
+        ) mmp
+        INNER JOIN sys_village vi ON vi.street_id=mmp.area_id
+        </operation>
+</table>

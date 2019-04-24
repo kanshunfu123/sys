@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.StreetDOMapper">
+    <!-- 自动生成,请修改 SYS_STREET.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mana.mapper.dataobject.StreetDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="AREA_ID" property="areaId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="CITY_ID" property="cityId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="PROVINCE_ID" property="provinceId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="AREA" property="area" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CITY" property="city" jdbcType="VARCHAR" javaType="String"/>
+            <result column="NAME" property="name" jdbcType="VARCHAR" javaType="String"/>
+            <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+            <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="STREET_UUID" property="streetUuid" jdbcType="VARCHAR" javaType="String"/>
+            <result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,AREA_ID,CITY_ID,PROVINCE_ID,AREA,CITY,NAME,DEL_FLAG,CREATE_BY,UPDATE_BY,STREET_UUID,PROVINCE_NAME,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+        <!--插入表:SYS_STREET-->
+        <insert id="insert" >
+                    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_STREET(
+            
+            AREA_ID
+            ,CITY_ID
+            ,PROVINCE_ID
+            ,AREA
+            ,CITY
+            ,NAME
+            ,DEL_FLAG
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,PROVINCE_NAME
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            
+            #{areaId,jdbcType=BIGINT}
+            ,#{cityId,jdbcType=BIGINT}
+            ,#{provinceId,jdbcType=BIGINT}
+            ,#{area,jdbcType=VARCHAR}
+            ,#{city,jdbcType=VARCHAR}
+            ,#{name,jdbcType=VARCHAR}
+            ,#{delFlag,jdbcType=CHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{provinceName,jdbcType=VARCHAR}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+        )
+        </insert>
+
+        <!--更新表:SYS_STREET-->
+        <update id="update" >
+                    UPDATE /*MS-SYS-STREET-UPDATE*/ SYS_STREET
+            SET
+                    AREA_ID         = #{areaId,jdbcType=BIGINT}
+                    ,CITY_ID         = #{cityId,jdbcType=BIGINT}
+                    ,PROVINCE_ID     = #{provinceId,jdbcType=BIGINT}
+                    ,AREA            = #{area,jdbcType=VARCHAR}
+                    ,CITY            = #{city,jdbcType=VARCHAR}
+                    ,NAME            = #{name,jdbcType=VARCHAR}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,PROVINCE_NAME   = #{provinceName,jdbcType=VARCHAR}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </update>
+
+        <!--根据主键删除数据:SYS_STREET-->
+        <delete id="deleteById" >
+                    DELETE /*MS-SYS-STREET-DELETEBYID*/ FROM SYS_STREET
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </delete>
+
+        <!--根据主键获取数据:SYS_STREET-->
+        <select id="getById" resultMap="BaseResultMap">
+                    SELECT /*MS-SYS-STREET-GETBYID*/  <include refid="Base_Column_List" /> FROM SYS_STREET
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </select>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.UserGroupDeviceMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.UserGroupDeviceDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="sys_user_group_id" jdbcType="BIGINT" property="sysUserGroupId" />
+        <result column="sys_device_no" jdbcType="VARCHAR" property="sysDeviceNo" />
+        <result column="device_type" jdbcType="CHAR" property="deviceType" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, uuid, sys_user_group_id, sys_device_no, device_type, del_flag, create_by, create_time,
+    update_by, update_time
+    </sql>
+    <select id="getDeviceIdByGroupId" parameterType="map" resultType="string">
+    SELECT sys_device_no FROM sys_user_group_device
+    WHERE sys_user_group_id=#{groupId}
+</select>
+    <select id="getDeviceIdByGroupIdANDType" parameterType="map" resultType="string">
+        SELECT sys_device_no FROM sys_user_group_device
+        WHERE sys_user_group_id=#{groupId} AND  device_type=#{deviceType}
+    </select>
+    <insert id="batchaddRoleUser" parameterType="com.xiaowei.mana.mapper.dataobject.UserGroupDeviceDO">
+        <foreach collection="list" item="item" separator=";">
+            insert into sys_user_group_device ( uuid, sys_user_group_id,
+            sys_device_no, device_type, del_flag,
+            create_by, create_time, update_by,
+            update_time)
+            values ( #{item.uuid,jdbcType=VARCHAR}, #{item.sysUserGroupId,jdbcType=BIGINT},
+            #{item.sysDeviceNo,jdbcType=VARCHAR}, #{item.deviceType,jdbcType=CHAR}, #{item.delFlag,jdbcType=CHAR},
+            #{item.createBy,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP})
+        </foreach>
+
+    </insert>
+    <delete id="deleteByGroupId" parameterType="java.lang.Long">
+        delete from sys_user_group_device
+        where sys_user_group_id=#{groupId} AND sys_device_no IN
+        <foreach collection="lists" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

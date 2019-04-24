@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.DeptMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.DeptDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sys_dept_uuid" jdbcType="VARCHAR" property="sysDeptUuid"/>
+        <result column="sys_dept_name" jdbcType="VARCHAR" property="sysDeptName"/>
+        <result column="sys_dept_parent_id" jdbcType="BIGINT" property="sysDeptParentId"/>
+        <result column="sys_dept_level" jdbcType="VARCHAR" property="sysDeptLevel"/>
+        <result column="sys_dept_seq" jdbcType="INTEGER" property="sysDeptSeq"/>
+        <result column="sys_is_leaf" jdbcType="CHAR" property="sysIsLeaf"/>
+        <result column="sys_dept_remark" jdbcType="VARCHAR" property="sysDeptRemark"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, sys_dept_uuid, sys_dept_name, sys_dept_parent_id, sys_dept_level, sys_dept_seq,
+        sys_is_leaf, sys_dept_remark, group_id, del_flag, create_by, create_time, update_time,
+        update_by
+    </sql>
+    <select id="countDeptTree" resultType="int">
+        SELECT count(id) FROM sys_dept WHERE group_id=#{groupId}
+    </select>
+    <update id="batchUpdateLevel" parameterType="map">
+        <foreach collection="sysDeptList" item="sysDept" separator=";">
+            UPDATE sys_dept
+            SET sys_dept_level = #{sysDept.sysDeptLevel}
+            WHERE id = #{sysDept.id}
+        </foreach>
+    </update>
+    <select id="getDeptByUUID" resultMap="BaseResultMap">
+        select
+        id, sys_dept_uuid, sys_dept_name, sys_dept_parent_id, sys_dept_level, sys_dept_seq,
+        sys_is_leaf
+        from sys_dept
+        where sys_dept_uuid = #{uuid}
+    </select>
+    <select id="countByLevel" resultType="int">
+        SELECT count(id) FROM sys_dept WHERE sys_dept_level LIKE CONCAT( #{level,jdbcType=VARCHAR},  '%')
+    </select>
+    <select id="getChildDeptListByLevel" resultMap="BaseResultMap">
+        SELECT
+         id, sys_dept_uuid, sys_dept_name, sys_dept_parent_id, sys_dept_level, sys_dept_seq,
+        sys_is_leaf
+         FROM sys_dept WHERE sys_dept_level LIKE CONCAT( #{level,jdbcType=VARCHAR},  '%')
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        id, sys_dept_uuid, sys_dept_name, sys_dept_parent_id, sys_dept_level, sys_dept_seq,
+        sys_is_leaf
+        from sys_dept
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="deptTree" resultMap="BaseResultMap">
+        SELECT  id, sys_dept_uuid, sys_dept_name, sys_dept_parent_id, sys_dept_level, sys_dept_seq,
+        sys_is_leaf, sys_dept_remark, group_id
+        FROM  sys_dept
+        WHERE group_id=#{groupId}
+    </select>
+    <select id="countByNameAndParentId" parameterType="map" resultType="int">
+        SELECT count(1)
+        FROM sys_dept
+        WHERE sys_dept_name = #{name} AND group_id=#{groupId}
+        <if test="parentId != null">
+            AND sys_dept_parent_id = #{parentId}
+        </if>
+        <if test="id != null">
+            AND id != #{id}
+        </if>
+    </select>
+    <insert id="insertSelective" parameterType="com.xiaowei.mana.mapper.dataobject.DeptDO">
+        insert into sys_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysDeptUuid != null">
+                sys_dept_uuid,
+            </if>
+            <if test="sysDeptName != null">
+                sys_dept_name,
+            </if>
+            <if test="sysDeptParentId != null">
+                sys_dept_parent_id,
+            </if>
+            <if test="sysDeptLevel != null">
+                sys_dept_level,
+            </if>
+            <if test="sysDeptSeq != null">
+                sys_dept_seq,
+            </if>
+            <if test="sysIsLeaf != null">
+                sys_is_leaf,
+            </if>
+            <if test="sysDeptRemark != null">
+                sys_dept_remark,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysDeptUuid != null">
+                #{sysDeptUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDeptName != null">
+                #{sysDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDeptParentId != null">
+                #{sysDeptParentId,jdbcType=BIGINT},
+            </if>
+            <if test="sysDeptLevel != null">
+                #{sysDeptLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDeptSeq != null">
+                #{sysDeptSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysIsLeaf != null">
+                #{sysIsLeaf,jdbcType=CHAR},
+            </if>
+            <if test="sysDeptRemark != null">
+                #{sysDeptRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiaowei.mana.mapper.dataobject.DeptDO">
+        update sys_dept
+        <set>
+            <if test="sysDeptUuid != null">
+                sys_dept_uuid = #{sysDeptUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDeptName != null">
+                sys_dept_name = #{sysDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDeptParentId != null">
+                sys_dept_parent_id = #{sysDeptParentId,jdbcType=BIGINT},
+            </if>
+            <if test="sysDeptLevel != null">
+                sys_dept_level = #{sysDeptLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDeptSeq != null">
+                sys_dept_seq = #{sysDeptSeq,jdbcType=INTEGER},
+            </if>
+            <if test="sysIsLeaf != null">
+                sys_is_leaf = #{sysIsLeaf,jdbcType=CHAR},
+            </if>
+            <if test="sysDeptRemark != null">
+                sys_dept_remark = #{sysDeptRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

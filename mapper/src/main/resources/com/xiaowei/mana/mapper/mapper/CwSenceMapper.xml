@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.CwSenceMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.XwCwSenceDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sence_uuid" jdbcType="VARCHAR" property="senceUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="tank_size" jdbcType="VARCHAR" property="tankSize" />
+        <result column="tank_material" jdbcType="VARCHAR" property="tankMaterial" />
+        <result column="tank_seal" jdbcType="VARCHAR" property="tankSeal" />
+        <result column="sence_principal" jdbcType="VARCHAR" property="sencePrincipal" />
+        <result column="principal_phone" jdbcType="VARCHAR" property="principalPhone" />
+        <result column="cleaning_frequency" jdbcType="VARCHAR" property="cleaningFrequency" />
+        <result column="water_support_status" jdbcType="VARCHAR" property="waterSupportStatus" />
+        <result column="last_cleaning_time" jdbcType="TIMESTAMP" property="lastCleaningTime" />
+        <result column="sence_install_time" jdbcType="TIMESTAMP" property="senceInstallTime" />
+        <result column="sence_property_company" jdbcType="VARCHAR" property="sencePropertyCompany" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId"/>
+        <result column="city_id" jdbcType="BIGINT" property="cityId"/>
+        <result column="area_id" jdbcType="BIGINT" property="areaId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, sence_uuid, device_no, tank_size, tank_material, tank_seal, sence_principal,
+    principal_phone, cleaning_frequency, water_support_status, last_cleaning_time, sence_install_time,
+    sence_property_company, create_by, create_time, update_by, update_time, del_flag
+  </sql>
+
+    <!--设备编号是否存在-->
+    <select id="deviceNo" resultType="int">
+        select count(id)
+        from xw_cw_sence
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <!--设备编号是否存在-->
+    <select id="deNo" resultType="int">
+        select count(id)
+        from xw_equipment_cw
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="uuid" resultMap="uuid">
+        select
+         id, sence_uuid, device_no, tank_size, tank_material, tank_seal, sence_principal,
+    principal_phone, cleaning_frequency, water_support_status, last_cleaning_time, sence_install_time,
+    sence_property_company, create_by, create_time, update_by, update_time, del_flag
+        from xw_cw_sence
+        where device_no = #{deviceNo}
+    </select>
+    <resultMap id="uuid" type="com.xiaowei.mana.mapper.dataobject.XwCwSenceDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sence_uuid" jdbcType="VARCHAR" property="senceUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="tank_size" jdbcType="VARCHAR" property="tankSize" />
+        <result column="tank_material" jdbcType="VARCHAR" property="tankMaterial" />
+        <result column="tank_seal" jdbcType="VARCHAR" property="tankSeal" />
+        <result column="sence_principal" jdbcType="VARCHAR" property="sencePrincipal" />
+        <result column="principal_phone" jdbcType="VARCHAR" property="principalPhone" />
+        <result column="cleaning_frequency" jdbcType="VARCHAR" property="cleaningFrequency" />
+        <result column="water_support_status" jdbcType="VARCHAR" property="waterSupportStatus" />
+        <result column="last_cleaning_time" jdbcType="TIMESTAMP" property="lastCleaningTime" />
+        <result column="sence_install_time" jdbcType="TIMESTAMP" property="senceInstallTime" />
+        <result column="sence_property_company" jdbcType="VARCHAR" property="sencePropertyCompany" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    </resultMap>
+    <select id="cwSenceByNo" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xw_cw_sence
+        where
+        device_no=#{deviceNo,jdbcType=VARCHAR}
+    </select>
+    <select id="deSenNo" resultType="int">
+        select count(id)
+        from xw_cw_sence
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="selCwSen" resultMap="BaseResultMap">
+          SELECT  id, sence_uuid, device_no, tank_size, tank_material, tank_seal, sence_principal,
+    principal_phone, cleaning_frequency, water_support_status, last_cleaning_time, sence_install_time,
+    sence_property_company, create_by, create_time, update_by, update_time, del_flag,province_id,city_id,area_id
+        FROM xw_cw_sence
+
+    </select>
+
+
+
+
+</mapper>

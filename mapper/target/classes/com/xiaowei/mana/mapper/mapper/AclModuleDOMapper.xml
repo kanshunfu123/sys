@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.AclModuleDOMapper">
+    <!-- 自动生成,请修改 SYS_ACL_MODULE.xml -->
+    <resultMap id="BaseResultMap"  type="com.xiaowei.mana.mapper.dataobject.AclModuleDO">
+            <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+            <result column="SYS_ACL_MODULE_PARENT_ID" property="sysAclModuleParentId" jdbcType="BIGINT" javaType="Long"/>
+            <result column="SYS_ACL_PERMISSION_TYPE" property="sysAclPermissionType" jdbcType="BIGINT" javaType="Long"/>
+            <result column="DEL_FLAG" property="delFlag" jdbcType="CHAR" javaType="String"/>
+            <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_ACL_MODULE_CODE" property="sysAclModuleCode" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_ACL_MODULE_ICON" property="sysAclModuleIcon" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_ACL_MODULE_NAME" property="sysAclModuleName" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_ACL_MODULE_UUID" property="sysAclModuleUuid" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_ACL_MODULE_LEVEL" property="sysAclModuleLevel" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_ACL_MODULE_REMARK" property="sysAclModuleRemark" jdbcType="VARCHAR" javaType="String"/>
+            <result column="SYS_ACL_MODULE_SEQ" property="sysAclModuleSeq" jdbcType="INTEGER" javaType="Integer"/>
+            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,SYS_ACL_MODULE_PARENT_ID,SYS_ACL_PERMISSION_TYPE,DEL_FLAG,CREATE_BY,UPDATE_BY,SYS_ACL_MODULE_CODE,SYS_ACL_MODULE_ICON,SYS_ACL_MODULE_NAME,SYS_ACL_MODULE_UUID,SYS_ACL_MODULE_LEVEL,SYS_ACL_MODULE_REMARK,SYS_ACL_MODULE_SEQ,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+        <!--插入表:SYS_ACL_MODULE-->
+        <insert id="insert" >
+                    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_ACL_MODULE(
+            
+            SYS_ACL_MODULE_PARENT_ID
+            ,DEL_FLAG
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,SYS_ACL_MODULE_CODE
+            ,SYS_ACL_MODULE_ICON
+            ,SYS_ACL_MODULE_NAME
+            ,SYS_ACL_MODULE_UUID
+            ,SYS_ACL_MODULE_LEVEL
+            ,SYS_ACL_MODULE_REMARK
+            ,SYS_ACL_PERMISSION_TYPE
+            ,SYS_ACL_MODULE_SEQ
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            
+            #{sysAclModuleParentId,jdbcType=BIGINT}
+            ,#{delFlag,jdbcType=CHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{sysAclModuleCode,jdbcType=VARCHAR}
+            ,#{sysAclModuleIcon,jdbcType=VARCHAR}
+            ,#{sysAclModuleName,jdbcType=VARCHAR}
+            ,#{sysAclModuleUuid,jdbcType=VARCHAR}
+            ,#{sysAclModuleLevel,jdbcType=VARCHAR}
+            ,#{sysAclModuleRemark,jdbcType=VARCHAR}
+            ,#{sysAclPermissionType,jdbcType=CHAR}
+            ,#{sysAclModuleSeq,jdbcType=INTEGER}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+        )
+        </insert>
+
+        <!--更新表:SYS_ACL_MODULE-->
+        <update id="update" >
+                    UPDATE /*MS-SYS-ACL-MODULE-UPDATE*/ SYS_ACL_MODULE
+            SET
+                    SYS_ACL_MODULE_PARENT_ID = #{sysAclModuleParentId,jdbcType=BIGINT}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,SYS_ACL_MODULE_CODE = #{sysAclModuleCode,jdbcType=VARCHAR}
+                    ,SYS_ACL_MODULE_ICON = #{sysAclModuleIcon,jdbcType=VARCHAR}
+                    ,SYS_ACL_MODULE_NAME = #{sysAclModuleName,jdbcType=VARCHAR}
+                    ,SYS_ACL_MODULE_UUID = #{sysAclModuleUuid,jdbcType=VARCHAR}
+                    ,SYS_ACL_MODULE_LEVEL = #{sysAclModuleLevel,jdbcType=VARCHAR}
+                    ,SYS_ACL_MODULE_REMARK = #{sysAclModuleRemark,jdbcType=VARCHAR}
+                    ,SYS_ACL_PERMISSION_TYPE = #{sysAclPermissionType,jdbcType=CHAR}
+                    ,SYS_ACL_MODULE_SEQ = #{sysAclModuleSeq,jdbcType=INTEGER}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </update>
+
+        <!--根据主键删除数据:SYS_ACL_MODULE-->
+        <delete id="deleteById" >
+                    DELETE /*MS-SYS-ACL-MODULE-DELETEBYID*/ FROM SYS_ACL_MODULE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </delete>
+
+        <!--根据主键获取数据:SYS_ACL_MODULE-->
+        <select id="getById" resultMap="BaseResultMap">
+                    SELECT /*MS-SYS-ACL-MODULE-GETBYID*/  <include refid="Base_Column_List" /> FROM SYS_ACL_MODULE
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </select>
+</mapper>

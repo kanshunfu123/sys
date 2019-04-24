@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.UserGroupAclMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.UserGroupAclDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="sys_user_group_id" jdbcType="BIGINT" property="sysUserGroupId" />
+        <result column="sys_acl_id" jdbcType="BIGINT" property="sysAclId" />
+        <result column="sys_acl_permission_type" jdbcType="BIGINT" property="sysAclPermissionType" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, uuid, sys_user_group_id, sys_acl_id, sys_acl_permission_type, del_flag, create_by,
+    create_time, update_time, update_by
+  </sql>
+    <select id="getGroupAclByUUID" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user_group_acl
+        where uuid=#{uuid}
+    </select>
+    <select id="getDeviceIdByGroupId" resultType="Long">
+        select
+        sys_acl_id
+        from sys_user_group_acl
+        where sys_user_group_id=#{groupId}
+    </select>
+    <delete id="deleteByGroupId" parameterType="java.lang.Long">
+        delete from sys_user_group_acl
+        where sys_user_group_id = #{groupId,jdbcType=BIGINT}
+    </delete>
+    <insert id="batchaddRoleUser" parameterType="com.xiaowei.mana.mapper.dataobject.UserGroupAclDO">
+        <foreach collection="list" item="item" separator=";">
+            insert into sys_user_group_acl ( uuid, sys_user_group_id,
+            sys_acl_id, sys_acl_permission_type, del_flag,
+            create_by, create_time, update_time,
+            update_by)
+            values ( #{item.uuid,jdbcType=VARCHAR}, #{item.sysUserGroupId,jdbcType=BIGINT},
+            #{item.sysAclId,jdbcType=BIGINT}, #{item.sysAclPermissionType,jdbcType=BIGINT}, #{item.delFlag,jdbcType=CHAR},
+            #{item.createBy,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.updateBy,jdbcType=VARCHAR})
+        </foreach>
+
+    </insert>
+</mapper>

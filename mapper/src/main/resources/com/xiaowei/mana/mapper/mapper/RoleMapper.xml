@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.RoleMapper">
+    <resultMap id="BaseResultMap_group" type="com.xiaowei.mana.mapper.dataobject.UserGroupDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_group_uuid" jdbcType="VARCHAR" property="userGroupUuid"/>
+        <result column="user_group_name" jdbcType="VARCHAR" property="userGroupName"/>
+        <result column="sys_account_start_time" jdbcType="TIMESTAMP" property="sysAccountStartTime"/>
+        <result column="sys_account_end_time" jdbcType="TIMESTAMP" property="sysAccountEndTime"/>
+        <result column="sys_open_day" jdbcType="VARCHAR" property="sysOpenDay"/>
+        <result column="sys_start" jdbcType="CHAR" property="sysStart"/>
+        <result column="sys_create_account_num" jdbcType="INTEGER" property="sysCreateAccountNum"/>
+        <result column="sys_scene" jdbcType="VARCHAR" property="sysScene"/>
+        <result column="sys_allow_device_num" jdbcType="INTEGER" property="sysAllowDeviceNum"/>
+        <result column="sys_rece_device_num" jdbcType="INTEGER" property="sysReceDeviceNum"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+    <resultMap id="BaseResultMap_pagerole" type="com.xiaowei.mana.mapper.dataobject.PageRoleDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sys_role_uuid" jdbcType="VARCHAR" property="sysRoleUuid"/>
+        <result column="sys_role_name" jdbcType="VARCHAR" property="sysRoleName"/>
+        <result column="sys_role_type" jdbcType="CHAR" property="sysRoleType"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="sys_role_status" jdbcType="CHAR" property="sysRoleStatus"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <association property="userGroupDO" column="group_id" select="groupNameByGroupId"/>
+    </resultMap>
+    <select id="pageRole" parameterType="map" resultMap="BaseResultMap_pagerole">
+        SELECT id, sys_role_uuid, sys_role_name, sys_role_type, remark, group_id,sys_role_status,create_time
+        FROM sys_role
+        <trim prefix="where" prefixOverrides="and">
+            <if test="roleName!=null and roleName!=''">
+                AND sys_role_name LIKE CONCAT('%',#{roleName},'%')
+            </if>
+            <if test="groupId!=null">
+                AND group_id=#{groupId}
+            </if>
+        </trim>
+        ORDER BY sys_role.create_time DESC
+    </select>
+    <select id="groupNameByGroupId" resultMap="BaseResultMap_group">
+    SELECT id, user_group_uuid, user_group_name
+    from sys_user_group
+        where id = #{group_id}
+    </select>
+
+
+    <select id="getAllRoles" resultMap="BaseResultMap">
+         SELECT id, sys_role_uuid, sys_role_name, sys_role_type, remark, group_id,sys_role_status
+        FROM sys_role WHERE del_flag='0'
+    </select>
+    <select id="getRolesByUserId" resultMap="BaseResultMap">
+       SELECT id, sys_role_uuid, sys_role_name, sys_role_type, remark, group_id,sys_role_status
+        FROM sys_role WHERE id IN (
+          SELECT role_id FROM sys_role_user WHERE user_id =#{userId}
+        )
+    </select>
+    <select id="getRoleByTyGroupType" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        id, sys_role_uuid, sys_role_name, sys_role_type, remark, group_id,sys_role_status
+        FROM sys_role
+        <trim prefixOverrides="and" prefix="where">
+            <if test="groupid!=null">
+                AND group_id=#{groupid}
+            </if>
+            <if test="roleType!=null and roleType!=''">
+               AND sys_role_type=#{roleType}
+            </if>
+        </trim>
+    </select>
+    <select id="getRoleById" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+         id, sys_role_uuid, sys_role_name, sys_role_type, remark, group_id,sys_role_status
+         FROM sys_role
+    WHERE id=#{id}
+</select>
+    <select id="getThirdRoleByParam" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        id, sys_role_uuid, sys_role_name, sys_role_type, remark, group_id,sys_role_status
+        FROM sys_role WHERE sys_role_type=#{roleType} AND group_id=#{groupid}
+        <if test="id!=null">
+            AND id!=#{id}
+        </if>
+    </select>
+    <select id="getRoleCountByRoleName" resultType="int">
+        select
+        count(id)
+        from sys_role
+        <trim prefix="where" prefixOverrides="and">
+            <if test="rolename!=null">
+                AND sys_role_name=#{rolename}
+            </if>
+            <if test="groupid!=null">
+                AND group_id=#{groupid}
+            </if>
+            <if test="roleid!=null">
+                AND id!=#{roleid}
+            </if>
+        </trim>
+    </select>
+    <select id="getRoleByUUID" resultMap="BaseResultMap">
+        SELECT
+         id, sys_role_uuid, sys_role_name, sys_role_type, remark, group_id,sys_role_status
+    FROM sys_role WHERE sys_role_uuid=#{uuid}
+    </select>
+    <update id="modifyRole" parameterType="com.xiaowei.mana.mapper.dataobject.RoleDO">
+        update sys_role
+        <set>
+            <if test="sysRoleUuid != null">
+                sys_role_uuid = #{sysRoleUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRoleName != null">
+                sys_role_name = #{sysRoleName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRoleType != null">
+                sys_role_type = #{sysRoleType,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="sysRoleStatus != null">
+                sys_role_status = #{sysRoleStatus,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <insert id="addRole" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.xiaowei.mana.mapper.dataobject.RoleDO">
+        insert into sys_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysRoleUuid != null">
+                sys_role_uuid,
+            </if>
+            <if test="sysRoleName != null">
+                sys_role_name,
+            </if>
+            <if test="sysRoleType != null">
+                sys_role_type,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="sysRoleStatus != null">
+                sys_role_status,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysRoleUuid != null">
+                #{sysRoleUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRoleName != null">
+                #{sysRoleName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysRoleType != null">
+                #{sysRoleType,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="sysRoleStatus != null">
+                #{sysRoleStatus,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.RoleDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sys_role_uuid" jdbcType="VARCHAR" property="sysRoleUuid"/>
+        <result column="sys_role_name" jdbcType="VARCHAR" property="sysRoleName"/>
+        <result column="sys_role_type" jdbcType="CHAR" property="sysRoleType"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="sys_role_status" jdbcType="CHAR" property="sysRoleStatus"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+</mapper>

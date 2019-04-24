@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.RwSenceMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.XwRwSenceDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sence_uuid" jdbcType="VARCHAR" property="senceUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="rw_name" jdbcType="VARCHAR" property="rwName" />
+        <result column="rw_width" jdbcType="VARCHAR" property="rwWidth" />
+        <result column="rw_length" jdbcType="VARCHAR" property="rwLength" />
+        <result column="rw_depth" jdbcType="VARCHAR" property="rwDepth" />
+        <result column="rw_levee" jdbcType="VARCHAR" property="rwLevee" />
+        <result column="rw_pollute_source" jdbcType="VARCHAR" property="rwPolluteSource" />
+        <result column="sence_principal" jdbcType="VARCHAR" property="sencePrincipal" />
+        <result column="principal_phone" jdbcType="VARCHAR" property="principalPhone" />
+        <result column="rw_type" jdbcType="VARCHAR" property="rwType" />
+        <result column="rw_range" jdbcType="VARCHAR" property="rwRange" />
+        <result column="rw_remark" jdbcType="VARCHAR" property="rwRemark" />
+        <result column="sence_install_time" jdbcType="TIMESTAMP" property="senceInstallTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId"/>
+        <result column="city_id" jdbcType="BIGINT" property="cityId"/>
+        <result column="area_id" jdbcType="BIGINT" property="areaId"/>
+        <result column="rw_grade" jdbcType="INTEGER" property="rwGrade"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, sence_uuid, device_no, rw_name, rw_width, rw_length, rw_depth, rw_levee, rw_pollute_source,
+    sence_principal, principal_phone, rw_type, rw_range, rw_remark, sence_install_time,
+    create_by, create_time, update_by, update_time, del_flag,rw_grade
+  </sql>
+
+    <!--设备编号是否存在-->
+    <select id="deviceNo" resultType="int">
+        select count(id)
+        from xw_rw_sence
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="deNo" resultType="int">
+        select count(id)
+        from xw_equipment_rw
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="uuid" resultMap="uuid">
+        select
+        id, sence_uuid, device_no, rw_name, rw_width, rw_length, rw_depth, rw_levee, rw_pollute_source,
+    sence_principal, principal_phone, rw_type, rw_range, rw_remark, sence_install_time,
+    create_by, create_time, update_by, update_time, del_flag
+        from xw_rw_sence
+        where device_no = #{deviceNo}
+    </select>
+    <resultMap id="uuid" type="com.xiaowei.mana.mapper.dataobject.XwRwSenceDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sence_uuid" jdbcType="VARCHAR" property="senceUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="rw_name" jdbcType="VARCHAR" property="rwName" />
+        <result column="rw_width" jdbcType="VARCHAR" property="rwWidth" />
+        <result column="rw_length" jdbcType="VARCHAR" property="rwLength" />
+        <result column="rw_depth" jdbcType="VARCHAR" property="rwDepth" />
+        <result column="rw_levee" jdbcType="VARCHAR" property="rwLevee" />
+        <result column="rw_pollute_source" jdbcType="VARCHAR" property="rwPolluteSource" />
+        <result column="sence_principal" jdbcType="VARCHAR" property="sencePrincipal" />
+        <result column="principal_phone" jdbcType="VARCHAR" property="principalPhone" />
+        <result column="rw_type" jdbcType="VARCHAR" property="rwType" />
+        <result column="rw_range" jdbcType="VARCHAR" property="rwRange" />
+        <result column="rw_remark" jdbcType="VARCHAR" property="rwRemark" />
+        <result column="sence_install_time" jdbcType="TIMESTAMP" property="senceInstallTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    </resultMap>
+    <select id="rwSenceByNo" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xw_rw_sence
+        where
+        device_no=#{deviceNo,jdbcType=VARCHAR}
+    </select>
+    <select id="deSenNo" resultType="int">
+        select count(id)
+        from xw_rw_sence
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="selRwSen" resultMap="BaseResultMap">
+          SELECT    id, sence_uuid, device_no, rw_name, rw_width, rw_length, rw_depth, rw_levee, rw_pollute_source,
+    sence_principal, principal_phone, rw_type, rw_range, rw_remark, sence_install_time,
+    create_by, create_time, update_by, update_time, del_flag,province_id,city_id,area_id,rw_grade
+        FROM xw_rw_sence
+
+    </select>
+
+
+
+
+</mapper>

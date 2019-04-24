@@ -1,0 +1,71 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="SYS_STREET" physicalName="SYS_STREET" remark="省市区------》街道">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:SYS_STREET">
+            <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+                SELECT
+                LAST_INSERT_ID()
+            </selectKey>
+        INSERT INTO SYS_STREET(
+            
+            AREA_ID
+            ,CITY_ID
+            ,PROVINCE_ID
+            ,AREA
+            ,CITY
+            ,NAME
+            ,DEL_FLAG
+            ,CREATE_BY
+            ,UPDATE_BY
+            ,PROVINCE_NAME
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            
+            #{areaId,jdbcType=BIGINT}
+            ,#{cityId,jdbcType=BIGINT}
+            ,#{provinceId,jdbcType=BIGINT}
+            ,#{area,jdbcType=VARCHAR}
+            ,#{city,jdbcType=VARCHAR}
+            ,#{name,jdbcType=VARCHAR}
+            ,#{delFlag,jdbcType=CHAR}
+            ,#{createBy,jdbcType=VARCHAR}
+            ,#{updateBy,jdbcType=VARCHAR}
+            ,#{provinceName,jdbcType=VARCHAR}
+            ,#{createTime,jdbcType=TIMESTAMP}
+            ,#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+        <operation name="update" paramtype="object" remark="更新表:SYS_STREET">
+            UPDATE SYS_STREET
+            SET
+                    AREA_ID         = #{areaId,jdbcType=BIGINT}
+                    ,CITY_ID         = #{cityId,jdbcType=BIGINT}
+                    ,PROVINCE_ID     = #{provinceId,jdbcType=BIGINT}
+                    ,AREA            = #{area,jdbcType=VARCHAR}
+                    ,CITY            = #{city,jdbcType=VARCHAR}
+                    ,NAME            = #{name,jdbcType=VARCHAR}
+                    ,DEL_FLAG        = #{delFlag,jdbcType=CHAR}
+                    ,CREATE_BY       = #{createBy,jdbcType=VARCHAR}
+                    ,UPDATE_BY       = #{updateBy,jdbcType=VARCHAR}
+                    ,PROVINCE_NAME   = #{provinceName,jdbcType=VARCHAR}
+                    ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+                    ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            WHERE
+                ID              = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="deleteById" multiplicity="one" remark="根据主键删除数据:SYS_STREET">
+            DELETE FROM SYS_STREET
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+
+        <operation name="getById" multiplicity="one" remark="根据主键获取数据:SYS_STREET">
+            SELECT * FROM SYS_STREET
+            WHERE
+                ID = #{id,jdbcType=BIGINT}
+        </operation>
+</table>

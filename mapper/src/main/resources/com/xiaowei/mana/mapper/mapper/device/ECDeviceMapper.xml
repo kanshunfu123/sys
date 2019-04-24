@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.device.ECDeviceMapper">
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.XwEquipmentEcDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="equipment_uuid" jdbcType="VARCHAR" property="equipmentUuid" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+        <result column="device_desc" jdbcType="VARCHAR" property="deviceDesc" />
+        <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+        <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime" />
+        <result column="setup_time" jdbcType="TIMESTAMP" property="setupTime" />
+        <result column="village_id" jdbcType="BIGINT" property="villageId" />
+        <result column="village_name" jdbcType="VARCHAR" property="villageName" />
+        <result column="install_man" jdbcType="VARCHAR" property="installMan" />
+        <result column="vendor" jdbcType="VARCHAR" property="vendor" />
+        <result column="floor_num" jdbcType="INTEGER" property="floorNum" />
+        <result column="floor_downnum" jdbcType="INTEGER" property="floorDownnum" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city_id" jdbcType="BIGINT" property="cityId" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="area_id" jdbcType="BIGINT" property="areaId" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
+        <result column="street_id" jdbcType="BIGINT" property="streetId" />
+        <result column="street" jdbcType="VARCHAR" property="street" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="safe_company" jdbcType="VARCHAR" property="safeCompany" />
+        <result column="safe_man" jdbcType="VARCHAR" property="safeMan" />
+        <result column="safe_phone" jdbcType="VARCHAR" property="safePhone" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+        <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+        <result column="install_phone" jdbcType="VARCHAR" property="installPhone" />
+        <result column="safe_time" jdbcType="TIMESTAMP" property="safeTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, equipment_uuid, device_no, device_name, device_code, device_desc, latitude, longitude,
+        product_time, setup_time, village_id, village_name, install_man, vendor, floor_num,
+        floor_downnum, province_id, province, city_id, city, area_id, area, street_id, street,
+        address, safe_company, safe_man, safe_phone, create_by, create_time, update_by, update_time,
+        del_flag, device_type, install_phone, safe_time
+    </sql>
+    <select id="feignECbyDeviceNo" resultMap="BaseResultMap">
+        SELECT id, equipment_uuid, device_no, device_name, device_code, device_desc, latitude, longitude,
+        product_time, setup_time, village_id, village_name, install_man, vendor, floor_num,
+        floor_downnum, province_id, province, city_id, city, area_id, area, street_id, street,
+        address, safe_company, safe_man, safe_phone, create_by, create_time, update_by, update_time,
+        del_flag, device_type, install_phone, safe_time
+        FROM  xw_equipment_ec
+        WHERE device_no=#{deviceNo}
+    </select>
+
+
+</mapper>

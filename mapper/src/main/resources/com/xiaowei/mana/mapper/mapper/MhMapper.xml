@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaowei.mana.mapper.mapper.MhMapper">
+    <!-- 自动生成,请修改 XW_EQUIPMENT_CW.xml -->
+    <resultMap id="BaseResultMap" type="com.xiaowei.mana.mapper.dataobject.XwEquipmentMhDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="equipment_uuid" jdbcType="VARCHAR" property="equipmentUuid"/>
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo"/>
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode"/>
+        <result column="device_desc" jdbcType="VARCHAR" property="deviceDesc"/>
+        <result column="latitude" jdbcType="VARCHAR" property="latitude"/>
+        <result column="longitude" jdbcType="VARCHAR" property="longitude"/>
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime"/>
+        <result column="setup_time" jdbcType="TIMESTAMP" property="setupTime"/>
+        <result column="village_id" jdbcType="BIGINT" property="villageId"/>
+        <result column="village_name" jdbcType="VARCHAR" property="villageName"/>
+        <result column="install_man" jdbcType="VARCHAR" property="installMan"/>
+        <result column="vendor" jdbcType="VARCHAR" property="vendor"/>
+        <result column="province_id" jdbcType="BIGINT" property="provinceId"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city_id" jdbcType="BIGINT" property="cityId"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="area_id" jdbcType="BIGINT" property="areaId"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="street_id" jdbcType="BIGINT" property="streetId"/>
+        <result column="street" jdbcType="VARCHAR" property="street"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="have_water_line" jdbcType="INTEGER" property="haveWaterLine"/>
+        <result column="have_gas" jdbcType="INTEGER" property="haveGas"/>
+        <result column="have_h2s" jdbcType="INTEGER" property="haveH2s"/>
+        <result column="safe_company" jdbcType="VARCHAR" property="safeCompany"/>
+        <result column="safe_man" jdbcType="VARCHAR" property="safeMan"/>
+        <result column="safe_phone" jdbcType="VARCHAR" property="safePhone"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="have_humi" jdbcType="INTEGER" property="haveHumi"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+       id, equipment_uuid, device_no, device_name, device_code, device_desc, latitude, longitude,
+    product_time, setup_time, village_id, village_name, install_man, vendor, province_id,
+    province, city_id, city, area_id, area, street_id, street, address, have_water_line,
+    have_gas, have_h2s, safe_company, safe_man, safe_phone, create_by, create_time, update_by,
+    update_time, del_flag,have_humi
+    </sql>
+    <!--编号是否存在-->
+    <select id="deviceCode" resultType="int">
+        select count(id)
+        from xw_equipment_mh
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no!=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+            <if test="deviceCode!=null and deviceCode!=''">
+                AND device_code=#{deviceCode,jdbcType=VARCHAR}
+            </if>
+            <if test="street!=null and street!=''">
+                AND street=#{street,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <!--设备编号是否存在-->
+    <select id="deviceNo" resultType="int">
+        select count(id)
+        from xw_equipment_mh
+        <trim prefixOverrides="AND || OR" prefix="WHERE">
+            <if test="deviceNo!=null and deviceNo!=''">
+                AND device_no=#{deviceNo,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <!--uuid查询电梯设备详情-->
+    <select id="uuid" resultMap="uuid">
+        select
+          id, equipment_uuid, device_no, device_name, device_code, device_desc, latitude, longitude,
+    product_time, setup_time, village_id, village_name, install_man, vendor, province_id,
+    province, city_id, city, area_id, area, street_id, street, address, have_water_line,
+    have_gas, have_h2s, safe_company, safe_man, safe_phone, create_by, create_time, update_by,
+    update_time, del_flag,install_phone,safe_time,have_humi,fault_push
+        from xw_equipment_mh
+        where equipment_uuid = #{equipmentUuid}
+    </select>
+    <resultMap id="uuid" type="com.xiaowei.mana.mapper.dataobject.XwEquipmentMhDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="equipment_uuid" jdbcType="VARCHAR" property="equipmentUuid"/>
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo"/>
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode"/>
+        <result column="device_desc" jdbcType="VARCHAR" property="deviceDesc"/>
+        <result column="latitude" jdbcType="VARCHAR" property="latitude"/>
+        <result column="longitude" jdbcType="VARCHAR" property="longitude"/>
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime"/>
+        <result column="setup_time" jdbcType="TIMESTAMP" property="setupTime"/>
+        <result column="village_id" jdbcType="BIGINT" property="villageId"/>
+        <result column="village_name" jdbcType="VARCHAR" property="villageName"/>
+        <result column="install_man" jdbcType="VARCHAR" property="installMan"/>
+        <result column="vendor" jdbcType="VARCHAR" property="vendor"/>
+        <result column="province_id" jdbcType="BIGINT" property="provinceId"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city_id" jdbcType="BIGINT" property="cityId"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="area_id" jdbcType="BIGINT" property="areaId"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="street_id" jdbcType="BIGINT" property="streetId"/>
+        <result column="street" jdbcType="VARCHAR" property="street"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="have_water_line" jdbcType="INTEGER" property="haveWaterLine"/>
+        <result column="have_gas" jdbcType="INTEGER" property="haveGas"/>
+        <result column="have_h2s" jdbcType="INTEGER" property="haveH2s"/>
+        <result column="safe_company" jdbcType="VARCHAR" property="safeCompany"/>
+        <result column="safe_man" jdbcType="VARCHAR" property="safeMan"/>
+        <result column="safe_phone" jdbcType="VARCHAR" property="safePhone"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="safe_time" jdbcType="TIMESTAMP" property="safeTime"/>
+        <result column="install_phone" jdbcType="VARCHAR" property="installPhone"/>
+        <result column="have_humi" jdbcType="INTEGER" property="haveHumi"/>
+        <result column="fault_push" jdbcType="INTEGER" property="faultPush"/>
+    </resultMap>
+    <select id="pageList" resultMap="PageMap">
+        select
+        id, equipment_uuid, device_no, device_name, device_code, device_desc, latitude, longitude,
+        product_time, setup_time, village_id, village_name, install_man, vendor, province_id,
+        province, city_id, city, area_id, area, street_id, street, address, have_water_line,
+        have_gas, have_h2s, safe_company, safe_man, safe_phone, del_flag,device_type,fault_push
+        from xw_equipment_mh
+        <trim prefix="where" prefixOverrides="and">
+            <if test="list!=null and list.size()!=0">
+                device_no IN
+                <foreach collection="list" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="deviceNo!=null and deviceNo!=''">
+                and device_no like CONCAT('%',#{deviceNo  ,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                and setup_time>#{startTime,jdbcType=VARCHAR}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime,jdbcType=VARCHAR}>setup_time
+            </if>
+            <if test="provinceId!=null and provinceId!=''">
+                and province_id=#{provinceId,jdbcType=BIGINT}
+            </if>
+            <if test="cityId!=null and cityId!=''">
+                and city_id=#{cityId,jdbcType=BIGINT}
+            </if>
+            <if test="areaId!=null and areaId!=''">
+                and area_id=#{areaId,jdbcType=BIGINT}
+            </if>
+        </trim>
+        order by id desc
+    </select>
+    <resultMap id="PageMap" type="com.xiaowei.mana.mapper.dataobject.XwEquipmentMhDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="equipment_uuid" jdbcType="VARCHAR" property="equipmentUuid"/>
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo"/>
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode"/>
+        <result column="device_desc" jdbcType="VARCHAR" property="deviceDesc"/>
+        <result column="device_type" jdbcType="VARCHAR" property="deviceType"/>
+        <result column="latitude" jdbcType="VARCHAR" property="latitude"/>
+        <result column="longitude" jdbcType="VARCHAR" property="longitude"/>
+        <result column="product_time" jdbcType="TIMESTAMP" property="productTime"/>
+        <result column="setup_time" jdbcType="TIMESTAMP" property="setupTime"/>
+        <result column="village_id" jdbcType="BIGINT" property="villageId"/>
+        <result column="village_name" jdbcType="VARCHAR" property="villageName"/>
+        <result column="install_man" jdbcType="VARCHAR" property="installMan"/>
+        <result column="vendor" jdbcType="VARCHAR" property="vendor"/>
+        <result column="province_id" jdbcType="BIGINT" property="provinceId"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city_id" jdbcType="BIGINT" property="cityId"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="area_id" jdbcType="BIGINT" property="areaId"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="street_id" jdbcType="BIGINT" property="streetId"/>
+        <result column="street" jdbcType="VARCHAR" property="street"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="have_water_line" jdbcType="INTEGER" property="haveWaterLine"/>
+        <result column="have_gas" jdbcType="INTEGER" property="haveGas"/>
+        <result column="have_h2s" jdbcType="INTEGER" property="haveH2s"/>
+        <result column="safe_company" jdbcType="VARCHAR" property="safeCompany"/>
+        <result column="safe_man" jdbcType="VARCHAR" property="safeMan"/>
+        <result column="safe_phone" jdbcType="VARCHAR" property="safePhone"/>
+        <result column="fault_push" jdbcType="INTEGER" property="faultPush"/>
+    </resultMap>
+    <select id="selMh" resultMap="BaseResultMap">
+          SELECT   id, equipment_uuid, device_no, device_name, device_code, device_desc, latitude, longitude,
+    product_time, setup_time, village_id, village_name, install_man, vendor, province_id,
+    province, city_id, city, area_id, area, street_id, street, address, have_water_line,
+    have_gas, have_h2s, safe_company, safe_man, safe_phone, create_by, create_time, update_by,
+    update_time, del_flag,have_humi,fault_push
+        FROM xw_equipment_mh
+
+    </select>
+    <select id="deNo" resultMap="uuid">
+        select
+          id, equipment_uuid, device_no, device_name, device_code, device_desc, latitude, longitude,
+    product_time, setup_time, village_id, village_name, install_man, vendor, province_id,
+    province, city_id, city, area_id, area, street_id, street, address, have_water_line,
+    have_gas, have_h2s, safe_company, safe_man, safe_phone, create_by, create_time, update_by,
+    update_time, del_flag,install_phone,safe_time,have_humi,fault_push
+        from xw_equipment_mh
+        where device_no = #{deviceNo}
+    </select>
+
+
+</mapper>
